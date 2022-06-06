@@ -28,11 +28,11 @@
  * Version 0.0.5 update
  * -> Automate 100% of process
  * -> No human interaction required
- * -> Values stored can be edited when required  
- * -> Implementation of SFTP to get required files 
- * -> Automatically receive and proccess files
- * -> Extract required data and store it 
- * -> Repeat this process X times in a day
+ * -> Values stored can be edited when required             /\
+ * -> Implementation of SFTP to get required files         //\\
+ * -> Automatically receive and proccess files            //  \\ 
+ * -> Extract required data and store it                 //    \\
+ * -> Repeat this process X times in a day              //      \\   
  * 
  * 
  */
@@ -43,6 +43,7 @@ if( ! defined('ABSPATH') ){
 }
 
 if ( !class_exists('EtfPlugin') ) {
+
     class ETFPlugin{
 
         var $postTypes = array("etfs");
@@ -54,6 +55,8 @@ if ( !class_exists('EtfPlugin') ) {
         var $etfs_list;
 
         var $unstructured_etfs_list;
+
+        var $automated = false;
 
         function __construct($in_feilds,$in_etf,$in_uns_etfs){
             
@@ -69,7 +72,9 @@ if ( !class_exists('EtfPlugin') ) {
             add_shortcode('render-etf-page', array($this, 'renderProductPage'));
             add_shortcode('render-top-holders-table', array($this, 'renderTopHolders'));
 
-            add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data') );
+            add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
+            add_action( 'get_sftp_data', array($this, 'get_sftp'));
+
         }
 
         function activiate(){
@@ -78,6 +83,10 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function deactivate(){
+            if($this->automated){
+                wp_clear_scheduled_hook( 'get_sftp_data' );
+            }
+            
             flush_rewrite_rules();
         }
 
@@ -110,6 +119,27 @@ if ( !class_exists('EtfPlugin') ) {
 			wp_send_json($csv_res);
         }
 
+        function init_sftp(){
+            // start sftp related process 
+            if ( wp_next_scheduled ( 'get_sftp_data', $args ) && !$this->automated) {
+                return;
+            }
+
+            $this->automated = true;
+            wp_schedule_event( time(), 'hourly', 'get_sftp_data' ); // dynamically assgin timings 
+        }
+ 
+        function get_sftp(){
+            // get and procsess data file
+
+        }
+
+        function end_sftp(){
+            // end/pause sftp related process
+            $this->automated = false;
+            wp_clear_scheduled_hook( 'get_sftp_data' );
+        }
+
         /**
          * registers etf post type
          */
@@ -140,6 +170,24 @@ if ( !class_exists('EtfPlugin') ) {
               'hierarchical' => false,
               'supports' => array('title','editor','custom-fields')
             ));
+
+            add_submenu_page(
+                'edit.php?post_type=etfs', //$parent_slug
+                'Settings',  //$page_title
+                'Settings',        //$menu_title
+                'manage_options',           //$capability
+                'etfs_general_settings',//$menu_slug
+                'etfs_general_settings_render_page'//$function
+            );
+            
+        }
+
+        function etfs_general_settings_render_page(){
+            echo '<h2> ETFs Settings </h2>'; 
+
+            // ob_start();
+            // include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/etfs-settings.php');
+            // return ob_get_clean();
         }
 
         /**
@@ -319,6 +367,7 @@ if(class_exists('ETFPlugin')){
     require_once 'assets/class-atts.php';
     require_once 'data/GoogleSheetProvider.php';
     require_once 'data/Pdf2Data.php';
+    require_once 'data/SFTP.php';
     $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured);
 }
     
