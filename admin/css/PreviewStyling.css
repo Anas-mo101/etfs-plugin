@@ -1,0 +1,188 @@
+#wpfooter{
+    display: none;
+}
+#ETF-Pre-popup-underlay{
+    position: fixed;
+    z-index: 999999;
+    display: none;
+    background-color: rgba(125, 125, 125, 0.6);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#ETF-Pre-popup-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#ETF-Pre-table-popup{
+    margin: 30px;
+    border-radius: 15px;
+    background-color: white;
+    width: 100%;
+    height: 93%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#ETF-Pre-popup-topbar-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+#ETF-Pre-popup-bottombar-container{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#ETF-Pre-popup-close-button{
+    margin: auto 10px;
+} 
+
+#ETF-Pre-popup-title-container, #ETF-Pre-popup-submit-button{
+    margin: 10px;
+}
+
+#ETF-Pre-popup-submit-button{
+    width: 200px;
+    height: 50px;
+}
+
+#ETF-Pre-popup-close-button{
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ETF-Pre-popup-table-container{
+    background-color: #f0f0f1;
+    height: inherit;
+    border: solid 2px rgb(128, 128, 128);
+    margin: 10px 0;
+    display: flex;
+    overflow: scroll;
+    flex-direction: column;
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+th {
+    background-color: darkblue;
+    color: #ffffff;
+}
+
+tbody {
+    background-color: #f5f5f5;
+}
+
+/*responsive*/
+
+@media (max-width: 500px) {
+.preview-table thead {
+    display: none;
+}
+
+.preview-table,
+.preview-table tbody,
+.preview-table tr,
+.preview-table td {
+    display: block;
+    width: 100%;
+}
+.preview-table tr {
+    margin-bottom: 15px;
+}
+
+.preview-table td {
+    text-align: right;
+    padding-left: 50%;
+    text-align: right;
+    position: relative;
+}
+
+.preview-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+}
+}
+
+.table-horizontal-row{
+    background-color: white;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 735px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.template-tables-preview{
+    margin: 40px auto;
+    width: auto;
+}
+
+#ETF-Pre-graphcontainer {
+    height: 500px;
+    min-width: 310px;
+    width: 100%;
+}
+
+.table-horizontal-row-grid{
+    background-color: white;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 160px 160px 160px 160px 160px 160px; 
+    width: 100%;
+    margin: 10px 0;
+    justify-items: center;
+}
+
+.table-horizontal-row-grid-4{
+    grid-template-columns: 170px 170px 170px 170px;
+    width: auto;
+}
+
+.table-horizontal-row-grid-5{
+    grid-template-columns: 170px 170px 170px 170px 170px;
+    width: auto;
+}
+
+.table-horizontal-row-grid-4 h3, .table-horizontal-row-grid-4 p{
+    text-align: center;
+    width: 100%;
+}
+
+.template-tables-preview h3{
+    text-align: center;
+}
+
+.fund-details-input-feilds{
+    height: 20px;
+    width: 100px;
+    margin: auto;
+}
