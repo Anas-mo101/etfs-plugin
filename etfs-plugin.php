@@ -10,6 +10,7 @@
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
+ * 
  */
 
 /**
