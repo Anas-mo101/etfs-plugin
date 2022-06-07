@@ -21,7 +21,7 @@ $custom_fields = array(
         "name"          => "pdf-monthly-ror-url",
         "title"         => "Monthly ROR URL",
         "description"   => "",
-        "type"          => "url",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -29,7 +29,7 @@ $custom_fields = array(
         "name"          => "pdf-disturbion-url",
         "title"         => "Distribution Memo URL",
         "description"   => "",
-        "type"          => "url",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),

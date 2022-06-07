@@ -177,17 +177,13 @@ if ( !class_exists('EtfPlugin') ) {
                 'Settings',        //$menu_title
                 'manage_options',           //$capability
                 'etfs_general_settings',//$menu_slug
-                'etfs_general_settings_render_page'//$function
+                array($this, 'etfs_general_settings_callback')//$function
             );
             
         }
 
-        function etfs_general_settings_render_page(){
-            echo '<h2> ETFs Settings </h2>'; 
-
-            // ob_start();
-            // include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/etfs-settings.php');
-            // return ob_get_clean();
+        function etfs_general_settings_callback(){
+            require_once 'shortcodes/etfs-settings.php';
         }
 
         /**
@@ -240,6 +236,7 @@ if ( !class_exists('EtfPlugin') ) {
             echo '<script src="https://code.highcharts.com/modules/export-data.js"></script>';
             echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/PreviewRen.js"> </script>';
             echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/ReqFuncs.js"> </script>';
+            echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/fileSelector.js"> </script>';
         }
 
         /**
@@ -279,12 +276,23 @@ if ( !class_exists('EtfPlugin') ) {
                                 case "text": {
                                     // Plain text field
                                     echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                                    echo '<input required type="text" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    echo '<input required type="text" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;" />';
                                     break;
                                 }
                                 case "url": {
                                     echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                                    echo '<input required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    echo '<input required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
+                                    break;
+                                }
+                                case "pdf_url": {
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                                    echo '<div style="display: flex; gap: 10px;"> <input readonly required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    if ( isset( $_POST['image_attachment_id'] ) ) : update_option( 'media_selector_attachment_id', absint( $_POST['image_attachment_id'] ) ); endif;
+                                    wp_enqueue_media(); 
+                                    ?> <form style="display: flex; gap: 10px;" method='post'>
+                                        <button id="<?php echo $this->prefix?>pdf_upload" type="button" onclick="mediaFileSelector('<?php echo $customField[ 'name' ] ?>')" class="button button-primary button-large"> Select file </button>
+                                        <input type='hidden' name='image_attachment_id' id='image_attachment_id' value='<?php echo get_option( 'media_selector_attachment_id' ); ?>'>
+                                    </form> </div> <?php
                                     break;
                                 }
                                 case "select": {
@@ -312,7 +320,7 @@ if ( !class_exists('EtfPlugin') ) {
                 } ?>
                 <div style="display: flex; gap: 30px;"> 
                     <div>
-                        <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview Data </button></div>
+                        <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview </button></div>
                         <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url( __FILE__ ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
                         <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Preview Success </p>
                         <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>
