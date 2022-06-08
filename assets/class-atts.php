@@ -5,7 +5,7 @@ $custom_fields = array(
         "name"          => "google-nav-url",
         "title"         => "Daily NAV Sheet URL",
         "description"   => "",
-        "type"          => "url",
+        "type"          => "g_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -13,7 +13,23 @@ $custom_fields = array(
         "name"          => "google-holding-url",
         "title"         => "Holding Report Sheet URL",
         "description"   => "",
-        "type"          => "url",
+        "type"          => "g_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "google-nav-url-toggle-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "google-holding-url-toggle-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),

@@ -2,6 +2,7 @@
 
 class GoogleSheetProvider
 {
+	
     /**
 	 * Get remote contents using either file_get_contents or curl.
 	 * 
@@ -41,7 +42,8 @@ class GoogleSheetProvider
             $dom->loadHTML('<?xml encoding="utf-8" ?>'.$this->getRemoteContents($url));
             libxml_clear_errors();
             $xpath = new \DomXPath($dom);
-
+			
+				
             $columns = [];
             $firstRow = $xpath->query('//table//tbody//tr')->item(0);
             if ($firstRow) {
@@ -53,7 +55,7 @@ class GoogleSheetProvider
                     $columns[$headerName] = $headerName;
                 }
             }
-
+			
             return $columns;
         } catch (\Exception $e) {
             return new \WP_Error(423, $e->getMessage());
