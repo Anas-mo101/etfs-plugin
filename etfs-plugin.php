@@ -73,8 +73,9 @@ if ( !class_exists('EtfPlugin') ) {
             add_shortcode('render-top-holders-table', array($this, 'renderTopHolders'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
-            add_action( 'get_sftp_data', array($this, 'get_sftp'));
+            add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
 
+            add_action( 'get_sftp_data', array($this, 'get_sftp'));
         }
 
         function activiate(){
@@ -103,6 +104,12 @@ if ( !class_exists('EtfPlugin') ) {
                     error_log($log);
                 }
             }
+        }
+
+        function set_sftp_config(){
+            $sftp = SFTP::getInstance();
+            $res = $sftp->set_config($_POST);
+            wp_send_json($res);
         }
 
         function fetch_etf_data(){
@@ -317,7 +324,6 @@ if ( !class_exists('EtfPlugin') ) {
 
 if(class_exists('ETFPlugin')){
     include 'alt_autoload.php';
-
     $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured);
 }
     

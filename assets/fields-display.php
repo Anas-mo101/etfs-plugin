@@ -50,12 +50,9 @@
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
                         echo '<div style="display: flex; gap: 10px;"> <input '. $toggle_input_visiblity_b .' required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '-google-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
                         echo '<input readonly '. $toggle_input_visiblity_a .' required type="url" name="' . $this->prefix . $customField[ 'name' ] . '-" id="' . $this->prefix . $customField[ 'name' ] . '-upload-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
-                        
                         if ( isset( $_POST['image_attachment_id'] ) ) : update_option( 'media_selector_attachment_id', absint( $_POST['image_attachment_id'] ) ); endif;  wp_enqueue_media(); 
                         ?> <button <?php echo $toggle_input_visiblity_a ?> id="<?php echo $this->prefix . $customField[ 'name' ] ?>-file-upload" type="button" onclick="mediaFileSelector('<?php echo $customField[ 'name' ] ?>',true,['application/csv', 'text/csv'])" class="button button-primary button-large"> Select file </button>
-                        
                         <p style="margin: auto 0;">OR</p>
-
                         <button data-state="<?php echo $toggle_input_visiblity_state ?>" id="<?php echo $this->prefix . $customField[ 'name' ]?>-toggle-file-option" type="button" onclick="toggle_between_gs_and_up('<?php echo $customField[ 'name' ]?>')" class="button button-primary button-large"> <?php echo $toggle_input_visiblity_button ?> </button>
                         </div> <?php
                         break;
