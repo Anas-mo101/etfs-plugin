@@ -106,12 +106,6 @@ if ( !class_exists('EtfPlugin') ) {
             }
         }
 
-        function set_sftp_config(){
-            $sftp = SFTP::getInstance();
-            $res = $sftp->set_config($_POST);
-            wp_send_json($res);
-        }
-
         function fetch_etf_data(){
             $url = $_POST['gsURL'];
             $url_h = $_POST['hlURL'];
@@ -153,25 +147,18 @@ if ( !class_exists('EtfPlugin') ) {
 			wp_send_json($csv_res);
         }
 
-        function init_sftp(){
-            // start sftp related process 
-            if ( wp_next_scheduled ( 'get_sftp_data', $args ) && !$this->automated) {
-                return;
+        function set_sftp_config(){
+            $sftp = SFTP::getInstance();
+            $res = $sftp->set_config($_POST);
+            
+            if(($res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked") && $this->automated == false){
+                // if (! wp_next_scheduled ( 'get_sftp_data', $args ))  wp_schedule_event( time(), 'hourly', 'get_sftp_data' );
+                $this->automated = true;
+            }elseif($res["cycle"] !== "blocked" && $this->automated == true){
+                $this->automated = false;
+                // wp_clear_scheduled_hook( 'get_sftp_data' );
             }
-
-            $this->automated = true;
-            wp_schedule_event( time(), 'hourly', 'get_sftp_data' ); // dynamically assgin timings 
-        }
- 
-        function get_sftp(){
-            // get and procsess data file
-
-        }
-
-        function end_sftp(){
-            // end/pause sftp related process
-            $this->automated = false;
-            wp_clear_scheduled_hook( 'get_sftp_data' );
+            wp_send_json($res);
         }
 
         /**

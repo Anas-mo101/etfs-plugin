@@ -57,6 +57,9 @@ class SFTP{
     }
 
     function set_config($args){
+        $_cycle_res = 'ongoing';
+        $pre_auto = $this->cooked_josn["auto"];
+
         // // validate $args
         if(!isset($args['state']) || (trim($args['state']) === '') ||
             !isset($args['host']) || (trim($args['host']) === '') ||
@@ -82,19 +85,28 @@ class SFTP{
         fwrite($file, $raw_json);
         fclose($file);
 
-        $connection_res = $this->connect();
+        // in case $this->cooked_josn["auto"] turns from false to true 
+        // start the sftp cycle when turned on then follow timing/schedule
+        if($this->cooked_josn["auto"] === "true" && $pre_auto !== $this->cooked_josn["auto"]){
+            $_cycle_res = $this->auto_cycle();
+        }elseif($this->cooked_josn["auto"] === "false" && $pre_auto !== $this->cooked_josn["auto"]){
+            $_cycle_res = 'blocked';
+        }
 
-        // return response according to state
-        $res = Array('update' => 'success', 'connection' => $connection_res);
+        // return response according to cycle state
+        $res = Array('update' => 'success', 'cycle' => $_cycle_res);
         return $res;
     }
 
-    function get_config(){
+    public function get_config(){
         return $this->cooked_josn;
     }
 
     function connect(){
-        if($this->cooked_josn["auto"] === false) return "blocked";
+        
+        // libssh2 php extention -> https://www.libssh2.org/download/
+        // ssh2 php extention -> https://pecl.php.net/package/ssh2/ (1.3.1 for php 8.0 on local bitnami server)
+        if ( ! extension_loaded( 'ssh2' ) ) return "The ssh2 PHP extension is not available";
 
         $connection = ssh2_connect($this->cooked_josn["host"], $this->cooked_josn["port"]);
         if (!$connection) return "failed";
@@ -103,16 +115,123 @@ class SFTP{
         if (!$auth) return "authentication failed";
 
         $this->sftp = ssh2_sftp($connection);
-        return "success";
+
+        return true;
     }
 
-    function get_file($url){
-        $stream = fopen('ssh2.sftp://' . intval($this->sftp) . $url, 'r');
-        if (! $stream) {return false;}else{ return $stream;}
+    private function scan_filesystem($remote_file) {
+        $sftp = $this->sftp;
+        $dir = "ssh2.sftp://$sftp$remote_file";
+        $tempArray = array();
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                while (($file = readdir($dh)) !== false) {
+                    $filetype = filetype($dir . $file);
+                    if($filetype == "dir") {
+                        $tmp = $this->scan_filesystem($remote_file . $file . "/");
+                        foreach($tmp as $t) {
+                            $tempArray[] = $file . "/" . $t;
+                        }
+                    } else {
+                        $tempArray[] = $dir . "/" . $file;
+                    }
+                }
+                closedir($dh);
+            }
+        }
+       return $tempArray;
+    }
+
+    private function save_file($remote_file,$file_name)
+    {
+        $local_save_dir = wp_get_upload_dir();
+        $local_save_file_path = $local_save_dir["path"] .'/'. $file_name;
+        $stream = @fopen($remote_file, 'r');
+        if (! $stream) return false;
+        $contents = fread($stream, filesize($remote_file));
+        file_put_contents($local_save_file_path, $contents);
+        @fclose($stream);
+        return $local_save_file_path;
     }
 
     function disconnect(){
         $this->sftp = null; 
         unset($this->sftp);
+    }
+
+    function auto_cycle(){
+        $files_required = array('TrueMarkWeb.40YR.YR_DailyNAV.csv' => false, 'TrueMarkWeb.40YR.YR_Holdings.csv' => false);
+        
+        // init cycle schedule @ ETFPlugin 
+
+        // connect to sftp server
+        if(($con_res = $this->connect()) !== true){
+            return $con_res;
+        }
+
+        // scan file sftp dir & find required files
+        $files_path = $this->scan_filesystem('/download');
+        $files_name = array();
+        foreach($files_path as $key=>$file_path){
+            $pattern = '/[^\/]+$/U';
+            preg_match($pattern, $file_path, $matches);
+            if(array_key_exists($matches[0],$files_required)){
+                $files_name[] = $matches[0];
+                $files_required["$matches[0]"] = true;
+            }else{
+                unset($files_path["$key"]);
+            }
+        }
+
+        $files_required_and_available_remotely = array_combine($files_name,$files_path);
+
+        if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
+            return "no required files available";
+        }
+        
+        // save file on our server
+        $files_unprocessed_and_available_localy = array();
+        foreach($files_required_and_available_remotely as $name=>$path){
+            if($new_local_path = $this->save_file($path,$name)){
+                $files_unprocessed_and_available_localy[] = array($name => $new_local_path);
+                unset($files_required_and_available_remotely["$name"]);
+            }
+        }
+
+        // separate by file types -> extract data from file 
+        foreach($files_unprocessed_and_available_localy as $file_available){
+            foreach ($file_available as $name => $path) {
+                $path_info = pathinfo($name);
+                if($path_info['extension'] === "csv"){
+                    switch ($name) {
+                        case 'TrueMarkWeb.40YR.YR_DailyNAV.csv':
+                            // do daily nav processing
+                            break;
+                        case 'TrueMarkWeb.40YR.YR_Holdings.csv':
+                            // do daily holdings processing
+                            break;
+                        default: break; // unwanted file names
+                    }
+                }elseif($path_info['extension'] === "pdf"){
+                    switch ($name) {
+                        case 'ror.pdf':
+                            // do ror processing
+                            break;
+                        case 'dist_memo.pdf':
+                            // do dist memo processing
+                            break;
+                        default: break; // unwanted file names
+                    }
+                }else{
+                    return "file type not supported";
+                }
+            }
+        }
+
+        // update db with new data
+
+        // disconnect to sftp server
+        $this->disconnect();
+        return "first sftp cycle is successfull";
     }
 }
