@@ -66,6 +66,7 @@ $sftp_config = $sftp->get_config();
                                 <a class="btn btn-success btn-lg save-button">Save</a>
                                 <a class="cancel-button btn btn-danger btn-lg">Cancel</a>
                                 <a class="btn btn-primary btn-lg edit-button">Edit</a>
+                                <div class="btn status-states" style="display: none; margin: auto 0;" id="ETFs-Pre-loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
                             </div>
                         </div>
                     </form>

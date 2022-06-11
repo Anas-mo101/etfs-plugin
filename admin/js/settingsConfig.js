@@ -21,6 +21,7 @@ jQuery( document ).ready( function( $ ) {
     }
 
     function save_onclick(){
+        $("#ETFs-Pre-loadinganimation").css('display', 'inline-block');
         var data = { 
             action: 'etfconfig',
             host: $("#ETFs-Pre-host").val(),
@@ -39,10 +40,12 @@ jQuery( document ).ready( function( $ ) {
             success: function( response ) {
                 console.log(response);
                 cancel_onclick();
+                $("#ETFs-Pre-loadinganimation").css('display', 'none');
             }
         })
         .fail(function(error) {
             console.log("response failed");
+            $("#ETFs-Pre-loadinganimation").css('display', 'none');
         });
     }
 });
