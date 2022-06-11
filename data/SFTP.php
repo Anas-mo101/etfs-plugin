@@ -203,15 +203,12 @@ class SFTP{
             foreach ($file_available as $name => $path) {
                 $path_info = pathinfo($name);
                 if($path_info['extension'] === "csv"){
-                    switch ($name) {
-                        case 'TrueMarkWeb.40YR.YR_DailyNAV.csv':
-                            // do daily nav processing
-                            break;
-                        case 'TrueMarkWeb.40YR.YR_Holdings.csv':
-                            // do daily holdings processing
-                            break;
-                        default: break; // unwanted file names
-                    }
+                    $columns = (new CsvProvider())->load_and_fetch_headers($path);
+                    $data = (new CsvProvider())->load_and_fetch($path, $columns);
+
+                    $post_meta = new PostMeta($data,$name);
+                    $res = $post_meta->process_incoming();
+                    //update meta using file name
                 }elseif($path_info['extension'] === "pdf"){
                     switch ($name) {
                         case 'ror.pdf':

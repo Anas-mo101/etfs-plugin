@@ -5,7 +5,7 @@ const populatePreviewTable = (res) => {
     document.getElementById('ETF-Pre-rate-date-fund-details').innerHTML = currentDate;
 
     // Fund Data & Pricing
-    document.getElementById('ETF-Pre-rate-date').innerHTML = res.nav.body[0]['Rate Date'];
+    document.getElementById('ETF-Pre-rate-date').innerHTML = currentDate;
     document.getElementById('ETF-Pre-rate-date-net').innerHTML = res.nav.body[0]['Rate Date'];
     document.getElementById('ETF-Pre-nav-assets').innerHTML = res.nav.body[0]['Net Assets'];
     document.getElementById('ETF-Pre-nav-value').innerHTML = res.nav.body[0]['NAV'];
@@ -115,7 +115,7 @@ const populatePreviewTable = (res) => {
 
         // --> Fund Data & Pricing
         if(document.getElementById("ETF-Pre-fund-pricing-section").checked){
-            
+            document.getElementById('ETF-Pre-fund-pricing-date-data').value = currentDate;
             document.getElementById('ETF-Pre-net-assets-data').value = res.nav.body[0]['Net Assets'];
             document.getElementById('ETF-Pre-na-v-data').value = res.nav.body[0]['NAV'];
             document.getElementById('ETF-Pre-shares-out-standig-data').value = res.nav.body[0]['Shares Outstanding'];
