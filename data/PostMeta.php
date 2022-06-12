@@ -25,10 +25,10 @@ class PostMeta{
                 $this->process_daily_nav();
                 break;
             case '.pdf':
-                # code...
+                $this->process_ror();
                 break;
             case '.pdf':
-                # code...
+                $this->process_dist();
                 break;    
             default: break;
         }
@@ -96,6 +96,17 @@ class PostMeta{
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return 'null data';
         }
+
+
+
+    }
+
+    private function process_dist(){
+        if(!$this->incoming_meta || count($this->incoming_meta) === 0){
+            return 'null data';
+        }
+
+        
 
     }
 }

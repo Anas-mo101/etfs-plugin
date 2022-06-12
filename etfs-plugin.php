@@ -139,11 +139,9 @@ if ( !class_exists('EtfPlugin') ) {
                 $data_h = (new CsvProvider())->load_and_fetch($url_h,$columns_h);
             }
             $responesData_h = Array('headers' => $columns_h, 'body' =>  $data_h);
-
             $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,false);
             $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,false);
             $csv_res = Array( 'nav' => $responesData, 'holdings' =>  $responesData_h, 'monthly_ror' => $monthly_ror_pdf_data, 'dist_memo' => $dist_memo_pdf_data);
-
 			wp_send_json($csv_res);
         }
 
