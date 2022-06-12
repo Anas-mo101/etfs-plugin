@@ -151,7 +151,7 @@ if ( !class_exists('EtfPlugin') ) {
             $sftp = SFTP::getInstance();
             $res = $sftp->set_config($_POST);
             
-            if(($res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked") && $this->automated == false){
+            if(($res["cycle"] !== "interrupted" || $res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked") && $this->automated == false){
                 // if (! wp_next_scheduled ( 'get_sftp_data', $args ))  wp_schedule_event( time(), 'hourly', 'get_sftp_data' );
                 $this->automated = true;
             }elseif($res["cycle"] !== "blocked" && $this->automated == true){

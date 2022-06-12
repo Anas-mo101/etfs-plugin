@@ -67,7 +67,7 @@ class SFTP{
                     !isset($args['pass']) || (trim($args['pass']) === '') ||
                         !isset($args['port']) || (trim($args['port']) === '') ||
                             !isset($args['freq']) || (trim($args['freq']) === '')) {
-            $res = Array('update' => 'null entries','cycle' => 'interupted');
+            $res = Array('update' => 'null entries','cycle' => 'interrupted');
             return $res;
         }
 

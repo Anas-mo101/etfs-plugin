@@ -1,7 +1,10 @@
-const populatePreviewTable = (res) => {
+const populatePreviewTable = (res) => { 
+    let ror_state = res.monthly_ror['fetch failed'] ? false : true;
+    let dist_state = res.dist_memo['fetch failed'] ? false : true;
+
     // Fund Details
     let currentDate = new Date().toLocaleDateString();
-    document.getElementById('ETF-Pre-sec-yield').innerHTML = res.monthly_ror.sec_yeild;
+    document.getElementById('ETF-Pre-sec-yield').innerHTML = ror_state ? res.monthly_ror.sec_yeild : 'No Data';
     document.getElementById('ETF-Pre-rate-date-fund-details').innerHTML = currentDate;
 
     // Fund Data & Pricing
@@ -51,27 +54,27 @@ const populatePreviewTable = (res) => {
 
     // Performance
     document.getElementById('ETF-Pre-preformance-update-date').innerHTML = currentDate;
-    document.getElementById('ETF-Pre-market-price-three').innerHTML = res.monthly_ror.market_price.three_months;
-    document.getElementById('ETF-Pre-market-price-six').innerHTML = res.monthly_ror.market_price.six_months;
-    document.getElementById('ETF-Pre-market-price-year').innerHTML = res.monthly_ror.market_price.one_year;
-    document.getElementById('ETF-Pre-market-price-inception').innerHTML = res.monthly_ror.market_price.inception;
+    document.getElementById('ETF-Pre-market-price-three').innerHTML = ror_state ? res.monthly_ror.market_price.three_months : 'No Data';
+    document.getElementById('ETF-Pre-market-price-six').innerHTML = ror_state ? res.monthly_ror.market_price.six_months : 'No Data';
+    document.getElementById('ETF-Pre-market-price-year').innerHTML = ror_state ? res.monthly_ror.market_price.one_year : 'No Data';
+    document.getElementById('ETF-Pre-market-price-inception').innerHTML = ror_state ? res.monthly_ror.market_price.inception : 'No Data';
 
-    document.getElementById('ETF-Pre-nav-three').innerHTML = res.monthly_ror.fund_nav.three_months;
-    document.getElementById('ETF-Pre-nav-six').innerHTML = res.monthly_ror.fund_nav.six_months;
-    document.getElementById('ETF-Pre-nav-year').innerHTML = res.monthly_ror.fund_nav.one_year;
-    document.getElementById('ETF-Pre-nav-inception').innerHTML = res.monthly_ror.fund_nav.inception;
+    document.getElementById('ETF-Pre-nav-three').innerHTML = ror_state ? res.monthly_ror.fund_nav.three_months : 'No Data';
+    document.getElementById('ETF-Pre-nav-six').innerHTML = ror_state ? res.monthly_ror.fund_nav.six_months : 'No Data';
+    document.getElementById('ETF-Pre-nav-year').innerHTML = ror_state ? res.monthly_ror.fund_nav.one_year : 'No Data';
+    document.getElementById('ETF-Pre-nav-inception').innerHTML = ror_state ? res.monthly_ror.fund_nav.inception : 'No Data';
 
-    document.getElementById('ETF-Pre-sp-three').innerHTML = res.monthly_ror.sp.three_months;
-    document.getElementById('ETF-Pre-sp-six').innerHTML = res.monthly_ror.sp.six_months;
-    document.getElementById('ETF-Pre-sp-year').innerHTML = res.monthly_ror.sp.one_year;
-    document.getElementById('ETF-Pre-sp-inception').innerHTML = res.monthly_ror.sp.inception;
+    document.getElementById('ETF-Pre-sp-three').innerHTML = ror_state ? res.monthly_ror.sp.three_months : 'No Data';
+    document.getElementById('ETF-Pre-sp-six').innerHTML = ror_state ? res.monthly_ror.sp.six_months : 'No Data';
+    document.getElementById('ETF-Pre-sp-year').innerHTML = ror_state ? res.monthly_ror.sp.one_year : 'No Data';
+    document.getElementById('ETF-Pre-sp-inception').innerHTML = ror_state ? res.monthly_ror.sp.inception : 'No Data';
 
 
     // Distribution Detail
-    document.getElementById('ETF-Pre-ex-date').innerHTML = res.dist_memo.ex_date;
-    document.getElementById('ETF-Pre-rec-date').innerHTML = res.dist_memo.rec_date;
-    document.getElementById('ETF-Pre-pay-date').innerHTML = res.dist_memo.pay_date;
-    document.getElementById('ETF-Pre-amount-date').innerHTML = res.dist_memo.dis_rate_share;
+    document.getElementById('ETF-Pre-ex-date').innerHTML = dist_state ? res.dist_memo.ex_date : 'No Data';
+    document.getElementById('ETF-Pre-rec-date').innerHTML = dist_state ? res.dist_memo.rec_date : 'No Data';
+    document.getElementById('ETF-Pre-pay-date').innerHTML = dist_state ? res.dist_memo.pay_date : 'No Data';
+    document.getElementById('ETF-Pre-amount-date').innerHTML = dist_state ? res.dist_memo.dis_rate_share : 'No Data';
 
     // TOP 10 HOLDINGS
     let holderShown = [];
@@ -110,7 +113,7 @@ const populatePreviewTable = (res) => {
             document.getElementById("ETF-Pre-nav-sybmol-data").value = document.getElementById("ETF-Pre-nav-symbol-previewform").value.trim();
             document.getElementById("ETF-Pre-ticker-data").value = document.getElementById("ETF-Pre-ticker-previewform").value.trim();
             document.getElementById("ETF-Pre-expense-raito-data").value = document.getElementById("ETF-Pre-expense-ratio-previewform").value.trim();
-            document.getElementById("ETF-Pre-sec-yeild-data").value = res.monthly_ror.sec_yeild;
+            document.getElementById("ETF-Pre-sec-yeild-data").value = ror_state ? res.monthly_ror.sec_yeild : '';
         }
 
         // --> Fund Data & Pricing
@@ -133,20 +136,20 @@ const populatePreviewTable = (res) => {
         if(document.getElementById("ETF-Pre-top-holdings-section").checked){
             document.getElementById('ETF-Pre-pref-date-data').value = currentDate;
 
-            document.getElementById('ETF-Pre-perf-market-three-data').value = res.monthly_ror.market_price.three_months;
-            document.getElementById('ETF-Pre-perf-market-six-data').value = res.monthly_ror.market_price.six_months;
-            document.getElementById('ETF-Pre-perf-market-year-data').value = res.monthly_ror.market_price.one_year;
-            document.getElementById('ETF-Pre-perf-market-inception-data').value = res.monthly_ror.market_price.inception;
+            document.getElementById('ETF-Pre-perf-market-three-data').value = ror_state ? res.monthly_ror.market_price.three_months  : '';
+            document.getElementById('ETF-Pre-perf-market-six-data').value = ror_state ? res.monthly_ror.market_price.six_months  : '';
+            document.getElementById('ETF-Pre-perf-market-year-data').value = ror_state ? res.monthly_ror.market_price.one_year  : '';
+            document.getElementById('ETF-Pre-perf-market-inception-data').value = ror_state ? res.monthly_ror.market_price.inception  : '';
 
-            document.getElementById('ETF-Pre-perf-nav-three-data').value = res.monthly_ror.fund_nav.three_months;
-            document.getElementById('ETF-Pre-perf-nav-six-data').value = res.monthly_ror.fund_nav.six_months;
-            document.getElementById('ETF-Pre-perf-nav-year-data').value = res.monthly_ror.fund_nav.one_year;
-            document.getElementById('ETF-Pre-perf-nav-inception-data').value = res.monthly_ror.fund_nav.inception;
+            document.getElementById('ETF-Pre-perf-nav-three-data').value = ror_state ? res.monthly_ror.fund_nav.three_months : '';
+            document.getElementById('ETF-Pre-perf-nav-six-data').value = ror_state ? res.monthly_ror.fund_nav.six_months : '';
+            document.getElementById('ETF-Pre-perf-nav-year-data').value = ror_state ? res.monthly_ror.fund_nav.one_year : '';
+            document.getElementById('ETF-Pre-perf-nav-inception-data').value = ror_state ? res.monthly_ror.fund_nav.inception : '';
 
-            document.getElementById('ETF-Pre-perf-sp-three-data').value = res.monthly_ror.sp.three_months;
-            document.getElementById('ETF-Pre-perf-sp-six-data').value = res.monthly_ror.sp.six_months;
-            document.getElementById('ETF-Pre-perf-sp-year-data').value = res.monthly_ror.sp.one_year;
-            document.getElementById('ETF-Pre-perf-sp-inception-data').value = res.monthly_ror.sp.inception;
+            document.getElementById('ETF-Pre-perf-sp-three-data').value = ror_state ? res.monthly_ror.sp.three_months : '';
+            document.getElementById('ETF-Pre-perf-sp-six-data').value = ror_state ? res.monthly_ror.sp.six_months : '';
+            document.getElementById('ETF-Pre-perf-sp-year-data').value = ror_state ? res.monthly_ror.sp.one_year : '';
+            document.getElementById('ETF-Pre-perf-sp-inception-data').value = ror_state ? res.monthly_ror.sp.inception : '';
         }
 
         // --> Outcome Period Values
@@ -171,10 +174,10 @@ const populatePreviewTable = (res) => {
 
         // --> Distribution Detail
         if(document.getElementById("ETF-Pre-distribution-detail-section").checked){
-            document.getElementById('ETF-Pre-ex-date-data').value = res.dist_memo.ex_date;
-            document.getElementById('ETF-Pre-rec-date-data').value = res.dist_memo.rec_date;
-            document.getElementById('ETF-Pre-pay-date-data').value = res.dist_memo.pay_date;
-            document.getElementById('ETF-Pre-dis-rate-share-data').value = res.dist_memo.dis_rate_share;
+            document.getElementById('ETF-Pre-ex-date-data').value = dist_state ?  res.dist_memo.ex_date : '';
+            document.getElementById('ETF-Pre-rec-date-data').value = dist_state ?  res.dist_memo.rec_date : '';
+            document.getElementById('ETF-Pre-pay-date-data').value = dist_state ?  res.dist_memo.pay_date : '';
+            document.getElementById('ETF-Pre-dis-rate-share-data').value = dist_state ?  res.dist_memo.dis_rate_share : '';
         }
 
         // --> holdings

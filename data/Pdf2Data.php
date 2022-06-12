@@ -129,10 +129,14 @@ class Pdf2Data {
 
             $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF)/U';
             preg_match($pattern, $text, $matches);
+
+            if(!$matches && count($matches) == 0){
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+                return $pdf_data_array;
+            }
+
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
-
             $sp_incp_fixed = $this->parser_value_fix($matches[1]);
-
             $pdf_data_array_market = array('three_months' => $unordered_pdf_data_array[4], 'six_months' => $unordered_pdf_data_array[7], 'one_year' => $unordered_pdf_data_array[3], 'inception' => $unordered_pdf_data_array[8]);
             $pdf_data_array_nav = array('three_months' => $unordered_pdf_data_array[21], 'six_months' => $unordered_pdf_data_array[20], 'one_year' => $unordered_pdf_data_array[17], 'inception' => $unordered_pdf_data_array[18]);
             $pdf_data_array_sp = array('three_months' => $unordered_pdf_data_array[28], 'six_months' => $unordered_pdf_data_array[27], 'one_year' => $unordered_pdf_data_array[33], 'inception' => $sp_incp_fixed);
@@ -157,16 +161,26 @@ class Pdf2Data {
             $text = $this->convert_pdf_to_text($pdf_file_link);
             $pattern = '/(?:Record Date:)(.*)(?:Ordinary Income Rate)/U';
             preg_match($pattern, $text, $matches);
-            $unordered_pdf_data_array = explode(' ',trim($matches[1]));
 
+            if(!$matches && count($matches) == 0){
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+                return $pdf_data_array;
+            }
+
+            $unordered_pdf_data_array = explode(' ',trim($matches[1]));
             $ex_date = $unordered_pdf_data_array[0] . ' ' . $unordered_pdf_data_array[1] . $unordered_pdf_data_array[2];
             $rec_date = $unordered_pdf_data_array[5] . ' ' . $unordered_pdf_data_array[6] . $unordered_pdf_data_array[7];
             $pay_date = $unordered_pdf_data_array[15] . ' ' . $unordered_pdf_data_array[16] . $unordered_pdf_data_array[17];
 
             $pattern = '/(?:TrueShares Structured Outcome \(' . $etf_pre . '\) ETF)(.*)(?:TrueShares)/U';
             preg_match($pattern, $text, $matches);
+
+            if(!$matches && count($matches) == 0){
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+                return $pdf_data_array;
+            }
+
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
-            
             $pdf_data_array = array('ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date, 'dis_rate_share' => $unordered_pdf_data_array[2]);
 
             return $pdf_data_array;
