@@ -49,7 +49,7 @@ class PostMeta{
         }
 
         foreach ($this->incoming_meta as $meta) {
-            $post_to_update = get_page_by_title($meta['Fund Ticker'], OBJECT, 'etfs' );
+            $post_to_update = get_page_by_title( $meta['Fund Ticker'], OBJECT, 'etfs' );
             if(! $post_to_update) continue;
 
             update_post_meta($post_to_update->id,'ETF-Pre-fund-pricing-date-data',date("d/m/y"));
@@ -64,9 +64,6 @@ class PostMeta{
     }
 
     private function process_holdings(){
-        $holding_meta_keys = array(
-            '' => '',
-        );
 
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return;
@@ -94,5 +91,4 @@ class PostMeta{
         wp_reset_query();
         return 'success';
     }
-
 }

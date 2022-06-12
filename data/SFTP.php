@@ -67,7 +67,7 @@ class SFTP{
                     !isset($args['pass']) || (trim($args['pass']) === '') ||
                         !isset($args['port']) || (trim($args['port']) === '') ||
                             !isset($args['freq']) || (trim($args['freq']) === '')) {
-            $res = Array('update' => 'null entries');
+            $res = Array('update' => 'null entries','cycle' => 'interupted');
             return $res;
         }
 
@@ -198,7 +198,7 @@ class SFTP{
             }
         }
 
-        // separate by file types -> extract data from file 
+        // separate by file types -> extract & save data from file 
         foreach($files_unprocessed_and_available_localy as $file_available){
             foreach ($file_available as $name => $path) {
                 $path_info = pathinfo($name);
@@ -208,6 +208,8 @@ class SFTP{
 
                     $post_meta = new PostMeta($data,$name);
                     $res = $post_meta->process_incoming();
+                    $this->write_log($name . '->' . $res);
+                    
                     //update meta using file name
                 }elseif($path_info['extension'] === "pdf"){
                     switch ($name) {
