@@ -118,21 +118,52 @@ class Pdf2Data {
         if($api_on){
             // Using API 
             $text = $this-> pdf_convertion_api_call($pdf_file_link);
-            $pattern = '/TrueShares Structured Outcome ' . $month . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
+            $pattern = '/TrueShares Structured Outcome ' . $etf_pre . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
             preg_match($pattern, $text, $matches);
             $pdf_data_array = $matches;
             // not completed 
             return $pdf_data_array;
-        }else{
-            // Using PDFParser Library 
-            $text = $this->convert_pdf_to_text($pdf_file_link);
+        }
+
+        // Using PDFParser Library 
+        $text = $this->convert_pdf_to_text($pdf_file_link);
+
+        $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF)/U';
+        preg_match($pattern, $text, $matches);
+
+        if(!$matches && count($matches) == 0){
+            $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+            return $pdf_data_array;
+        }
+
+        $unordered_pdf_data_array = explode(' ',trim($matches[1]));
+        $sp_incp_fixed = $this->parser_value_fix($matches[1]);
+        $pdf_data_array_market = array('three_months' => $unordered_pdf_data_array[4], 'six_months' => $unordered_pdf_data_array[7], 'one_year' => $unordered_pdf_data_array[3], 'inception' => $unordered_pdf_data_array[8]);
+        $pdf_data_array_nav = array('three_months' => $unordered_pdf_data_array[21], 'six_months' => $unordered_pdf_data_array[20], 'one_year' => $unordered_pdf_data_array[17], 'inception' => $unordered_pdf_data_array[18]);
+        $pdf_data_array_sp = array('three_months' => $unordered_pdf_data_array[28], 'six_months' => $unordered_pdf_data_array[27], 'one_year' => $unordered_pdf_data_array[33], 'inception' => $sp_incp_fixed);
+        $pdf_data_array = array('sec_yeild' => $unordered_pdf_data_array[11], 'market_price' =>  $pdf_data_array_market, 'fund_nav' => $pdf_data_array_nav, 'sp' => $pdf_data_array_sp);
+        return $pdf_data_array;
+    }
+
+    function get_all_monthly_fund_data($pdf_file_link){
+        $query = new WP_Query(array( 'post_type' => 'etfs', 'post_status' => 'publish' ));
+        $text = $this->convert_pdf_to_text($pdf_file_link);
+        $pdf_data = array();
+
+        while ($query->have_posts()) {
+            $query->the_post();
+            $etf_title = get_the_title();
+            $etf_pre = $this->get_etfs_full_pre($etf_title);
+
+            if(! $etf_pre) continue;
 
             $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF)/U';
             preg_match($pattern, $text, $matches);
 
             if(!$matches && count($matches) == 0){
-                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
-                return $pdf_data_array;
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_pre .' ETF');
+                $pdf_data[] = $pdf_data_array;
+                continue;
             }
 
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
@@ -141,51 +172,99 @@ class Pdf2Data {
             $pdf_data_array_nav = array('three_months' => $unordered_pdf_data_array[21], 'six_months' => $unordered_pdf_data_array[20], 'one_year' => $unordered_pdf_data_array[17], 'inception' => $unordered_pdf_data_array[18]);
             $pdf_data_array_sp = array('three_months' => $unordered_pdf_data_array[28], 'six_months' => $unordered_pdf_data_array[27], 'one_year' => $unordered_pdf_data_array[33], 'inception' => $sp_incp_fixed);
             $pdf_data_array = array('sec_yeild' => $unordered_pdf_data_array[11], 'market_price' =>  $pdf_data_array_market, 'fund_nav' => $pdf_data_array_nav, 'sp' => $pdf_data_array_sp);
-            return $pdf_data_array;
+            $pdf_data[] = $pdf_data_array;
         }   
+        wp_reset_query();
+        return $pdf_data;
     }
 
     function get_distrubation_memo_data($pdf_file_link,$etf_name,$api_on){
-        $etf_pre = $this->get_etfs_full_pre($etf_name);
+        $etf_pre = false;
         $pdf_data_array;
+
+        if(! is_null($etf_name)){
+            $etf_pre = $this->get_etfs_full_pre($etf_name);
+        }
 
         if($api_on){
             // Using API 
             $text = $this-> pdf_convertion_api_call($pdf_file_link);
-            $pattern = '/TrueShares Structured Outcome ' . $month . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
+            $pattern = '/TrueShares Structured Outcome ' . $etf_pre . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
             preg_match($pattern, $text, $matches);
             $pdf_data_array = $matches;
-            // not completed 
+            // not completed due finanical restrications on api
             return $pdf_data_array;
-        }else{
-            $text = $this->convert_pdf_to_text($pdf_file_link);
-            $pattern = '/(?:Record Date:)(.*)(?:Ordinary Income Rate)/U';
-            preg_match($pattern, $text, $matches);
+        }
 
-            if(!$matches && count($matches) == 0){
-                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
-                return $pdf_data_array;
-            }
+        $text = $this->convert_pdf_to_text($pdf_file_link);
+        $pattern = '/(?:Record Date:)(.*)(?:Ordinary Income Rate)/U';
+        preg_match($pattern, $text, $matches);
 
+        if(!$matches && count($matches) == 0){
+            $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+            return $pdf_data_array;
+        }
+
+        $unordered_pdf_data_array = explode(' ',trim($matches[1]));
+        $ex_date = $unordered_pdf_data_array[0] . ' ' . $unordered_pdf_data_array[1] . $unordered_pdf_data_array[2];
+        $rec_date = $unordered_pdf_data_array[5] . ' ' . $unordered_pdf_data_array[6] . $unordered_pdf_data_array[7];
+        $pay_date = $unordered_pdf_data_array[15] . ' ' . $unordered_pdf_data_array[16] . $unordered_pdf_data_array[17];
+
+        $pattern = '/(?:TrueShares Structured Outcome \(' . $etf_pre . '\) ETF)(.*)(?:TrueShares)/U';
+        preg_match($pattern, $text, $matches);
+
+        if(!$matches && count($matches) == 0){
+            $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+            return $pdf_data_array;
+        }
+
+        $unordered_pdf_data_array = explode(' ',trim($matches[1]));
+        $pdf_data_array = array('ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date, 'dis_rate_share' => $unordered_pdf_data_array[2]);
+
+        return $pdf_data_array;
+    }
+
+    function get_all_distrubation_memo_data($pdf_file_link){
+        $query = new WP_Query(array( 'post_type' => 'etfs', 'post_status' => 'publish' ));
+        $text = $this->convert_pdf_to_text($pdf_file_link);
+        $pdf_data = array();
+
+        $pattern = '/(?:Record Date:)(.*)(?:Ordinary Income Rate)/U';
+        preg_match($pattern, $text, $matches);
+
+        $ex_date = 'No Data';
+        $rec_date = 'No Data';
+        $pay_date = 'No Data';
+        if($matches && count($matches) > 0){
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
             $ex_date = $unordered_pdf_data_array[0] . ' ' . $unordered_pdf_data_array[1] . $unordered_pdf_data_array[2];
             $rec_date = $unordered_pdf_data_array[5] . ' ' . $unordered_pdf_data_array[6] . $unordered_pdf_data_array[7];
             $pay_date = $unordered_pdf_data_array[15] . ' ' . $unordered_pdf_data_array[16] . $unordered_pdf_data_array[17];
+        }
+
+        while ($query->have_posts()) {
+            $query->the_post();
+            $etf_title = get_the_title();
+            $etf_pre = $this->get_etfs_full_pre($etf_title);
+
+            if(! $etf_pre) continue;
 
             $pattern = '/(?:TrueShares Structured Outcome \(' . $etf_pre . '\) ETF)(.*)(?:TrueShares)/U';
             preg_match($pattern, $text, $matches);
 
             if(!$matches && count($matches) == 0){
-                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
-                return $pdf_data_array;
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_title .' ETF');
+                $pdf_data[] = $pdf_data_array;
+                continue;
             }
-
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
-            $pdf_data_array = array('ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date, 'dis_rate_share' => $unordered_pdf_data_array[2]);
-
-            return $pdf_data_array;
-        }
+            $pdf_data_array = array('etf' => $etf_title ,'ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date,'dis_rate_share' => $unordered_pdf_data_array[2]);
+            $pdf_data[] = $pdf_data_array;
+        }   
+        wp_reset_query();
+        return $pdf_data;
     }
+
 
     // get month based on etf 
     function get_etfs_full_pre($etf_name){

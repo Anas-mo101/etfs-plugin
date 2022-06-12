@@ -66,7 +66,7 @@ class PostMeta{
     private function process_holdings(){
 
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
-            return;
+            return 'null data';
         }
 
         $query = new WP_Query(array( 'post_type' => 'etfs', 'post_status' => 'publish' ));
@@ -90,5 +90,12 @@ class PostMeta{
         }
         wp_reset_query();
         return 'success';
+    }
+
+    private function process_ror(){
+        if(!$this->incoming_meta || count($this->incoming_meta) === 0){
+            return 'null data';
+        }
+
     }
 }

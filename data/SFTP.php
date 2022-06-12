@@ -199,6 +199,7 @@ class SFTP{
         }
 
         // separate by file types -> extract & save data from file 
+        $save_meta_status = array();
         foreach($files_unprocessed_and_available_localy as $file_available){
             foreach ($file_available as $name => $path) {
                 $path_info = pathinfo($name);
@@ -206,28 +207,44 @@ class SFTP{
                     $columns = (new CsvProvider())->load_and_fetch_headers($path);
                     $data = (new CsvProvider())->load_and_fetch($path, $columns);
 
-                    $post_meta = new PostMeta($data,$name);
-                    $res = $post_meta->process_incoming();
-                    $this->write_log($name . '->' . $res);
-                    
+                    if(! $data || count($data) == 0){
+                        $save_meta_status[] = array($name => 'failed to fetch data');
+                    }else{
+                        // update db with new data
+                        $post_meta = new PostMeta($data,$name);
+                        $res = $post_meta->process_incoming();
+                        $save_meta_status[] = array($name => $res); 
+                    }
                     //update meta using file name
                 }elseif($path_info['extension'] === "pdf"){
+                    // instead of using names to update each ETFs indiviaully
+                    // use all etfs data avaiable to update etfs accordingly
+                    $data;
                     switch ($name) {
                         case 'ror.pdf':
                             // do ror processing
+                            $data = (new Pdf2Data())->get_all_monthly_fund_data($path);
                             break;
                         case 'dist_memo.pdf':
                             // do dist memo processing
+                            $data = (new Pdf2Data())->get_all_distrubation_memo_data($path);
                             break;
                         default: break; // unwanted file names
                     }
+
+                    if(! $data || count($data) == 0){
+                        $save_meta_status[] = array($name => 'failed to fetch data');
+                    }else{
+                        // update db with new data
+                        $post_meta = new PostMeta($data,$name);
+                        $res = $post_meta->process_incoming();
+                        $save_meta_status[] = array($name => $res); 
+                    }
                 }else{
-                    return "file type not supported";
+                    $save_meta_status[] = array($name => 'not supported');
                 }
             }
         }
-
-        // update db with new data
 
         // disconnect to sftp server
         $this->disconnect();
