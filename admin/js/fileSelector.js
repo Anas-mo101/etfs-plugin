@@ -26,14 +26,18 @@ const toggle_between_gs_and_up = (in_name) => {
         document.getElementById(`ETF-Pre-${in_name}-toggle-file-option`).innerHTML = "Google Sheet";
         document.getElementById(`ETF-Pre-${in_name}-toggle-file-option`).dataset.state = "upload";
         document.getElementById(`ETF-Pre-${in_name}-upload-link`).name = `ETF-Pre-${in_name}`;
+        document.getElementById(`ETF-Pre-${in_name}-upload-link`).required = true;
         document.getElementById(`ETF-Pre-${in_name}-google-link`).name = `ETF-Pre-${in_name}-`;
+        document.getElementById(`ETF-Pre-${in_name}-google-link`).required = false;
         document.getElementById(`ETF-Pre-${in_name}-upload-link`).style.display = 'block';
         document.getElementById(`ETF-Pre-${in_name}-file-upload`).style.display = 'block';
         document.getElementById(`ETF-Pre-${in_name}-google-link`).style.display = 'none';
     }else{
         document.getElementById(`ETF-Pre-${in_name}-toggle-file-option`).innerHTML = "Upload file";
         document.getElementById(`ETF-Pre-${in_name}-upload-link`).name = `ETF-Pre-${in_name}-`;
+        document.getElementById(`ETF-Pre-${in_name}-upload-link`).required = false;
         document.getElementById(`ETF-Pre-${in_name}-google-link`).name = `ETF-Pre-${in_name}`;
+        document.getElementById(`ETF-Pre-${in_name}-google-link`).required = true;
         document.getElementById(`ETF-Pre-${in_name}-toggle-file-option`).dataset.state = "google";
         document.getElementById(`ETF-Pre-${in_name}-upload-link`).style.display = 'none';
         document.getElementById(`ETF-Pre-${in_name}-file-upload`).style.display = 'none';
