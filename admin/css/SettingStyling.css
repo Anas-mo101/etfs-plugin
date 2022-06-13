@@ -61,26 +61,26 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-.ETF-Pre-settings-container{
+.ETF-Pre-settings-container {
     margin-bottom: 20px;
+    margin-right: 20px;
     border-radius: 5px;
     border: solid 2px rgb(230, 230, 230);
     padding: 0 20px;
-    max-width: fit-content;
     margin-top: 1.4em;
 }
 
 .ETF-Pre-form-input-contianer{
     display: block;
-    /* grid-template-columns: 250px 250px; */
     justify-items: flex-start;
     align-items: center;
     margin: 1.5em;
 }
 
-.ETF-Pre-input-toggle-text{
+.ETF-Pre-input-toggle-text {
     width: 100%;
     display: inline-flex;
+    margin-bottom: 20px;
 }
 
 .ETF-Pre-input-toggle-text h4{
@@ -90,6 +90,9 @@ input:checked + .slider:before {
 .edit-toggle {
     background: #0000000a;
     border-radius: 5px;
+    height: 45px;
+    margin: 5px 0;
+    width: 55%;
 }
 
 .edit-toggle:focus {

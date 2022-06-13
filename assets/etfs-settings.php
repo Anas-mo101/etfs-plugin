@@ -29,25 +29,25 @@ $sftp_config = $sftp->get_config();
                         <div class="">
                             <div class="">
                             <label><h4>Host:</h4> </label>
-                            <input id="ETFs-Pre-host" type="text" placeholder="<?php echo ($sftp_config["host"] === "null") ? '*' : $sftp_config["host"]; ?>" />
+                            <input style="width: 40%;" id="ETFs-Pre-host" type="text" value="<?php echo ($sftp_config["host"] === "null") ? '*' : $sftp_config["host"]; ?>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="">
                                 <label><h4>Username:</h4> </label>
-                                <input id="ETFs-Pre-user" type="text" placeholder="<?php echo ($sftp_config["username"] === "null") ? '*' : $sftp_config["username"]; ?>" />
+                                <input style="width: 40%;" id="ETFs-Pre-user" type="text" value="<?php echo ($sftp_config["username"] === "null") ? '*' : $sftp_config["username"]; ?>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="">
                                 <label><h4>Password:</h4> </label>
-                                <input id="ETFs-Pre-pass" type="text" placeholder="<?php echo ($sftp_config["password"] === "null") ? '*' : $sftp_config["password"]; ?>" />
+                                <input style="width: 40%;" id="ETFs-Pre-pass" type="password" value="<?php echo ($sftp_config["password"] === "null") ? '*' : $sftp_config["password"]; ?>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="">
                                 <label><h4>Port:</h4> </label>
-                                <input id="ETFs-Pre-port" type="text" placeholder="<?php echo ($sftp_config["port"] === "null") ? '*' : $sftp_config["port"]; ?>" />
+                                <input style="width: 40%;" id="ETFs-Pre-port" type="text" value="<?php echo ($sftp_config["port"] === "null") ? '*' : $sftp_config["port"]; ?>" />
                             </div>
                         </div>
                         <div class="row">

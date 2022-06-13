@@ -187,7 +187,7 @@ if ( !class_exists('EtfPlugin') ) {
               'rewrite' => array('slug'=>'etfs'),
               'capability_type' => 'post',
               'hierarchical' => false,
-              'supports' => array('title','editor','custom-fields')
+              'supports' => array('title','custom-fields')
             ));
 
             add_submenu_page(
@@ -198,6 +198,32 @@ if ( !class_exists('EtfPlugin') ) {
                 'etfs_general_settings',//$menu_slug
                 array($this, 'etfs_general_settings_callback')//$function
             );
+
+            register_post_type('subadvisors',array(
+                'labels' => array(
+                'name' => _x('Sub Advisors', 'post type general name'),
+                'singular_name' => _x('Sub Advisors', 'post type singular name'),
+                'add_new' => _x('Add New', 'Sub Advisor'),
+                'add_new_item' => __('Add New Sub Advisor'),
+                'edit_item' => __('Edit Sub Advisor'),
+                'new_item' => __('New Sub Advisor'),
+                'view_item' => __('View Sub Advisor'),
+                'search_items' => __('Search Sub Advisor'),
+                'not_found' =>  __('No Sub Advisors found'),
+                'not_found_in_trash' => __('No Sub Advisors found in Trash'),
+                'parent_item_colon' => '',
+                'menu_name' => 'Sub Advisors'
+              ),
+              'public' => true,
+              'publicly_queryable' => false,
+              'show_ui' => true,
+              'show_in_menu' => true,
+              'query_var' => true,
+              'rewrite' => array('slug'=>'etfs'),
+              'capability_type' => 'post',
+              'hierarchical' => false,
+              'supports' => array('title','editor','thumbnail')
+            ));
             
         }
 
@@ -239,7 +265,7 @@ if ( !class_exists('EtfPlugin') ) {
         function createCustomFields() {
             if ( function_exists( 'add_meta_box' ) ) {
                 foreach ( $this->postTypes as $postType ) {
-                    add_meta_box( 'my-custom-fields', 'ETFs Settings', array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
+                    add_meta_box( 'my-custom-fields', 'ETF Settings', array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
                 }
             }
         }

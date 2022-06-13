@@ -70,13 +70,20 @@
                     }
                     case "select": {
                         // Plain text field
+                        $query = new WP_Query(array( 'post_type' => 'subadvisors','numberposts' => -1));
+                        $select = get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true);
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>
-                                <select name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '">
-                                <option value="A"> Subadvsior A </option>
-                                <option value="B"> Subadvsior B </option>
-                                <option value="C"> Subadvsior C </option>
-                                <option value="D"> Subadvsior D </option>
-                            </select>';
+                            <select name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '">';
+                                $_select = ($select == 'none') ? 'selected' : '';
+                                echo '<option ' .  $_select . ' value="none"> none </option>';
+                                while ($query->have_posts()) {
+                                    $query->the_post();
+                                    $post_title = get_the_title();
+                                    $post_id = get_the_ID();
+                                    $_select = ($select == $post_id) ? 'selected' : '';
+                                    echo '<option ' . $_select . ' value="' . $post_id . '"> '. $post_title .' </option>';
+                                }
+                            echo '</select>';
                         break;
                     }
                     case "hidden": {
