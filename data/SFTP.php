@@ -33,7 +33,7 @@ class SFTP{
 
         // create one if does not exist
         $_temp_file = fopen($this->config_path . $this->_config, "w");
-        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : [] }';
+        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : [ {"nav" : ""}, {"holding" : ""}, {"ror" : ""},  {"dist" : ""} ] }';
         fwrite($_temp_file, $_temp_config);
         fclose($_temp_file);
     }
@@ -167,7 +167,7 @@ class SFTP{
             preg_match($pattern, $file_path, $matches);
             if(array_key_exists($matches[0],$files_required)){
                 $files_name[] = $matches[0];
-                $files_required["$matches[0]"] = true;
+                // $files_required["$matches[0]"] = true;
             }else{
                 unset($files_path["$key"]);
             }

@@ -29,7 +29,7 @@
     position: absolute;
     content: "";
     height: 22px;
-    width: 26px;
+    width: 22px;
     left: 4px;
     bottom: 4px;
     background-color: white;
@@ -65,7 +65,7 @@ input:checked + .slider:before {
     margin-bottom: 20px;
     margin-right: 20px;
     border-radius: 5px;
-    border: solid 2px rgb(230, 230, 230);
+    border: solid 2px #e6e6e6;
     padding: 0 20px;
     margin-top: 1.4em;
 }
@@ -123,4 +123,80 @@ form label{
 
 .row-margin{
     margin: 10px 0;
+}
+
+/* ============================= */
+
+.stage{
+    margin: 30px 0;
+    position:relative;  
+}
+.folder-wrap{
+    display: flex;
+    flex-wrap:wrap;
+}
+.folder-wrap::before{
+    display: block;
+    position: absolute;
+    top:-40px;
+}
+.folder-wrap:first-child::before{
+    display: block;
+    position: absolute;
+    top:-40px;
+}
+.tile{
+    border-radius: 3px;
+    width: 210px;
+    text-align: center;
+    border: 1px solid #e6e6e6;
+    transition: 0.2s all cubic-bezier(0.4, 0.0, 0.2, 1);
+    position: relative;
+    padding: 35px 16px 25px;
+    cursor: pointer;
+    margin: 10px;
+}
+.tile:hover{
+    box-shadow: 0px 7px 5px -6px rgba(0, 0, 0, 0.12);
+}
+.tile i{
+    color: #00A8FF;
+    height: 55px;
+    margin-bottom: 20px;
+    font-size: 55px;
+    display: block;
+    line-height: 54px;
+    cursor: pointer;
+}
+.tile i.mdi-file-document{
+    color:#8fd9ff;
+}
+
+/* Transitioning */
+.folder-wrap{
+    position: absolute;
+    width: 100%;
+    transition: .365s all cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    opacity: 0;
+    top: 0;
+}
+
+.folder-wrap.level-current{
+    transform: scale(1);
+    pointer-events: all;
+    opacity: 1;
+    position: relative;
+    height: 260px;
+    overflow-y: auto;
+    border: solid 2px #e6e6e6;
+}
+
+.drop-file-name{
+    width: 60%;
+    height: 30px;
+    border: solid 2px #e6e6e6;
+    border-radius: 5px;
+    padding: 0 10px;
+    overflow-x: hidden;
 }

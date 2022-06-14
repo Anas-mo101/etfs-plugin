@@ -59,7 +59,6 @@ jQuery( document ).ready( function( $ ) {
         if(flag) toggle_switch_reset();
         toggle_and_not_saved = false;
     }
-    
     // ajax requests
 
     $('.save-button').on('click', () => {
@@ -100,6 +99,15 @@ jQuery( document ).ready( function( $ ) {
             cache: false,
             success: function( response ) {
                 console.log(response);
+                document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = '';
+                if(Array.isArray(response.files)){
+                    response.files.forEach(file => {
+                        let ext = file.split('.').pop();
+                        const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> <i class="mdi mdi-file-document"></i> <p id="${file}" style="word-break: break-all;">${file}</p> <p>${ext} file</p> </div>`;
+                        document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML + x;
+                    });
+                }
+
                 $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
