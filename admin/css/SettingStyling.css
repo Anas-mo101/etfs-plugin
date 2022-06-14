@@ -80,7 +80,6 @@ input:checked + .slider:before {
 .ETF-Pre-input-toggle-text {
     width: 100%;
     display: inline-flex;
-    margin-bottom: 20px;
 }
 
 .ETF-Pre-input-toggle-text h4{

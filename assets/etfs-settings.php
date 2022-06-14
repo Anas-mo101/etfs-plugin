@@ -10,16 +10,16 @@ $sftp_config = $sftp->get_config();
 <link rel="stylesheet" href="<?php echo plugin_dir_url(dirname( __FILE__)). 'admin/css/'?>SettingStyling.css">
 <script src="<?php echo plugin_dir_url(dirname( __FILE__)). 'admin/js/settingsConfig.js'?>"></script>
 
-<h1 style="margin: 20px 0;"> ETFs Settings </h1>
+<h1> ETFs Settings </h1>
     <div>
         <div>
             <div class="ETF-Pre-settings-container">
                 <div class="ETF-Pre-form-input-contianer">
                     <form id="ETF-Pre-form-sftp-contianer">
-                        <h3 style="margin: 10px 0;">SFTP settings</h3>
+                        <h3 style="margin: 10px 0 30px 0;">SFTP settings</h3>
                         <div>
                             <div class="ETF-Pre-input-toggle-text">
-                                <h4>SFTP is on</h4>
+                                <h4>SFTP is <span id='ETF-Pre-toggle-state-text'> <?php echo ($sftp_config["auto"] === "true") ? "on" : "off";?> </span></h4>
                                 <label class="switch">
                                     <input <?php echo ($sftp_config["auto"] === "true") ? "checked" : '' ; ?> id="ETFs-Pre-auto" type="checkbox" >
                                     <span class="slider round"></span>
