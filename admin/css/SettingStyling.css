@@ -109,3 +109,18 @@ form label{
 .btn-row{
     margin: 2em 0;
 }
+
+
+.ETF-Pre-label-input-grid{
+	display: grid;
+    grid-template-columns: 45% auto;
+}
+
+.ETF-Pre-file-settings{
+	display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.row-margin{
+    margin: 10px 0;
+}

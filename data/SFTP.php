@@ -15,16 +15,6 @@ class SFTP{
         $this->load_config();
     }
 
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-    }
-
     public static function getInstance()
     {
       if (self::$instance == null){
@@ -43,7 +33,7 @@ class SFTP{
 
         // create one if does not exist
         $_temp_file = fopen($this->config_path . $this->_config, "w");
-        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null" }';
+        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : [] }';
         fwrite($_temp_file, $_temp_config);
         fclose($_temp_file);
     }
@@ -250,4 +240,23 @@ class SFTP{
         $this->disconnect();
         return "first sftp cycle is successfull";
     }
+
+    function get_dir_conntent(){
+        if(($con_res = $this->connect()) !== true){
+            return $con_res;
+        }
+
+        // scan file sftp dir & find required files
+        $files_path = $this->scan_filesystem('/download');
+        $files_name = array();
+        foreach($files_path as $key=>$file_path){
+            $pattern = '/[^\/]+$/U';
+            preg_match($pattern, $file_path, $matches);
+            $files_name[] = $matches[0];
+        }
+
+        $this->disconnect();
+        return $files_name;
+    }
+
 }

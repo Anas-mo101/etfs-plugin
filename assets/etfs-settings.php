@@ -15,8 +15,8 @@ $sftp_config = $sftp->get_config();
         <div>
             <div class="ETF-Pre-settings-container">
                 <div class="ETF-Pre-form-input-contianer">
-                    <form id="ETF-Pre-form-sftp-contianer">
-                        <h3 style="margin: 10px 0 30px 0;">SFTP settings</h3>
+                    <form class="ETF-Pre-form-sftp-contianer">
+                        <h3 style="margin: 10px 0 30px 0;">SFTP cycle settings</h3>
                         <div>
                             <div class="ETF-Pre-input-toggle-text">
                                 <h4>SFTP is <span id='ETF-Pre-toggle-state-text'> <?php echo ($sftp_config["auto"] === "true") ? "on" : "off";?> </span></h4>
@@ -26,31 +26,31 @@ $sftp_config = $sftp->get_config();
                                 </label>
                             </div>
                         </div> 
-                        <div class="">
+                        <div class="row-margin">
                             <div class="">
                             <label><h4>Host:</h4> </label>
-                            <input style="width: 40%;" id="ETFs-Pre-host" type="text" value="<?php echo ($sftp_config["host"] === "null") ? '*' : $sftp_config["host"]; ?>" />
+                            <input readonly style="width: 60%;" id="ETFs-Pre-host" type="text" value=<?php echo ($sftp_config["host"] === "null") ? '"" placeholder="*"' : $sftp_config["host"] . '"'; ?> />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row-margin">
                             <div class="">
                                 <label><h4>Username:</h4> </label>
-                                <input style="width: 40%;" id="ETFs-Pre-user" type="text" value="<?php echo ($sftp_config["username"] === "null") ? '*' : $sftp_config["username"]; ?>" />
+                                <input readonly style="width: 60%;" id="ETFs-Pre-user" type="text" value=<?php echo ($sftp_config["username"] === "null") ? '"" placeholder="*"' : $sftp_config["username"] . '"'; ?> />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row-margin">
                             <div class="">
                                 <label><h4>Password:</h4> </label>
-                                <input style="width: 40%;" id="ETFs-Pre-pass" type="password" value="<?php echo ($sftp_config["password"] === "null") ? '*' : $sftp_config["password"]; ?>" />
+                                <input readonly style="width: 60%;" id="ETFs-Pre-pass" type="password" value=<?php echo ($sftp_config["password"] === "null") ? '"" placeholder="*"' : $sftp_config["password"] . '"'; ?> />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row-margin">
                             <div class="">
                                 <label><h4>Port:</h4> </label>
-                                <input style="width: 40%;" id="ETFs-Pre-port" type="text" value="<?php echo ($sftp_config["port"] === "null") ? '*' : $sftp_config["port"]; ?>" />
+                                <input readonly style="width: 60%;" id="ETFs-Pre-port" type="text" value=<?php echo ($sftp_config["port"] === "null") ? '"" placeholder="*"' : $sftp_config["port"] . '"'; ?> />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row-margin">
                             <div class="">
                                 <label><h4>Frequency</h4></label>
                                 <select id="ETFs-Pre-freq">
@@ -61,8 +61,8 @@ $sftp_config = $sftp->get_config();
                                 </select>
                             </div>
                         </div>
-                        <div class="row ">
-                            <div class="btn-row">
+                        <div class="row-margin ">
+                            <div class="btn-row-margin">
                                 <a class="btn btn-success btn-lg save-button">Save</a>
                                 <a class="cancel-button btn btn-danger btn-lg">Cancel</a>
                                 <a class="btn btn-primary btn-lg edit-button">Edit</a>
@@ -70,6 +70,48 @@ $sftp_config = $sftp->get_config();
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="ETF-Pre-form-input-contianer ETF-Pre-file-settings">
+                    <div style="width: 100%;" class="ETF-Pre-form-sftp-contianer">
+                        <h3 style="margin: 10px 0 30px 0;">SFTP file naming settings</h3>
+                        <div class="row-margin">
+                            <div class="ETF-Pre-label-input-grid">
+                                <label><h4>Daily NAV (csv):</h4> </label>
+                                <input readonly style="width: 60%;" id="ETFs-Pre-nav-name" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="row-margin">
+                            <div class="ETF-Pre-label-input-grid">
+                                <label><h4>Holdings (csv):</h4> </label>
+                                <input readonly style="width: 60%;" id="ETFs-Pre-holdings-name" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="row-margin">
+                            <div class="ETF-Pre-label-input-grid">
+                                <label><h4>Distirbution Memo (pdf):</h4> </label>
+                                <input readonly style="width: 60%;" id="ETFs-Pre-dist-memo-name" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="row-margin">
+                            <div class="ETF-Pre-label-input-grid">
+                                <label><h4>Monlthy ROR (pdf):</h4> </label>
+                                <input readonly style="width: 60%;" id="ETFs-Pre-monthly-name" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="row-margin ">
+                            <div class="btn-row row-margin">
+                                <a class="btn btn-primary btn-lg edit-file-button">Edit</a>
+                                <a class="btn btn-success btn-lg scan-dir-button">Scan</a>
+                                <a class="btn btn-success btn-lg update-files-button">Save</a>
+                                <a class="btn btn-success btn-lg cancel-file-button">Cancel</a>
+                                <div class="btn status-states" style="display: none; margin: auto 0;" id="ETFs-Pre-loadinganimation-file-settings" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        
+                    </div>
                 </div>
             </div>
         </div>

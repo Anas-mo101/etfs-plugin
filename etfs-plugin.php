@@ -74,6 +74,8 @@ if ( !class_exists('EtfPlugin') ) {
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
+            add_action( 'wp_ajax_scansftpdir', array($this, 'get_sftp_dir'));
+            add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
 
             add_action( 'get_sftp_data', array($this, 'get_sftp'));
         }
@@ -94,16 +96,6 @@ if ( !class_exists('EtfPlugin') ) {
         function etfs_post_init(){
             $this->etfs_post_type();
             $this->add_etfs_if_not_yet_added();
-        }
-
-        function write_log($log) {
-            if (true === WP_DEBUG) {
-                if (is_array($log) || is_object($log)) {
-                    error_log(print_r($log, true));
-                } else {
-                    error_log($log);
-                }
-            }
         }
 
         function fetch_etf_data(){
@@ -158,6 +150,18 @@ if ( !class_exists('EtfPlugin') ) {
             }
             wp_send_json($res);
         }
+
+        function get_sftp_dir(){
+            $sftp = SFTP::getInstance();
+            $sftp_res = $sftp->get_dir_conntent();
+            $res = array('files' => $sftp_res);
+            wp_send_json($res);
+        }
+
+        function set_sftp_file(){
+            $res = array('files' => $sftp_res);
+            wp_send_json($res);
+        }   
 
         /**
          * registers etf post type

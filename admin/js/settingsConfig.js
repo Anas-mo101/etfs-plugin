@@ -1,10 +1,27 @@
 jQuery( document ).ready( function( $ ) { 
     let toggle_and_not_saved = false;
-    $('.save-button').on('click', save_onclick);
+    $('.cancel-file-button').on('click', cancel_file);
+    $('#ETFs-Pre-auto').on('click', toggle_switch_text);
     $('.cancel-button').on('click', cancel_onclick);
     $('.edit-button').on('click', edit_onclick);
-    $('#ETFs-Pre-auto').on('click', toggle_switch_text);
     cancel_onclick(false);
+    cancel_file();
+
+    $('.edit-file-button').on('click', () => {
+        $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', false);
+        $(".edit-file-button").hide();
+        $(".scan-dir-button").show();
+        $(".update-files-button").show();
+        $(".cancel-file-button").show();
+    });
+
+    function cancel_file(){
+        $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
+        $(".edit-file-button").show();
+        $(".scan-dir-button").hide();
+        $(".update-files-button").hide();
+        $(".cancel-file-button").hide();
+    }
 
     function toggle_switch_text(){
         if($("#ETFs-Pre-auto").is(":checked") == true){
@@ -36,16 +53,16 @@ jQuery( document ).ready( function( $ ) {
     }
 
     function cancel_onclick(flag = true){
-        $("input, select").prop('disabled', true);
-        $("#ETFs-Pre-auto").prop('disabled', true);
-        $('select').prop('disabled', 'disabled');
+        $("#ETFs-Pre-auto, #ETFs-Pre-pass, #ETFs-Pre-user, #ETFs-Pre-port, #ETFs-Pre-host, #ETFs-Pre-freq").prop('disabled', true);
         $('.save-button, .cancel-button').hide();
         $('.edit-button').show();
         if(flag) toggle_switch_reset();
         toggle_and_not_saved = false;
     }
+    
+    // ajax requests
 
-    function save_onclick(){
+    $('.save-button').on('click', () => {
         $("#ETFs-Pre-loadinganimation").css('display', 'inline-block');
         var data = { 
             action: 'etfconfig',
@@ -69,8 +86,51 @@ jQuery( document ).ready( function( $ ) {
             }
         })
         .fail(function(error) {
-            console.log("response failed");
+            console.log(`response failed: ${error}`);
             $("#ETFs-Pre-loadinganimation").css('display', 'none');
         });
-    }
+    });
+
+    $('.scan-dir-button').on('click', () => {
+        $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
+        $.ajax({
+            type: "GET",
+            url: ajaxurl,
+            data: {  action: 'scansftpdir' },
+            cache: false,
+            success: function( response ) {
+                console.log(response);
+                $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
+                $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+            }
+        })
+        .fail(function(error) {
+            console.log(`response failed: ${error}`);
+            $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+        });
+    });
+
+    $('.update-files-button').on('click', () => {
+        $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
+        var data = { 
+            action: 'etfupdatefile'
+        };
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data,
+            cache: false,
+            success: function( response ) {
+                console.log(response);
+                $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
+                $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+            }
+        })
+        .fail(function(error) {
+            console.log(`response failed: ${error}`);
+            $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+        });
+    });
+    
 });
