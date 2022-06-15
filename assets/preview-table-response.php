@@ -1,4 +1,4 @@
-
+<?php ?>
 <div id="<?php echo $this->prefix ?>popup-underlay">
     <div id="<?php echo $this->prefix ?>popup-container">
         <div id="<?php echo $this->prefix ?>table-popup">
@@ -225,5 +225,6 @@
         </div>
     </div>
 </div>
+<?php ?>
 
 

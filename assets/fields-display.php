@@ -1,4 +1,4 @@
-<?php?>
+<?php ?>
 <div class="form-wrap">
     <?php wp_nonce_field( 'my-custom-fields', 'my-custom-fields_wpnonce', false, true );
     foreach ( $this->customFields as $customField ) {
@@ -97,7 +97,7 @@
             </div>
         <?php
         }
-    } ?>
+    }?>
     <div style="display: flex; gap: 30px;"> 
         <div>
             <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview </button></div>
@@ -109,3 +109,4 @@
         </div>
     </div>
 </div>
+<?php ?>

@@ -71,6 +71,7 @@ if ( !class_exists('EtfPlugin') ) {
 
             add_shortcode('render-etf-page', array($this, 'renderProductPage'));
             add_shortcode('render-top-holders-table', array($this, 'renderTopHolders'));
+            add_shortcode('render-subadvisor-section', array($this, 'renderSubadvisor'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
