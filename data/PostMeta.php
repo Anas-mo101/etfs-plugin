@@ -10,27 +10,27 @@ class PostMeta{
     var $post_id;
     var $incoming_meta = array();
     var $file_name;
+    var $files_map;
 
-    function __construct($incoming,$file){
+    function __construct($incoming,$file,$files_map){
         $this->incoming_meta = $incoming;
         $this->file_name = $file;
     }
 
     function process_incoming(){
-        switch ($this->file_name) {
-            case 'TrueMarkWeb.40YR.YR_Holdings.csv':
-                $this->process_holdings();
-                break;
-            case 'TrueMarkWeb.40YR.YR_DailyNAV.csv':
-                $this->process_daily_nav();
-                break;
-            case '.pdf':
-                $this->process_ror();
-                break;
-            case '.pdf':
-                $this->process_dist();
-                break;    
-            default: break;
+
+        $process = array_search($this->file_name,$this->files_map,true);
+
+        switch ($process) {
+            case 'holding':
+                return $this->process_holdings();
+            case 'nav':
+                return $this->process_daily_nav();
+            case 'ror':
+                return $this->process_ror();
+            case 'dist':
+                return $this->process_dist();
+            default: return 'PostMeta: file not supported';
         }
     }
 

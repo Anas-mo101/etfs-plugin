@@ -19,7 +19,7 @@
         if ( !current_user_can( $customField['capability'], $post->ID ) )
             $output = false;
         // Output if allowed
-        if ( $output ) { ?>
+        if ( $output ) {  ?>
             <div class="form-field form-required">
                 <?php
                 switch ( $customField[ 'type' ] ) {
@@ -69,7 +69,6 @@
                         break;
                     }
                     case "select": {
-                        // Plain text field
                         $query = new WP_Query(array( 'post_type' => 'subadvisors','numberposts' => -1));
                         $select = get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true);
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>
@@ -84,6 +83,7 @@
                                     echo '<option ' . $_select . ' value="' . $post_id . '"> '. $post_title .' </option>';
                                 }
                             echo '</select>';
+                        wp_reset_query();
                         break;
                     }
                     case "hidden": {

@@ -95,7 +95,7 @@ class Pdf2Data {
         if($file_id == false){
             return false;
         }
-        $url = $this->get_converted_file($file_id );
+        $url = $this->get_converted_file($file_id);
         if($url == false){
             return false;
         }

@@ -50,14 +50,6 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
-        "name"          => "sub-advisor-name",
-        "title"         => "Subadvisor Name",
-        "description"   => "",
-        "type"          => "select",
-        "scope"         => array( "etfs" ),
-        "capability"    => "edit_posts"
-    ),
-    array(
         "name"          => "graph-json-data",
         "title"         => "Graph Json",
         "description"   => "",
@@ -462,6 +454,14 @@ $custom_fields = array(
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "sub-advisor-name",
+        "title"         => "Subadvisor Name",
+        "description"   => "",
+        "type"          => "select",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     )

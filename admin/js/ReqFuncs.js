@@ -1,4 +1,4 @@
-document.querySelector('.page-title-action').style.display = 'none';
+
 function isValidHttpUrl(string) {
     let url;
     try {

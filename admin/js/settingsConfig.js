@@ -16,6 +16,17 @@ jQuery( document ).ready( function( $ ) {
         $(".clear-set-file").show();
     });
 
+
+    $('#ETFs-Pre-toggle-file-view').change(function(){
+        if($('#ETFs-Pre-toggle-file-view').is(':checked')){
+            $("#ETFs-Pre-scaned-file-dir").show();
+            $("#ETFs-Pre-scaned-file-list-dir").hide();
+        }else{
+            $("#ETFs-Pre-scaned-file-dir").hide();
+            $("#ETFs-Pre-scaned-file-list-dir").show();
+        }
+    });
+
     function cancel_file(){
         $("#ETFs-Pre-nav-name, #ETFs-Pre-holding-name, #ETFs-Pre-dist-name, #ETFs-Pre-ror-name").prop('disabled', true);
         $(".edit-file-button").show();
@@ -102,11 +113,14 @@ jQuery( document ).ready( function( $ ) {
             success: function( response ) {
                 console.log(response);
                 document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = '';
+                document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = '';
                 if(Array.isArray(response.files)){
                     response.files.forEach(file => {
                         let ext = file.split('.').pop();
+                        const y = `<li id="${file}" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')" > ${file} </li>`;
                         const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> <div class="file-ext-text"> <i class="mdi mdi-file-document"></i> <p id="${file}" style="word-break: break-all;">${file}</p> </div> <p>${ext} file</p> </div>`;
                         document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML + x;
+                        document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML + y;
                     });
                 }
                 $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);

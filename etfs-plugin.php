@@ -78,6 +78,18 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
 
             add_action( 'get_sftp_data', array($this, 'get_sftp'));
+
+            add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
+        }
+
+        function write_log($log) {
+            if (true === WP_DEBUG) {
+                if (is_array($log) || is_object($log)) {
+                    error_log(print_r($log, true));
+                } else {
+                    error_log($log);
+                }
+            }
         }
 
         function activiate(){
@@ -276,18 +288,24 @@ if ( !class_exists('EtfPlugin') ) {
             }
         }
 
-        /**
-         * Adds needed scrpits (php, js & css) to be improved using wp way
-         */
-        function includeETFRequiredScripts(){
-            echo '<link rel="stylesheet" href="' . plugin_dir_url( __FILE__ ). 'admin/css/PreviewStyling.css">';
-            include 'assets/preview-table-response.php';
-            echo '<script src="https://code.highcharts.com/highcharts.js"></script>';
-            echo '<script src="https://code.highcharts.com/modules/exporting.js"></script>';
-            echo '<script src="https://code.highcharts.com/modules/export-data.js"></script>';
-            echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/PreviewRen.js"> </script>';
-            echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/ReqFuncs.js"> </script>';
-            echo '<script defer src=" ' . plugin_dir_url( __FILE__ ). 'admin/js/fileSelector.js"> </script>';
+        function etfs_admin_edit_scripts( $hook ) {
+            global $post;
+            $dir = plugin_dir_url( __FILE__ );
+            if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
+                if ( "etfs" === $post->post_type ) {    
+                    wp_enqueue_script('PreviewRen', $dir . 'admin/js/PreviewRen.js' );
+                    wp_enqueue_script('ReqFuncs', $dir . 'admin/js/ReqFuncs.js' );
+                    wp_enqueue_script('fileSelector', $dir . 'admin/js/fileSelector.js' );
+                    wp_enqueue_script('highcharts', 'https://code.highcharts.com/highcharts.js' );
+                    wp_enqueue_script('exporting', 'https://code.highcharts.com/modules/exporting.js' );
+                    wp_enqueue_script('export-data', 'https://code.highcharts.com/modules/export-data.js' );
+                    wp_enqueue_style( 'PreviewStyling', $dir . 'admin/css/PreviewStyling.css' );
+                }
+            }elseif ( $hook == 'admin_page_etfs_general_settings') {
+                wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+                wp_enqueue_style( 'SettingStyling', $dir . 'admin/css/SettingStyling.css' );
+                wp_enqueue_script('settingsConfig', $dir . 'admin/js/settingsConfig.js' );
+            }
         }
 
         /**
@@ -296,9 +314,9 @@ if ( !class_exists('EtfPlugin') ) {
         function displayCustomFields() {
             global $post;  
             if ( $post->post_type == "etfs" ){
-                $this->includeETFRequiredScripts();
+                include 'assets/preview-table-response.php';
             } 
-            require_once 'assets/fields-display.php';
+            require_once 'assets/fields-display.php'; 
         }
 
         /**
@@ -334,6 +352,12 @@ if ( !class_exists('EtfPlugin') ) {
         function renderTopHolders() {
             ob_start();
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/toptenshortcode.php');
+            return ob_get_clean();
+        }
+
+        function renderSubadvisor() {
+            ob_start();
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/subadvisorshortcode.php');
             return ob_get_clean();
         }
     }

@@ -6,10 +6,6 @@
 $sftp = SFTP::getInstance();
 $sftp_config = $sftp->get_config();
 ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="<?php echo plugin_dir_url(dirname( __FILE__)). 'admin/css/'?>SettingStyling.css">
-<link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
-<script src="<?php echo plugin_dir_url(dirname( __FILE__)). 'admin/js/settingsConfig.js'?>"></script>
 
 <h1> ETFs Settings </h1>
     <div>
@@ -124,10 +120,25 @@ $sftp_config = $sftp->get_config();
                     </div>
 
                     <div style="width: 100%;">
+                        <div style="display: flex; gap: 30px; justify-content: center; align-items: center;">
+                            <p style="margin: auto 0;">List Veiw</p>
+                            <label class="switch">
+                                <input id="ETFs-Pre-toggle-file-view" type="checkbox" >
+                                <span class="slider round"></span>
+                            </label>
+                            <p style="margin: auto 0;">Grid Veiw</p>
+                        </div>
                         <div class="stage">
-                            <div id="ETFs-Pre-scaned-file-dir" class="folder-wrap level-current scrolling">
+                            <div style='display: none;' id="ETFs-Pre-scaned-file-dir" class="folder-wrap level-current scrolling">
                                 
-                                
+                            </div>
+                            <div id="ETFs-Pre-scaned-file-list-dir" class="folder-wrap level-current scrolling">
+                                <ul>
+                                    <li class="root">
+                                        Downloads/
+                                    </li>
+                                    <div id="ETFs-Pre-scaned-file-list-dirc"> </div>
+                                </ul>
                             </div>
                         </div>
                     </div>

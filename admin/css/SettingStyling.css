@@ -206,3 +206,47 @@ form label{
 .file-ext-text{
     height: 85%;
 }
+
+#ETFs-Pre-scaned-file-list-dir ul {
+    margin: 0px 0px 0px 20px;
+    list-style: none;
+    line-height: 2em;
+    font-family: Arial;
+}
+#ETFs-Pre-scaned-file-list-dir ul li {
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+}
+#ETFs-Pre-scaned-file-list-dir ul li:before {
+    position: absolute;
+    left: -15px;
+    top: 0px;
+    content: "";
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 1em;
+    border-bottom: 1px solid #ddd;
+    width: 10px;
+}
+#ETFs-Pre-scaned-file-list-dir ul li:after {
+    position: absolute;
+    left: -15px;
+    bottom: -7px;
+    content: "";
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 100%;
+}
+#ETFs-Pre-scaned-file-list-dir ul li.root {
+    margin: 20px 0px 0px -20px;
+}
+#ETFs-Pre-scaned-file-list-dir ul li.root:before {
+    display: none;
+}
+#ETFs-Pre-scaned-file-list-dir ul li.root:after {
+    display: none;
+}
+#ETFs-Pre-scaned-file-list-dir ul li:last-child:after {
+    display: none;
+}

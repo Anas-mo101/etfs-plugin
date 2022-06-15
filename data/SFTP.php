@@ -150,7 +150,14 @@ class SFTP{
     }
 
     function auto_cycle(){
-        $files_required = array('TrueMarkWeb.40YR.YR_DailyNAV.csv' => false, 'TrueMarkWeb.40YR.YR_Holdings.csv' => false);
+        // set file names to look for
+        // $files_required = array('TrueMarkWeb.40YR.YR_DailyNAV.csv' => false, 'TrueMarkWeb.40YR.YR_Holdings.csv' => false);
+        $files_required = array();
+        foreach ($this->cooked_josn["files"] as $key => $value) {
+            if(! is_null($value) && $value !== ''){
+                $files_required[] = $value;
+            }
+        }
         
         // init cycle schedule @ ETFPlugin 
 
@@ -165,15 +172,15 @@ class SFTP{
         foreach($files_path as $key=>$file_path){
             $pattern = '/[^\/]+$/U';
             preg_match($pattern, $file_path, $matches);
-            if(array_key_exists($matches[0],$files_required)){
+            if(in_array($matches[0],$files_required)){
                 $files_name[] = $matches[0];
-                // $files_required["$matches[0]"] = true;
             }else{
                 unset($files_path["$key"]);
             }
         }
 
         $files_required_and_available_remotely = array_combine($files_name,$files_path);
+        
 
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
             return "no required files available";
@@ -201,7 +208,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name);
+                        $post_meta = new PostMeta($data,$name,$this->cooked_josn['files']); // pass  instead of name
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -209,13 +216,14 @@ class SFTP{
                 }elseif($path_info['extension'] === "pdf"){
                     // instead of using names to update each ETFs indiviaully
                     // use all etfs data avaiable to update etfs accordingly
-                    $data;
-                    switch ($name) {
-                        case 'ror.pdf':
+                    $data = array();
+                    $process = array_search($name,$this->cooked_josn['files'],true);
+                    switch ($process) {
+                        case 'ror':
                             // do ror processing
                             $data = (new Pdf2Data())->get_all_monthly_fund_data($path);
                             break;
-                        case 'dist_memo.pdf':
+                        case 'dist':
                             // do dist memo processing
                             $data = (new Pdf2Data())->get_all_distrubation_memo_data($path);
                             break;
@@ -226,7 +234,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name);
+                        $post_meta = new PostMeta($data,$name,$this->cooked_josn['files']);
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -259,44 +267,25 @@ class SFTP{
         return $files_name;
     }
 
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-    }
-    
-
     function set_files_name($args){ // not updating
-
-        $this->write_log($args);
 
         // validate $args
         if(isset($args['nav']) || (trim($args['nav']) !== '') ) {
-            $this->write_log('n');
             $this->cooked_josn["files"]["nav"] = $args["nav"];
         }
 
         if(isset($args['holding']) || (trim($args['holding']) !== '') ) {
-            $this->write_log('h');
             $this->cooked_josn["files"]["holding"] = $args["holding"];
         }
 
         if(isset($args['ror']) || (trim($args['ror']) !== '') ) {
-            $this->write_log('r');
             $this->cooked_josn["files"]["ror"] = $args["ror"];
         }
 
         if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
-            $this->write_log('d');
             $this->cooked_josn["files"]["dist"] = $args["dist"];
         }
 
-        $this->write_log($this->cooked_josn);
-        
         // update etfs-config.json
         $file = fopen($this->config_path . $this->_config,'w');
         $raw_json = json_encode($this->cooked_josn);
@@ -305,5 +294,4 @@ class SFTP{
 
         return 'success';
     }
-
 }
