@@ -2,16 +2,7 @@
 
 class Pdf2Data {
 
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-    }
-    
+
     // post file link to convert
     function convert_pdf($pdf_file){
         $curl = curl_init();

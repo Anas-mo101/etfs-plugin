@@ -13,14 +13,16 @@ jQuery( document ).ready( function( $ ) {
         $(".scan-dir-button").show();
         $(".update-files-button").show();
         $(".cancel-file-button").show();
+        $(".clear-set-file").show();
     });
 
     function cancel_file(){
-        $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
+        $("#ETFs-Pre-nav-name, #ETFs-Pre-holding-name, #ETFs-Pre-dist-name, #ETFs-Pre-ror-name").prop('disabled', true);
         $(".edit-file-button").show();
         $(".scan-dir-button").hide();
         $(".update-files-button").hide();
         $(".cancel-file-button").hide();
+        $(".clear-set-file").hide();
     }
 
     function toggle_switch_text(){
@@ -94,7 +96,7 @@ jQuery( document ).ready( function( $ ) {
         $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
         $.ajax({
             type: "GET",
-            url: ajaxurl,
+            url: ajaxurl,   
             data: {  action: 'scansftpdir' },
             cache: false,
             success: function( response ) {
@@ -103,11 +105,10 @@ jQuery( document ).ready( function( $ ) {
                 if(Array.isArray(response.files)){
                     response.files.forEach(file => {
                         let ext = file.split('.').pop();
-                        const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> <i class="mdi mdi-file-document"></i> <p id="${file}" style="word-break: break-all;">${file}</p> <p>${ext} file</p> </div>`;
+                        const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> <div class="file-ext-text"> <i class="mdi mdi-file-document"></i> <p id="${file}" style="word-break: break-all;">${file}</p> </div> <p>${ext} file</p> </div>`;
                         document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML + x;
                     });
                 }
-
                 $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
@@ -121,17 +122,20 @@ jQuery( document ).ready( function( $ ) {
     $('.update-files-button').on('click', () => {
         $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
         var data = { 
-            action: 'etfupdatefile'
+            action: 'etfupdatefile',
+            nav: document.getElementById('ETFs-Pre-nav-name').innerText,
+            holding: document.getElementById('ETFs-Pre-holding-name').innerText,
+            ror: document.getElementById('ETFs-Pre-ror-name').innerText,
+            dist: document.getElementById('ETFs-Pre-dist-name').innerText 
         };
 
         $.ajax({
-            type: "POST",
+            type: "POST",   
             url: ajaxurl,
             data,
             cache: false,
             success: function( response ) {
-                console.log(response);
-                $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
+                cancel_file();
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
         })

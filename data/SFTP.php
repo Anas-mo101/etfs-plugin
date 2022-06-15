@@ -33,7 +33,7 @@ class SFTP{
 
         // create one if does not exist
         $_temp_file = fopen($this->config_path . $this->_config, "w");
-        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : [ {"nav" : ""}, {"holding" : ""}, {"ror" : ""},  {"dist" : ""} ] }';
+        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : { "nav" : "", "holding" : "", "ror" : "", "dist" : "" } }';
         fwrite($_temp_file, $_temp_config);
         fclose($_temp_file);
     }
@@ -257,6 +257,53 @@ class SFTP{
 
         $this->disconnect();
         return $files_name;
+    }
+
+    function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+    }
+    
+
+    function set_files_name($args){ // not updating
+
+        $this->write_log($args);
+
+        // validate $args
+        if(isset($args['nav']) || (trim($args['nav']) !== '') ) {
+            $this->write_log('n');
+            $this->cooked_josn["files"]["nav"] = $args["nav"];
+        }
+
+        if(isset($args['holding']) || (trim($args['holding']) !== '') ) {
+            $this->write_log('h');
+            $this->cooked_josn["files"]["holding"] = $args["holding"];
+        }
+
+        if(isset($args['ror']) || (trim($args['ror']) !== '') ) {
+            $this->write_log('r');
+            $this->cooked_josn["files"]["ror"] = $args["ror"];
+        }
+
+        if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
+            $this->write_log('d');
+            $this->cooked_josn["files"]["dist"] = $args["dist"];
+        }
+
+        $this->write_log($this->cooked_josn);
+        
+        // update etfs-config.json
+        $file = fopen($this->config_path . $this->_config,'w');
+        $raw_json = json_encode($this->cooked_josn);
+        fwrite($file, $raw_json);
+        fclose($file);
+
+        return 'success';
     }
 
 }

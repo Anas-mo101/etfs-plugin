@@ -159,7 +159,9 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function set_sftp_file(){
-            $res = array('files' => $sftp_res);
+            $sftp = SFTP::getInstance();
+            $sftp_res = $sftp->set_files_name($_POST);
+            $res = array('update' => $sftp_res);
             wp_send_json($res);
         }   
 
