@@ -66,6 +66,8 @@ if ( !class_exists('EtfPlugin') ) {
 
             add_action('init', array($this, 'etfs_post_init') );
             add_action( 'admin_menu', array($this, 'createCustomFields' ) );
+            add_action('admin_menu', array($this,'sub_menu_callback'));
+            
             add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
             add_action( 'do_meta_boxes', array($this, 'removeDefaultCustomFields' ), 10, 3 );
 
@@ -209,15 +211,6 @@ if ( !class_exists('EtfPlugin') ) {
               'supports' => array('title','custom-fields')
             ));
 
-            add_submenu_page(
-                'edit.php?post_type=etfs', //$parent_slug
-                'Settings',  //$page_title
-                'Settings',        //$menu_title
-                'manage_options',           //$capability
-                'etfs_general_settings',//$menu_slug
-                array($this, 'etfs_general_settings_callback')//$function
-            );
-
             register_post_type('subadvisors',array(
                 'labels' => array(
                 'name' => _x('Sub Advisors', 'post type general name'),
@@ -237,12 +230,23 @@ if ( !class_exists('EtfPlugin') ) {
               'show_ui' => true,
               'show_in_menu' => true,
               'query_var' => true,
-              'rewrite' => array('slug'=>'etfs'),
+              'rewrite' => array('slug'=>'subadvisors'),
               'capability_type' => 'post',
               'hierarchical' => false,
               'supports' => array('title','editor','thumbnail')
             ));
             
+        }
+
+        function sub_menu_callback(){
+            add_submenu_page(
+                'edit.php?post_type=etfs', //$parent_slug
+                'Settings',  //$page_title
+                'Settings',        //$menu_title
+                'manage_options',           //$capability
+                'etfs_general_settings',//$menu_slug
+                array($this, 'etfs_general_settings_callback')//$function
+            );
         }
 
         function etfs_general_settings_callback(){
@@ -301,7 +305,7 @@ if ( !class_exists('EtfPlugin') ) {
                     wp_enqueue_script('export-data', 'https://code.highcharts.com/modules/export-data.js' );
                     wp_enqueue_style( 'PreviewStyling', $dir . 'admin/css/PreviewStyling.css' );
                 }
-            }elseif ( $hook == 'admin_page_etfs_general_settings') {
+            }elseif ( $hook == 'etfs_page_etfs_general_settings') {
                 wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
                 wp_enqueue_style( 'SettingStyling', $dir . 'admin/css/SettingStyling.css' );
                 wp_enqueue_script('settingsConfig', $dir . 'admin/js/settingsConfig.js' );
@@ -314,7 +318,7 @@ if ( !class_exists('EtfPlugin') ) {
         function displayCustomFields() {
             global $post;  
             if ( $post->post_type == "etfs" ){
-                include 'assets/preview-table-response.php';
+                require_once 'assets/preview-table-response.php';
             } 
             require_once 'assets/fields-display.php'; 
         }
