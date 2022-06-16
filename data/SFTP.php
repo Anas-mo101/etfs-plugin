@@ -1,43 +1,114 @@
 <?php
 
 class SFTP{ 
-
+    var $single_inseration = false;
     var $sftp;
-    var $cooked_josn;
-    var $_config = 'conf/etfs-config.json';
-    var $config_path;
+    var $_config;
+    private $table_name = "etfs_sftp_config_db"; 
+    private static $instance = null;
 
-    function __construct(){
-        $this->init_config();
-        $this->load_config();
+    private function __construct(){ }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null)
+        {
+            self::$instance = new SFTP();
+        }
+    
+        return self::$instance;
     }
 
-    private function init_config(){
-        // check for etfs-config.josn
-        $this->config_path = trailingslashit( dirname( __FILE__ ) );
-        if (file_exists($this->config_path . $this->_config)) {
-            // check for correct content
-            return true;
+    function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
         }
-
-        // create one if none exist
-        $_temp_file = @fopen($this->config_path . $this->_config, "w");
-        $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : { "nav" : "", "holding" : "", "ror" : "", "dist" : "" } }';
-        fwrite($_temp_file, $_temp_config);
-        @fclose($_temp_file);
     }
 
-    private function load_config(){
-        if (($raw_json = @file_get_contents($this->config_path . $this->_config)) === false) {
-            $error = error_get_last();
-            return false;
+    function sftp_db_init(){
+        global $wpdb;
+        $plugin_name_db_version = '1.0';
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE $wp_table_name (
+                    id varchar(12) UNIQUE DEFAULT '' NOT NULL,
+                    Automate char(1) DEFAULT 'f' NOT NULL,
+                    Host varchar(255) DEFAULT '' NOT NULL,
+                    User varchar(255) DEFAULT '' NOT NULL,
+                    Pass varchar(255) DEFAULT '' NOT NULL,
+                    Port varchar(255) DEFAULT '' NOT NULL,
+                    Timing varchar(255) DEFAULT '' NOT NULL,
+                    Nav varchar(255) DEFAULT '' NOT NULL,
+                    Holding varchar(255) DEFAULT '' NOT NULL,
+                    Ror varchar(255) DEFAULT '' NOT NULL,
+                    Dist varchar(255) DEFAULT '' NOT NULL
+                ) $charset_collate;";
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+        $this->sftp_db_insert_init();
+    }
+
+    function sftp_db_insert_init(){
+        if($this->single_inseration){ // not working ??
+            return;
         }
-        $this->cooked_josn = json_decode(trim($raw_json), true);
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
+        $wpdb->insert( 
+            $wp_table_name, 
+            array( 
+                'Id' => 'sftp_main_db', 
+                'Automate' => 'f', 
+                'Host' => '*', 
+                'User' => '*',
+                'Pass' => '*', 
+                'Port' => '*', 
+                'Timing' => 'hourly',
+                'Nav' => '*', 
+                'Holding' => '*', 
+                'Ror' => '*',
+                'Dist' => '*',
+            ) 
+        );
+        $this->single_inseration = true;
+    }
+
+    function get_config_db(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
+        $row_id = 'sftp_main_db';
+        $config = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wp_table_name WHERE id = %d", $row_id ), ARRAY_A );
+        return $config;
+    }
+
+    function update_config_db(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+        // check for null before update
+        $data = [ 
+            'Automate' => $this->_config["Automate"], 
+            'Host' => $this->_config["Host"], 
+            'User' => $this->_config["User"], 
+            'Pass' => $this->_config["Pass"], 
+            'Port' => $this->_config["Port"],
+            'Timing' => $this->_config["Timing"],
+            'Nav' => $this->_config["Nav"], 
+            'Holding' => $this->_config["Holding"], 
+            'Ror' => $this->_config["Ror"], 
+            'Dist' => $this->_config["Dist"], 
+        ];
+        $where = [ 'Id' => 'sftp_main_db' ]; // NULL value in WHERE clause.
+        $wpdb->update( $wp_table_name, $data, $where ); // Also works in this case.
     }
 
     function set_config($args){
         $_cycle_res = 'ongoing';
-        $pre_auto = $this->cooked_josn["auto"];
+        $pre_auto = $this->_config["Automate"];
 
         // // validate $args
         if(!isset($args['state']) || (trim($args['state']) === '') ||
@@ -46,29 +117,26 @@ class SFTP{
                     !isset($args['pass']) || (trim($args['pass']) === '') ||
                         !isset($args['port']) || (trim($args['port']) === '') ||
                             !isset($args['freq']) || (trim($args['freq']) === '')) {
-            $res = Array('update' => 'null entries','cycle' => 'interrupted');
+            $res = Array('update' => 'null entries','cycle' => 'interrupted by incorrect');
             return $res;
         }
 
-        // update $cooked_josn
-        $this->cooked_josn["auto"] = $args["state"];
-        $this->cooked_josn["host"] = $args["host"];
-        $this->cooked_josn["port"] = $args["port"];
-        $this->cooked_josn["password"] = $args["pass"];
-        $this->cooked_josn["username"] = $args["user"];
-        $this->cooked_josn["timing"] = $args["freq"];
+        // update $_config
+        $this->_config["Automate"] = ($args["state"] === 'true') ? 't' : 'f';
+        $this->_config["Host"] = $args["host"];
+        $this->_config["Port"] = $args["port"];
+        $this->_config["Pass"] = $args["pass"];
+        $this->_config["User"] = $args["user"];
+        $this->_config["Timing"] = $args["freq"];
         
-        // update etfs-config.json
-        $file = @fopen($this->config_path . $this->_config,'w');
-        $raw_json = json_encode($this->cooked_josn);
-        fwrite($file, $raw_json);
-        @fclose($file);
+        // update config db
+        $this->update_config_db();
 
-        // in case $this->cooked_josn["auto"] turns from false to true 
+        // in case $this->_config["Automate"] turns from false to true 
         // start the sftp cycle when turned on then follow timing/schedule
-        if($this->cooked_josn["auto"] === "true" && $pre_auto !== $this->cooked_josn["auto"]){
+        if($this->_config["Automate"] === "t" && $pre_auto !== $this->_config["Automate"]){
             $_cycle_res = $this->auto_cycle();
-        }elseif($this->cooked_josn["auto"] === "false" && $pre_auto !== $this->cooked_josn["auto"]){
+        }elseif($this->_config["Automate"] === "f" && $pre_auto !== $this->_config["Automate"]){
             $_cycle_res = 'blocked';
         }
 
@@ -78,19 +146,25 @@ class SFTP{
     }
 
     public function get_config(){
-        return $this->cooked_josn;
+        if(!$this->_config || is_null($this->_config)){
+            $this->_config = $this->get_config_db();
+        }
+        return $this->_config;
     }
 
     function connect(){
+        if(!$this->_config || is_null($this->_config)){
+            $this->_config = $this->get_config_db();
+        }
         
         // libssh2 php extention -> https://www.libssh2.org/download/
         // ssh2 php extention -> https://pecl.php.net/package/ssh2/ (1.3.1 for php 8.0 on local bitnami server)
         if ( ! extension_loaded( 'ssh2' ) ) return "The ssh2 PHP extension is not available";
 
-        $connection = ssh2_connect($this->cooked_josn["host"], $this->cooked_josn["port"]);
+        $connection = ssh2_connect($this->_config["Host"], $this->_config["Port"]);
         if (!$connection) return "failed";
 
-        $auth = @ssh2_auth_password($connection, $this->cooked_josn["username"], $this->cooked_josn["password"]);
+        $auth = @ssh2_auth_password($connection, $this->_config["User"], $this->_config["Pass"]);
         if (!$auth) return "authentication failed";
 
         $this->sftp = ssh2_sftp($connection);
@@ -140,16 +214,20 @@ class SFTP{
 
     function auto_cycle(){
         // set file names to look for
-        // $files_required = array('TrueMarkWeb.40YR.YR_DailyNAV.csv' => false, 'TrueMarkWeb.40YR.YR_Holdings.csv' => false);
+        $file_set_name = array(
+            'nav' => $this->_config["Nav"], 
+            'holding' => $this->_config["Holding"], 
+            'ror' => $this->_config["Ror"], 
+            'dist' => $this->_config["Dist"],
+        );
+
         $files_required = array();
-        foreach ($this->cooked_josn["files"] as $key => $value) {
-            if(! is_null($value) && $value !== ''){
+        foreach ($file_set_name as $key => $value) {
+            if(! is_null($value) && $value !== '*'){
                 $files_required[] = $value;
             }
         }
         
-        // init cycle schedule @ ETFPlugin 
-
         // connect to sftp server
         if(($con_res = $this->connect()) !== true){
             return $con_res;
@@ -197,7 +275,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$this->cooked_josn['files']); // pass  instead of name
+                        $post_meta = new PostMeta($data,$name,$file_set_name); // pass  instead of name
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -206,7 +284,7 @@ class SFTP{
                     // instead of using names to update each ETFs indiviaully
                     // use all etfs data avaiable to update etfs accordingly
                     $data = array();
-                    $process = array_search($name,$this->cooked_josn['files'],true);
+                    $process = array_search($name,$file_set_name,true);
                     switch ($process) {
                         case 'ror':
                             // do ror processing
@@ -223,7 +301,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$this->cooked_josn['files']);
+                        $post_meta = new PostMeta($data,$name,$file_set_name);
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -260,26 +338,23 @@ class SFTP{
 
         // validate $args
         if(isset($args['nav']) || (trim($args['nav']) !== '') ) {
-            $this->cooked_josn["files"]["nav"] = $args["nav"];
+            $this->_config["Nav"] = $args["nav"];
         }
 
         if(isset($args['holding']) || (trim($args['holding']) !== '') ) {
-            $this->cooked_josn["files"]["holding"] = $args["holding"];
+            $this->_config["Holding"] = $args["holding"];
         }
 
         if(isset($args['ror']) || (trim($args['ror']) !== '') ) {
-            $this->cooked_josn["files"]["ror"] = $args["ror"];
+            $this->_config["Ror"] = $args["ror"];
         }
 
         if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
-            $this->cooked_josn["files"]["dist"] = $args["dist"];
+            $this->_config["Dist"] = $args["dist"];
         }
 
-        // update etfs-config.json
-        $file = @fopen($this->config_path . $this->_config,'w');
-        $raw_json = json_encode($this->cooked_josn);
-        fwrite($file, $raw_json);
-        @fclose($file);
+        // update config db
+        $this->update_config_db();
 
         return 'success';
     }
