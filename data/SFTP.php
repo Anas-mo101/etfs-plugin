@@ -1,26 +1,15 @@
 <?php
 
-// $object1 = SFTP::getInstance();
-
 class SFTP{ 
 
     var $sftp;
     var $cooked_josn;
-    var $_config = 'etfs-config.json';
+    var $_config = 'conf/etfs-config.json';
     var $config_path;
-    private static $instance = null;
 
-    private function __construct(){
+    function __construct(){
         $this->init_config();
         $this->load_config();
-    }
-
-    public static function getInstance()
-    {
-      if (self::$instance == null){
-        self::$instance = new SFTP();
-      }
-      return self::$instance;
     }
 
     private function init_config(){
@@ -31,11 +20,11 @@ class SFTP{
             return true;
         }
 
-        // create one if does not exist
-        $_temp_file = fopen($this->config_path . $this->_config, "w");
+        // create one if none exist
+        $_temp_file = @fopen($this->config_path . $this->_config, "w");
         $_temp_config = '{"auto": "false", "host": "null", "username": "null", "password": "null", "port": "null", "timing": "null", "files" : { "nav" : "", "holding" : "", "ror" : "", "dist" : "" } }';
         fwrite($_temp_file, $_temp_config);
-        fclose($_temp_file);
+        @fclose($_temp_file);
     }
 
     private function load_config(){
@@ -70,10 +59,10 @@ class SFTP{
         $this->cooked_josn["timing"] = $args["freq"];
         
         // update etfs-config.json
-        $file = fopen($this->config_path . $this->_config,'w');
+        $file = @fopen($this->config_path . $this->_config,'w');
         $raw_json = json_encode($this->cooked_josn);
         fwrite($file, $raw_json);
-        fclose($file);
+        @fclose($file);
 
         // in case $this->cooked_josn["auto"] turns from false to true 
         // start the sftp cycle when turned on then follow timing/schedule
@@ -287,10 +276,10 @@ class SFTP{
         }
 
         // update etfs-config.json
-        $file = fopen($this->config_path . $this->_config,'w');
+        $file = @fopen($this->config_path . $this->_config,'w');
         $raw_json = json_encode($this->cooked_josn);
         fwrite($file, $raw_json);
-        fclose($file);
+        @fclose($file);
 
         return 'success';
     }

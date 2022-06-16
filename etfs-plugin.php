@@ -153,8 +153,7 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function set_sftp_config(){
-            $sftp = SFTP::getInstance();
-            $res = $sftp->set_config($_POST);
+            $res = (new SFTP())->set_config($_POST);
             
             if(($res["cycle"] !== "interrupted" || $res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked")
              && $this->automated == false){
@@ -168,15 +167,13 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function get_sftp_dir(){
-            $sftp = SFTP::getInstance();
-            $sftp_res = $sftp->get_dir_conntent();
+            $sftp_res = (new SFTP())->get_dir_conntent();
             $res = array('files' => $sftp_res);
             wp_send_json($res);
         }
 
         function set_sftp_file(){
-            $sftp = SFTP::getInstance();
-            $sftp_res = $sftp->set_files_name($_POST);
+            $sftp_res = (new SFTP())->set_files_name($_POST);
             $res = array('update' => $sftp_res);
             wp_send_json($res);
         }   

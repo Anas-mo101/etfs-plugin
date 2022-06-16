@@ -1,7 +1,4 @@
-<?php
-$sftp = SFTP::getInstance();
-$sftp_config = $sftp->get_config();
-?>
+<?php $sftp_config = (new SFTP())->get_config(); ?>
 <h1> ETFs Settings </h1>
 <div>
     <div>

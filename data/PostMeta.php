@@ -15,6 +15,7 @@ class PostMeta{
     function __construct($incoming,$file,$files_map){
         $this->incoming_meta = $incoming;
         $this->file_name = $file;
+        $this->files_map = $files_map;
     }
 
     function process_incoming(){
