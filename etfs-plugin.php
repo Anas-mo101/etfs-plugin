@@ -156,7 +156,8 @@ if ( !class_exists('EtfPlugin') ) {
             $sftp = SFTP::getInstance();
             $res = $sftp->set_config($_POST);
             
-            if(($res["cycle"] !== "interrupted" || $res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked") && $this->automated == false){
+            if(($res["cycle"] !== "interrupted" || $res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked")
+             && $this->automated == false){
                 // if (! wp_next_scheduled ( 'get_sftp_data', $args ))  wp_schedule_event( time(), 'hourly', 'get_sftp_data' );
                 $this->automated = true;
             }elseif($res["cycle"] !== "blocked" && $this->automated == true){
@@ -245,12 +246,10 @@ if ( !class_exists('EtfPlugin') ) {
                 'Settings',        //$menu_title
                 'manage_options',           //$capability
                 'etfs_general_settings',//$menu_slug
-                array($this, 'etfs_general_settings_callback')//$function
+                function () { // anonymous callback function
+                    include 'assets/etfs-settings.php';
+                }
             );
-        }
-
-        function etfs_general_settings_callback(){
-            require_once 'assets/etfs-settings.php';
         }
 
         /**
