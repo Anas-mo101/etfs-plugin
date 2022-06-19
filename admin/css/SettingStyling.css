@@ -250,3 +250,7 @@ form label{
 #ETFs-Pre-scaned-file-list-dir ul li:last-child:after {
     display: none;
 }
+
+.feilds-label-style{
+    font-size: 18px;
+}

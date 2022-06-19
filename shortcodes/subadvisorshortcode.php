@@ -5,30 +5,39 @@ $sub_adv_title = $sub_adv->post_title;
 $sub_adv_content = $sub_adv->post_content; 
 $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
 ?>
-
+​
 <style>
-
+​
     @media only screen and (max-width: 600px) {
         
         .cat-subadvisor{
-        font-size: 12px!important;
-        padding-top: 55px!important;
-        margin: 0;
+            font-size: 12px!important;
+            padding-top: 55px!important;
+            margin: 0;
         }
-
+​
         .title-subadvisor{
-        font-size: 44px!important;
-        padding-bottom: 15px!important;
+            font-size: 44px!important;
+            padding-bottom: 15px!important;
+            margin: 0!important;
         }
     
         .sub-feature-title,   .sub-feature-desc{
             font-size: 14px!important;
             line-height: 25px!important;
         }
+​
+        .spacer-img{
+            display: none;
+        }
+​
+        .sub-feature{
+            display:none;
+        }
     }
-
+​
     @media only screen and (max-width: 1024px){
-
+​
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
@@ -37,8 +46,9 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
             font-weight: 500;
             line-height: 27px;
             letter-spacing: 4px;
+            padding-top: 55px!important;
         }
-
+​
         .title-subadvisor{
             color: #12223D;
             font-family: "Avenir Next", Sans-serif;
@@ -47,7 +57,7 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
             line-height: 56px;
             margin: 0 0 37px 0;
         }
-
+​
         .row-subadvisor{
             display: flex;
             margin-right: auto;
@@ -67,7 +77,7 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
         .col-1-subadvisor-widget{
             padding: 0px;
         }
-
+​
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
@@ -92,17 +102,21 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
                 visibility: 0;
             
         }
+​
+        .spacer-img{
+            display: none;
+        }
     }
-
+​
     @media only screen and (min-width: 1025px) {
-
+​
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
             font-family: "Avenir Next", Sans-serif;
             font-size: 20px;
             font-weight: 500;
-            line-height: 27px;
+            line-height: 0;
             letter-spacing: 4px;
             margin-bottom: 18px;
         }
@@ -155,7 +169,7 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
         }
     }
 </style>
-
+​
 <section>
     <div class="row-subadvisor">
         <div class="col-1-subadvisor">
@@ -164,7 +178,7 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
                     <p class="cat-subadvisor">SUB-ADVISOR</p>
                     <p class="title-subadvisor"><?php echo $sub_adv_title ?></p>
                 </div>
-                <p class="sub-feature"><?php echo $sub_adv_title ?></p>   
+                <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
                 <a id="req-meet" href="/contact-us/">
                     <div id="banner-arrow" style="justify-content: normal; justify-items: baseline; display: flex;">
                         <p style="color: #0C233F; padding-right: 26px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 20px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
@@ -175,11 +189,11 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
                 </a>
         </div>
     </div>
-
+​
     <div class="col-2-subadvisor">
-        <div style="padding-top: 100px;" >
+        <div class="spacer-img" style="padding-top: 100px;" >
         </div>
-        <img style="vertical-align: middle; display: inline-block;" src="<?php echo $sub_adv_thumbnail ?>">
+        <img style="vertical-align: middle; display: inline-block; width: 100%;" src="<?php echo $sub_adv_thumbnail ?>">
     </div>
   </div>
 </section>

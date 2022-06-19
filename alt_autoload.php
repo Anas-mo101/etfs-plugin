@@ -22,7 +22,6 @@ $rootFolder = __DIR__.'/libs/Smalot/PdfParser';
 
 $libs = array(
     __DIR__.'/libs/Smalot/PdfParser',
-    __DIR__.'/data',
 );
 
 // Manually require files, which can't be loaded automatically that easily.
@@ -34,10 +33,11 @@ require_once $rootFolder.'/Element/ElementString.php';
 require_once $rootFolder.'/Encoding/AbstractEncoding.php';
 
 require_once 'assets/class-atts.php';
-// require_once 'data/GoogleSheetProvider.php';
-// require_once 'data/Pdf2Data.php';
-// require_once 'data/SFTP.php';
-// require_once 'data/CsvProvider.php';
+require_once 'data/GoogleSheetProvider.php';
+require_once 'data/Pdf2Data.php';
+require_once 'data/SFTP.php';
+require_once 'data/CsvProvider.php';
+require_once 'data/PostMeta.php';
 
 
 foreach ($libs as $lib) {

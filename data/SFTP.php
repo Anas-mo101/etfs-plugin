@@ -4,6 +4,7 @@ class SFTP{
     var $single_inseration = false;
     var $sftp;
     var $_config;
+    var $_files = array('nav' => '','holding' => '','ror' => '','dis' => '');
     private $table_name = "etfs_sftp_config_db"; 
     private static $instance = null;
 
@@ -36,17 +37,17 @@ class SFTP{
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $wp_table_name (
-                    id varchar(12) UNIQUE DEFAULT '' NOT NULL,
-                    Automate char(1) DEFAULT 'f' NOT NULL,
-                    Host varchar(255) DEFAULT '' NOT NULL,
-                    User varchar(255) DEFAULT '' NOT NULL,
-                    Pass varchar(255) DEFAULT '' NOT NULL,
-                    Port varchar(255) DEFAULT '' NOT NULL,
-                    Timing varchar(255) DEFAULT '' NOT NULL,
-                    Nav varchar(255) DEFAULT '' NOT NULL,
-                    Holding varchar(255) DEFAULT '' NOT NULL,
-                    Ror varchar(255) DEFAULT '' NOT NULL,
-                    Dist varchar(255) DEFAULT '' NOT NULL
+                    id varchar(12) UNIQUE DEFAULT '',
+                    Automate char(1) NOT NULL DEFAULT 'f',
+                    Host varchar(255) NOT NULL DEFAULT '',
+                    User varchar(255) NOT NULL DEFAULT '',
+                    Pass varchar(255) NOT NULL DEFAULT '',
+                    Port varchar(255) NOT NULL DEFAULT '',
+                    Timing varchar(255) NOT NULL DEFAULT '',
+                    Nav varchar(255) NOT NULL DEFAULT '',
+                    Holding varchar(255) NOT NULL DEFAULT '',
+                    Ror varchar(255) NOT NULL DEFAULT '',
+                    Dist varchar(255) NOT NULL DEFAULT ''
                 ) $charset_collate;";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
@@ -54,9 +55,6 @@ class SFTP{
     }
 
     function sftp_db_insert_init(){
-        if($this->single_inseration){ // not working ??
-            return;
-        }
         global $wpdb;
         $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
         $wpdb->insert( 
@@ -75,7 +73,6 @@ class SFTP{
                 'Dist' => '*',
             ) 
         );
-        $this->single_inseration = true;
     }
 
     function get_config_db(){
@@ -89,6 +86,7 @@ class SFTP{
     function update_config_db(){
         global $wpdb;
         $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+
         // check for null before update
         $data = [ 
             'Automate' => $this->_config["Automate"], 
@@ -96,19 +94,32 @@ class SFTP{
             'User' => $this->_config["User"], 
             'Pass' => $this->_config["Pass"], 
             'Port' => $this->_config["Port"],
-            'Timing' => $this->_config["Timing"],
-            'Nav' => $this->_config["Nav"], 
-            'Holding' => $this->_config["Holding"], 
-            'Ror' => $this->_config["Ror"], 
-            'Dist' => $this->_config["Dist"], 
+            'Timing' => $this->_config["Timing"]
         ];
         $where = [ 'Id' => 'sftp_main_db' ]; // NULL value in WHERE clause.
         $wpdb->update( $wp_table_name, $data, $where ); // Also works in this case.
     }
 
+    function update_config_db_files(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+        
+        // check for null before update
+        $data = [ 
+            'Nav' => $this->_config["Nav"], 
+            'Holding' => $this->_config["Holding"], 
+            'Ror' => $this->_config["Ror"], 
+            'Dist' => $this->_config["Dist"]
+        ];
+        $where = [ 'Id' => 'sftp_main_db' ]; 
+        $wpdb->update( $wp_table_name, $data, $where ); 
+    }
+
     function set_config($args){
+        $this->get_config();
         $_cycle_res = 'ongoing';
-        $pre_auto = $this->_config["Automate"];
+        $pre_auto = (! isset( $this->_config['Automate'])) ? 'f' : $this->_config['Automate'];
+
 
         // // validate $args
         if(!isset($args['state']) || (trim($args['state']) === '') ||
@@ -117,9 +128,10 @@ class SFTP{
                     !isset($args['pass']) || (trim($args['pass']) === '') ||
                         !isset($args['port']) || (trim($args['port']) === '') ||
                             !isset($args['freq']) || (trim($args['freq']) === '')) {
-            $res = Array('update' => 'null entries','cycle' => 'interrupted by incorrect');
+            $res = Array('update' => 'null entries','cycle' => 'invalid entry');
             return $res;
         }
+
 
         // update $_config
         $this->_config["Automate"] = ($args["state"] === 'true') ? 't' : 'f';
@@ -128,6 +140,7 @@ class SFTP{
         $this->_config["Pass"] = $args["pass"];
         $this->_config["User"] = $args["user"];
         $this->_config["Timing"] = $args["freq"];
+
         
         // update config db
         $this->update_config_db();
@@ -146,14 +159,14 @@ class SFTP{
     }
 
     public function get_config(){
-        if(!$this->_config || is_null($this->_config)){
+        if(!$this->_config || is_null($this->_config) || count($this->_config) == 0 ){
             $this->_config = $this->get_config_db();
         }
         return $this->_config;
     }
 
     function connect(){
-        if(!$this->_config || is_null($this->_config)){
+        if(!$this->_config || is_null($this->_config) || count($this->_config) == 0){
             $this->_config = $this->get_config_db();
         }
         
@@ -214,19 +227,25 @@ class SFTP{
 
     function auto_cycle(){
         // set file names to look for
-        $file_set_name = array(
-            'nav' => $this->_config["Nav"], 
-            'holding' => $this->_config["Holding"], 
-            'ror' => $this->_config["Ror"], 
-            'dist' => $this->_config["Dist"],
-        );
+        $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist' );
 
+
+        foreach ($file_set_name as $key => $value )  {
+            if(isset($this->_config["$key"]) && $this->_config["$key"] !== '*' ){
+                $file_set_name["$key"] = $this->_config[$key];
+            }else{
+                unset($file_set_name["$key"]);
+            }
+        }
+
+        
         $files_required = array();
         foreach ($file_set_name as $key => $value) {
             if(! is_null($value) && $value !== '*'){
                 $files_required[] = $value;
             }
         }
+
         
         // connect to sftp server
         if(($con_res = $this->connect()) !== true){
@@ -247,7 +266,7 @@ class SFTP{
         }
 
         $files_required_and_available_remotely = array_combine($files_name,$files_path);
-        
+
 
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
             return "no required files available";
@@ -354,7 +373,7 @@ class SFTP{
         }
 
         // update config db
-        $this->update_config_db();
+        $this->update_config_db_files();
 
         return 'success';
     }

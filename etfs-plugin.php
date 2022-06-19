@@ -97,14 +97,14 @@ if ( !class_exists('EtfPlugin') ) {
 
         function activiate(){
             $this->etfs_post_init();
-            $sftp = SFTP::getInstance();
+            $sftp = SFTP::getInstance(); // do not set sftp on page start, instead 
             $sftp->sftp_db_init();
             flush_rewrite_rules();
         }
 
         function deactivate(){
             if($this->automated){
-                wp_clear_scheduled_hook( 'get_sftp_data' );
+                // wp_clear_scheduled_hook( 'get_sftp_data' );
             }
             
             flush_rewrite_rules();

@@ -76,14 +76,21 @@ jQuery( document ).ready( function( $ ) {
 
     $('.save-button').on('click', () => {
         $("#ETFs-Pre-loadinganimation").css('display', 'inline-block');
+
+        host = $("#ETFs-Pre-host").val() === '' ? '*' : $("#ETFs-Pre-host").val();
+        user = $("#ETFs-Pre-user").val() === '' ? '*' : $("#ETFs-Pre-user").val();
+        pass = $("#ETFs-Pre-pass").val() === '' ? '*' : $("#ETFs-Pre-pass").val();
+        port = $("#ETFs-Pre-port").val() === '' ? '*' : $("#ETFs-Pre-port").val();
+        freq = $("#ETFs-Pre-freq").val() === '' ? '*' : $("#ETFs-Pre-freq").val();
+
         var data = { 
             action: 'etfconfig',
-            host: $("#ETFs-Pre-host").val(),
+            host: host,
             state: $("#ETFs-Pre-auto").is(":checked"),
-            user: $("#ETFs-Pre-user").val(),
-            pass: $("#ETFs-Pre-pass").val(),
-            port: $("#ETFs-Pre-port").val(),
-            freq: $("#ETFs-Pre-freq").val(),
+            user: user,
+            pass: pass,
+            port: port,
+            freq: freq,
         };
 
         $.ajax({
@@ -94,6 +101,7 @@ jQuery( document ).ready( function( $ ) {
             success: function( response ) {
                 console.log(response);
                 cancel_onclick(false);
+                $("#").html(response.cycle);
                 $("#ETFs-Pre-loadinganimation").css('display', 'none');
             }
         })
@@ -118,7 +126,12 @@ jQuery( document ).ready( function( $ ) {
                     response.files.forEach(file => {
                         let ext = file.split('.').pop();
                         const y = `<li id="${file}" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')" > ${file} </li>`;
-                        const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> <div class="file-ext-text"> <i class="mdi mdi-file-document"></i> <p id="${file}" style="word-break: break-all;">${file}</p> </div> <p>${ext} file</p> </div>`;
+                        const x = `<div class="tile form" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')"> 
+                            <div class="file-ext-text"> 
+                                <svg style="margin: 20px 0;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16"> <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/> </svg>
+                                <p id="${file}" style="word-break: break-all;">${file}</p> 
+                                </div> <p>${ext} file</p> 
+                            </div>`;
                         document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML + x;
                         document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML + y;
                     });
@@ -135,12 +148,18 @@ jQuery( document ).ready( function( $ ) {
 
     $('.update-files-button').on('click', () => {
         $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
+
+        let nav = document.getElementById('ETFs-Pre-nav-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-nav-name').innerText;
+        let holding = document.getElementById('ETFs-Pre-holding-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-holding-name').innerText;
+        let ror = document.getElementById('ETFs-Pre-ror-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-ror-name').innerText;
+        let dist = document.getElementById('ETFs-Pre-dist-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-dist-name').innerText;
+
         var data = { 
             action: 'etfupdatefile',
-            nav: document.getElementById('ETFs-Pre-nav-name').innerText,
-            holding: document.getElementById('ETFs-Pre-holding-name').innerText,
-            ror: document.getElementById('ETFs-Pre-ror-name').innerText,
-            dist: document.getElementById('ETFs-Pre-dist-name').innerText 
+            nav: nav,
+            holding: holding,
+            ror: ror,
+            dist: dist 
         };
 
         $.ajax({
