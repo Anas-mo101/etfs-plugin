@@ -1,9 +1,16 @@
 <?php 
 $sub_adv_id = get_post_meta( get_the_ID(), "ETF-Pre-sub-advisor-name", true );
 $sub_adv = get_post( $sub_adv_id );
-$sub_adv_title = $sub_adv->post_title; 
-$sub_adv_content = $sub_adv->post_content; 
-$sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
+$sub_adv_title; $sub_adv_content; $sub_adv_thumbnail;
+$show_sub_adv_if_true = false;
+
+if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv->post_content)){
+    $sub_adv_title = $sub_adv->post_title; 
+    $sub_adv_content = $sub_adv->post_content; 
+    $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
+    $show_sub_adv_if_true = true;
+}
+
 ?>
 ​
 <style>
@@ -170,6 +177,7 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
     }
 </style>
 ​
+<?php if($show_sub_adv_if_true){ ?>
 <section>
     <div class="row-subadvisor">
         <div class="col-1-subadvisor">
@@ -197,3 +205,4 @@ $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
     </div>
   </div>
 </section>
+<?php } ?>

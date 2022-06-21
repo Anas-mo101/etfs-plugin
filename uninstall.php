@@ -22,5 +22,5 @@ foreach($subadvisors as $data){
 
 global $wpdb;
 $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
-$wpdb->query( "DROP TABLE IF EXISTS {$wp_table_name}" );
+$wpdb->query( "DROP TABLE IF EXISTS $wp_table_name" );
 delete_option("my_plugin_db_version");

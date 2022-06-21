@@ -1,6 +1,16 @@
 <?php $sftp = SFTP::getInstance();
 $sftp_config = $sftp->get_config();?>
-<h1 style="margin: 20px 0;"> ETFs Settings </h1>
+
+<div style="display: flex; justify-content: space-between; margin: 10px 0">
+    <h1 style="margin: auto 0;"> ETFs Settings </h1>
+    <div class="ETF-Pre-counter-container">
+        <p style="text-align: center;"> America/Chicago </p>
+        <div class="ETF-Pre-counter-sub-container">
+            <h3 id="ETF-Pre-cycle-counter"> <?php echo $sftp_config["Last_Cycle_Timestamp"] === NULL ? 'None Yet' : $sftp_config["Last_Cycle_Timestamp"] ; ?> </h3>
+        </div>
+        <p style="text-align: center;"> Last successful cycles </p>
+    </div>
+</div>
 <div>
     <div>
         <div class="ETF-Pre-settings-container">
@@ -44,10 +54,9 @@ $sftp_config = $sftp->get_config();?>
                         <div class="">
                             <label style="margin: auto 0;"><h4 class="feilds-label-style">Frequency</h4></label>
                             <select id="ETFs-Pre-freq">
-                                <option <?php echo ($sftp_config["Timing"] === "halfhour") ? "selected" : '' ; ?> value="halfhour">Every 30 minutes</option>
-                                <option <?php echo ($sftp_config["Timing"] === "onehour") ? "selected" : '' ; ?> value="onehour">Hourly</option>
-                                <option <?php echo ($sftp_config["Timing"] === "threehour") ? "selected" : '' ; ?> value="threehour">Every Three Hour</option>
-                                <option <?php echo ($sftp_config["Timing"] === "24hour") ? "selected" : '' ; ?> value="24hour">Daily</option>
+                                <option <?php echo ($sftp_config["Timing"] === "hourly") ? "selected" : '' ; ?> value="hourly">hourly</option>
+                                <option <?php echo ($sftp_config["Timing"] === "twicedaily") ? "selected" : '' ; ?> value="twicedaily">twice a day</option>
+                                <option <?php echo ($sftp_config["Timing"] === "daily") ? "selected" : '' ; ?> value="daily">daily</option>
                             </select>
                         </div>
                     </div>
@@ -57,7 +66,7 @@ $sftp_config = $sftp->get_config();?>
                             <a class="cancel-button btn btn-danger btn-lg">Cancel</a>
                             <a class="btn btn-primary btn-lg edit-button">Edit</a>
                             <div class="btn status-states" style="display: none; margin: auto 0;" id="ETFs-Pre-loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
-                            <p style="margin: auto 0;" id="ETF-Pre-creds-state">  </p>
+                            <p style="margin: auto 0; cursor: auto;" class="btn" id="ETF-Pre-creds-state">  </p>
                         </div>
                     </div>
                 </form>
@@ -109,6 +118,7 @@ $sftp_config = $sftp->get_config();?>
                             <a class="btn btn-success btn-lg update-files-button">Save</a>
                             <a class="btn btn-success btn-lg cancel-file-button">Cancel</a>
                             <div class="btn status-states" style="display: none; margin: auto 0;" id="ETFs-Pre-loadinganimation-file-settings" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
+                            <p style="margin: auto 0; cursor: auto;" class="btn" id="ETF-Pre-file-state">  </p>
                         </div>
                     </div>
                 </div>

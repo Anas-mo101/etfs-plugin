@@ -23,13 +23,13 @@ class PostMeta{
         $process = array_search($this->file_name,$this->files_map,true);
 
         switch ($process) {
-            case 'holding':
+            case 'Holding':
                 return $this->process_holdings();
-            case 'nav':
+            case 'Nav':
                 return $this->process_daily_nav();
-            case 'ror':
+            case 'Ror':
                 return $this->process_ror();
-            case 'dist':
+            case 'Dist':
                 return $this->process_dist();
             default: return 'PostMeta: file not supported';
         }
@@ -40,11 +40,12 @@ class PostMeta{
             'ETF-Pre-na-v-data' => 'NAV',
             'ETF-Pre-net-assets-data' => 'Net Assets',
             'ETF-Pre-shares-out-standig-data' => 'Shares Outstanding',
-            'ETF-Pre-discount-percentage-data' => 'Premium/Discount',
+            'ETF-Pre-discount-percentage-data' => 'Premium/Discount Percentage',
             'ETF-Pre-closing-price-data' => 'Rate Date',
             'ETF-Pre-thirty-day-median-data' => 'Median 30 Day Spread Percentage',
         );
 
+        
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return 'null data';
         }
@@ -53,11 +54,11 @@ class PostMeta{
             $post_to_update = get_page_by_title( $meta['Fund Ticker'], OBJECT, 'etfs' );
             if(! $post_to_update) continue;
 
-            update_post_meta($post_to_update->id,'ETF-Pre-fund-pricing-date-data',date("d/m/y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-fund-pricing-date-data',date("d/m/y"));
 
             foreach ($nav_meta_keys as $key => $value) {
                 if(isset($meta[$value])){
-                    update_post_meta($post_to_update->id,$key,$meta[$value]);
+                    update_post_meta($post_to_update->ID,$key,$meta[$value]);
                 }
             }
         }
@@ -70,7 +71,14 @@ class PostMeta{
             return 'null data';
         }
 
-        $query = new WP_Query(array( 'post_type' => 'etfs', 'post_status' => 'publish' ));
+        $holding_ = array();
+        for ($i=0; $i < 4; $i++) { 
+            $holding_[] = $this->incoming_meta[$i]; // sort
+        }
+
+        $new_holdings = json_encode($holding_);
+
+        $query = new WP_Query(array( 'post_type' => 'etfs', 'posts_per_page' => 999999 ));
         while ($query->have_posts()) {
             $query->the_post();
             $post_id_to_update = get_the_ID();
@@ -78,13 +86,6 @@ class PostMeta{
             if (!$this->incoming_meta || count($this->incoming_meta) === 0) {
                 return 'null data';
             }
-
-            $holding_ = array();
-            for ($i=0; $i < 4; $i++) { 
-                $holding_[] = $this->incoming_meta[$i]; // sort
-            }
-
-            $new_holdings = json_encode($holding_);
 
             update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("d/m/y"));
             update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);

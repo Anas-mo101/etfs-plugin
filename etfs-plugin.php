@@ -6,7 +6,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           0.0.3
+ * Version:           0.0.5
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
@@ -56,7 +56,7 @@ if ( !class_exists('EtfPlugin') ) {
 
         var $unstructured_etfs_list;
 
-        var $automated = false;
+        var $automation = false;
 
         function __construct($in_feilds,$in_etf,$in_uns_etfs){
             
@@ -65,9 +65,12 @@ if ( !class_exists('EtfPlugin') ) {
             $this->unstructured_etfs_list = $in_uns_etfs;
 
             add_action('init', array($this, 'etfs_post_init') );
+
+            add_action( 'after_setup_theme', array($this,'insert_uns_category'));
+
             add_action( 'admin_menu', array($this, 'createCustomFields' ) );
             add_action('admin_menu', array($this,'sub_menu_callback'));
-            
+
             add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
             add_action( 'do_meta_boxes', array($this, 'removeDefaultCustomFields' ), 10, 3 );
 
@@ -80,7 +83,9 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'wp_ajax_scansftpdir', array($this, 'get_sftp_dir'));
             add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
 
-            add_action( 'get_sftp_data', array($this, 'get_sftp'));
+            add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
+
+            add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
 
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
         }
@@ -96,16 +101,15 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function activiate(){
-            $this->etfs_post_init();
-            $sftp = SFTP::getInstance(); // do not set sftp on page start, instead 
+            $this->etfs_post_type();
+     
+            $sftp = SFTP::getInstance();
             $sftp->sftp_db_init();
             flush_rewrite_rules();
         }
 
         function deactivate(){
-            if($this->automated){
-                // wp_clear_scheduled_hook( 'get_sftp_data' );
-            }
+            wp_clear_scheduled_hook( 'get_sftp_data' );
             
             flush_rewrite_rules();
         }
@@ -157,15 +161,15 @@ if ( !class_exists('EtfPlugin') ) {
         function set_sftp_config(){
             $sftp = SFTP::getInstance();
             $res = $sftp->set_config($_POST);
-            
-            if(($res["cycle"] !== "interrupted" || $res["cycle"] !== "ongoing" || $res["cycle"] !== "blocked")
-             && $this->automated == false){
-                // if (! wp_next_scheduled ( 'get_sftp_data', $args ))  wp_schedule_event( time(), 'hourly', 'get_sftp_data' );
-                $this->automated = true;
-            }elseif($res["cycle"] !== "blocked" && $this->automated == true){
-                $this->automated = false;
-                // wp_clear_scheduled_hook( 'get_sftp_data' );
+
+            if($res['cycle'] === 'first sftp cycle is successfull'){
+                if (! wp_next_scheduled ( 'get_sftp_data' ))  wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
+                $this->automation = true;
+            }elseif ($res["cycle"] === "blocked") {
+                $this->automation = false;
+                wp_clear_scheduled_hook( 'get_sftp_data' );
             }
+
             wp_send_json($res);
         }
 
@@ -181,12 +185,19 @@ if ( !class_exists('EtfPlugin') ) {
             $sftp_res = $sftp->set_files_name($_POST);
             $res = array('update' => $sftp_res);
             wp_send_json($res);
-        }   
+        } 
+
+        function run_sftp_cycle(){
+            $sftp = SFTP::getInstance();
+            $sftp->auto_cycle();
+        }
 
         /**
          * registers etf post type
          */
         function etfs_post_type() {
+
+            
             register_post_type('etfs',array(
                 'labels' => array(
                 'name' => _x('ETFs', 'post type general name'),
@@ -211,6 +222,7 @@ if ( !class_exists('EtfPlugin') ) {
               'rewrite' => array('slug'=>'etfs'),
               'capability_type' => 'post',
               'hierarchical' => false,
+              'taxonomies'  => array( 'category' ),
               'supports' => array('title','custom-fields')
             ));
 
@@ -258,6 +270,7 @@ if ( !class_exists('EtfPlugin') ) {
          * creates 16 etfs
          */
         function add_etfs_if_not_yet_added() {
+            //Define the category
             foreach($this->etfs_list as $etf_name) {
               if (!get_page_by_path($etf_name,OBJECT,'etfs'))
                 wp_insert_post(array(
@@ -268,6 +281,24 @@ if ( !class_exists('EtfPlugin') ) {
                   'comment_status'  => "closed",
                   'ping_status'     => "closed",
                 ));
+            }
+        }
+
+        function insert_uns_category() {
+            if(!term_exists('brand')) {
+                wp_insert_term(
+                    'Unstructured ETFs',
+                    'category',
+                    array(
+                        'slug' => 'unstructured-etfs'
+                    )
+                );
+            }
+        }
+
+        function hide_unstructional_etfs_section(){
+            if(in_category( 'Unstructured ETFs' )){
+                echo '<style> .unstructured-etfs{ display: none !important; } </style>';
             }
         }
 

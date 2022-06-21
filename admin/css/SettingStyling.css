@@ -254,3 +254,14 @@ form label{
 .feilds-label-style{
     font-size: 18px;
 }
+
+h3#ETF-Pre-cycle-counter {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.ETF-Pre-counter-container {
+    margin: auto 30px;
+    border: solid 2px #ddd;
+    padding: 10px;
+}

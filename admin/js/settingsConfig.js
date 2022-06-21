@@ -7,15 +7,16 @@ jQuery( document ).ready( function( $ ) {
     cancel_onclick(false);
     cancel_file();
 
-    $('.edit-file-button').on('click', () => {
+    $('.edit-file-button').on('click', () => { edit_file_button(); });
+
+    function edit_file_button(){
         $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', false);
         $(".edit-file-button").hide();
         $(".scan-dir-button").show();
         $(".update-files-button").show();
         $(".cancel-file-button").show();
         $(".clear-set-file").show();
-    });
-
+    }
 
     $('#ETFs-Pre-toggle-file-view').change(function(){
         if($('#ETFs-Pre-toggle-file-view').is(':checked')){
@@ -75,6 +76,7 @@ jQuery( document ).ready( function( $ ) {
     // ajax requests
 
     $('.save-button').on('click', () => {
+        $("#ETF-Pre-creds-state").hide();
         $("#ETFs-Pre-loadinganimation").css('display', 'inline-block');
 
         host = $("#ETFs-Pre-host").val() === '' ? '*' : $("#ETFs-Pre-host").val();
@@ -101,17 +103,28 @@ jQuery( document ).ready( function( $ ) {
             success: function( response ) {
                 console.log(response);
                 cancel_onclick(false);
-                $("#").html(response.cycle);
+                $("#ETF-Pre-creds-state").html(response.cycle);
+                $("#ETF-Pre-creds-state").show();
+                if(response.cycle === 'no required files available, do allocate correct file naming bellow'){
+                    edit_file_button();
+                    $('#ETFs-Pre-auto').prop('checked', false); 
+                }else if(response.cycle === 'The ssh2 PHP extension is not available' || 
+                             response.cycle === 'connection failed' || 
+                                 response.cycle === 'authentication failed'){
+                    $('#ETFs-Pre-auto').prop('checked', false);                 
+                }   
                 $("#ETFs-Pre-loadinganimation").css('display', 'none');
             }
-        })
-        .fail(function(error) {
+        }).fail(function(error) {
             console.log(`response failed: ${error}`);
             $("#ETFs-Pre-loadinganimation").css('display', 'none');
+            $("#ETF-Pre-creds-state").show();
+            $("#ETF-Pre-creds-state").html("server failed");
         });
     });
 
     $('.scan-dir-button').on('click', () => {
+        $("#ETF-Pre-file-state").hide();
         $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'inline-block');
         $.ajax({
             type: "GET",
@@ -123,6 +136,8 @@ jQuery( document ).ready( function( $ ) {
                 document.getElementById('ETFs-Pre-scaned-file-dir').innerHTML = '';
                 document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = '';
                 if(Array.isArray(response.files)){
+                    $("#ETF-Pre-file-state").show();
+                    $("#ETF-Pre-file-state").html("sftp scan successfull");
                     response.files.forEach(file => {
                         let ext = file.split('.').pop();
                         const y = `<li id="${file}" draggable="true" ondragstart="event.dataTransfer.setData('text', '${file}')" > ${file} </li>`;
@@ -136,13 +151,15 @@ jQuery( document ).ready( function( $ ) {
                         document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML + y;
                     });
                 }
+                
                 $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', true);
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
-        })
-        .fail(function(error) {
+        }).fail(function(error) {
             console.log(`response failed: ${error}`);
             $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+            $("#ETF-Pre-file-state").show();
+            $("#ETF-Pre-file-state").html("server fail");
         });
     });
 
@@ -169,12 +186,14 @@ jQuery( document ).ready( function( $ ) {
             cache: false,
             success: function( response ) {
                 cancel_file();
+                $("#ETF-Pre-file-state").html("file requirement update successfull");
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
         })
         .fail(function(error) {
             console.log(`response failed: ${error}`);
             $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
+            $("#ETF-Pre-file-state").html("file requirement update unsuccessfull");
         });
     });
     

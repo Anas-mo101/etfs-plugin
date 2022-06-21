@@ -47,7 +47,8 @@ class SFTP{
                     Nav varchar(255) NOT NULL DEFAULT '',
                     Holding varchar(255) NOT NULL DEFAULT '',
                     Ror varchar(255) NOT NULL DEFAULT '',
-                    Dist varchar(255) NOT NULL DEFAULT ''
+                    Dist varchar(255) NOT NULL DEFAULT '',
+                    Last_Cycle_Timestamp DATETIME
                 ) $charset_collate;";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
@@ -71,6 +72,7 @@ class SFTP{
                 'Holding' => '*', 
                 'Ror' => '*',
                 'Dist' => '*',
+                'Last_Cycle_Timestamp' => NULL
             ) 
         );
     }
@@ -78,8 +80,8 @@ class SFTP{
     function get_config_db(){
         global $wpdb;
         $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
-        $row_id = 'sftp_main_db';
-        $config = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wp_table_name WHERE id = %d", $row_id ), ARRAY_A );
+        $id = 'sftp_main_db';
+        $config = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wp_table_name WHERE Id = %d", $id), ARRAY_A );
         return $config;
     }
 
@@ -115,9 +117,30 @@ class SFTP{
         $wpdb->update( $wp_table_name, $data, $where ); 
     }
 
+    function cycle_timestamp(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+
+        date_default_timezone_set("America/Chicago");
+        $current_time = date("Y-m-d h:i:s");
+
+        $data = ['Last_Cycle_Timestamp' => $current_time ];
+
+        $where = [ 'Id' => 'sftp_main_db' ]; 
+        $wpdb->update( $wp_table_name, $data, $where ); 
+    }
+
+    function force_turn_off(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+        $data = ['Automate' => 'f' ];
+        $where = [ 'Id' => 'sftp_main_db' ]; 
+        $wpdb->update( $wp_table_name, $data, $where ); 
+    }
+
     function set_config($args){
         $this->get_config();
-        $_cycle_res = 'ongoing';
+        $_cycle_res = 'cycle state unchanged';
         $pre_auto = (! isset( $this->_config['Automate'])) ? 'f' : $this->_config['Automate'];
 
 
@@ -131,6 +154,7 @@ class SFTP{
             $res = Array('update' => 'null entries','cycle' => 'invalid entry');
             return $res;
         }
+
 
 
         // update $_config
@@ -150,7 +174,7 @@ class SFTP{
         if($this->_config["Automate"] === "t" && $pre_auto !== $this->_config["Automate"]){
             $_cycle_res = $this->auto_cycle();
         }elseif($this->_config["Automate"] === "f" && $pre_auto !== $this->_config["Automate"]){
-            $_cycle_res = 'blocked';
+            $_cycle_res = 'sftp off';
         }
 
         // return response according to cycle state
@@ -175,7 +199,7 @@ class SFTP{
         if ( ! extension_loaded( 'ssh2' ) ) return "The ssh2 PHP extension is not available";
 
         $connection = ssh2_connect($this->_config["Host"], $this->_config["Port"]);
-        if (!$connection) return "failed";
+        if (!$connection) return "connection failed";
 
         $auth = @ssh2_auth_password($connection, $this->_config["User"], $this->_config["Pass"]);
         if (!$auth) return "authentication failed";
@@ -249,6 +273,7 @@ class SFTP{
         
         // connect to sftp server
         if(($con_res = $this->connect()) !== true){
+            $this->force_turn_off();
             return $con_res;
         }
 
@@ -269,7 +294,8 @@ class SFTP{
 
 
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
-            return "no required files available";
+            $this->force_turn_off();
+            return "no required files available, do allocate correct file naming bellow";
         }
         
         // save file on our server
@@ -332,6 +358,7 @@ class SFTP{
 
         // disconnect to sftp server
         $this->disconnect();
+        $this->cycle_timestamp();
         return "first sftp cycle is successfull";
     }
 
