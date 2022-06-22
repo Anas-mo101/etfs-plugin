@@ -157,7 +157,7 @@ tbody {
     padding: 0 15px;
     display: grid;
     grid-template-columns: 160px 160px 160px 160px 160px 160px; 
-    width: 100%;
+    /* width: 100%; */
     margin: 10px 0;
     justify-items: center;
 }
@@ -184,5 +184,5 @@ tbody {
 .fund-details-input-feilds{
     height: 20px;
     width: 100px;
-    margin: auto;
+    margin: auto 10px;
 }

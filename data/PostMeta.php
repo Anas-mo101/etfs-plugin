@@ -99,8 +99,27 @@ class PostMeta{
             return 'null data';
         }
 
+        foreach ($this->incoming_meta as $etf_name => $meta) {
+            $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
+            if(! $post_to_update) continue;
 
+            update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['ex_date']);
 
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-inception-data', $meta['fund_nav']['inception']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-year-data', $meta['fund_nav']['one_year']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-six-data', $meta['fund_nav']['six_months']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-three-data', $meta['fund_nav']['three_months']);
+
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-inception-data', $meta['market_price']['inception']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-year-data', $meta['market_price']['one_year']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-six-data', $meta['market_price']['six_months']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-three-data', $meta['market_price']['three_months']);
+
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-inception-data', $meta['sp']['inception']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-year-data', $meta['sp']['one_year']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-six-data', $meta['sp']['six_months']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-three-data', $meta['sp']['three_months']);
+        }
     }
 
     private function process_dist(){
@@ -108,7 +127,14 @@ class PostMeta{
             return 'null data';
         }
 
-        
+        foreach ($this->incoming_meta as $meta) {
+            $post_to_update = get_page_by_title( $meta['etf_name'], OBJECT, 'etfs' );
+            if(! $post_to_update) continue;
 
+            update_post_meta($post_to_update->ID,'ETF-Pre-ex-date-data', $meta['ex_date']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);
+            update_post_meta($post_to_update->ID,'ETF-Pre-dis-rate-share-data', $meta['dis_rate_share']);
+        }
     }
 }

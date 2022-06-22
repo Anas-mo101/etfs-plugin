@@ -17,7 +17,11 @@
                     <label for="<?php echo $this->prefix ?>fund-detials-section"> Update Fund Details Section ? </label><br>
 
                     <h1> Fund Details </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>rate-date-fund-details">  </span></p>
+                    <p>  Data as of 
+                        <span id="<?php echo $this->prefix ?>rate-date-fund-details">
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-fund-details" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "rate-date-fund-details-data", true )) ?> " />
+                        </span>
+                    </p>
                     <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
                         <h3>Inception Date </h3> 
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>inc-date-previewform" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "inception-date-data", true )) ?> " />
@@ -46,7 +50,7 @@
                         <div></div>
                         <div></div>
                         <h3>30 Day SEC Yield* </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>sec-yield"> </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sec-yield" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sec-yeild-data", true )) ?> " />
                     </div>
                 </div>
 
@@ -55,30 +59,38 @@
                     <label for="<?php echo $this->prefix ?>fund-pricing-section"> Update Fund Data & Pricing Section ? </label><br>
 
                     <h1> Fund Data & Pricing </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>rate-date">  </span></p>
+                    <p>  Data as of 
+                        <span id="<?php echo $this->prefix ?>rate-date">
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "fund-pricing-date-data'", true )) ?> " />
+                        </span>
+                    </p>
                     <div class="table-horizontal-row"> 
-                        <h3>Net Assets as of <span id="<?php echo $this->prefix ?>rate-date-net"></h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>nav-assets">  </p>
+                        <h3>Net Assets as of 
+                            <span id="<?php echo $this->prefix ?>"> 
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-net" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "fund-pricing-date-data", true )) ?> " />
+                            </span>
+                        </h3>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-assets" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-assets-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row"> 
                         <h3> NAV </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>nav-value">  </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-value" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "na-v-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row"> 
                         <h3> Shares Outstanding </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>shares-outstanding">  </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>shares-outstanding" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "shares-out-standig-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row"> 
                         <h3> Premium/Discount Percentage </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>premium-discount-percentage" >  </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-discount-percentage" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-percentage-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row"> 
                         <h3> Closing Price </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>closing-price">  </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>closing-price" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "closing-price-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row"> 
                         <h3>  Median 30 Day Spread Percentage </h3>
-                        <p style="margin: auto 0;" id="<?php echo $this->prefix ?>median-spread-per">  </p>
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>median-spread-per" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "thirty-day-median-data", true )) ?> " />
                     </div>
                 </div>
 
@@ -90,56 +102,72 @@
                     <div id="<?php echo $this->prefix ?>graphcontainer"></div>
                 </div>
 
-                <div class="template-tables-preview" id="<?php echo $this->prefix ?>outcome-period">
-                    <input type="checkbox" id="<?php echo $this->prefix ?>outcome-period-section">
-                    <label for="<?php echo $this->prefix ?>outcome-period-section"> Update Outcome Period Values Section ? </label><br>
+                <?php if(! in_category( 'Unstructured ETFs' )){ ?>
+                    
+                    <div class="template-tables-preview" id="<?php echo $this->prefix ?>outcome-period">
+                        <input type="checkbox" id="<?php echo $this->prefix ?>outcome-period-section">
+                        <label for="<?php echo $this->prefix ?>outcome-period-section"> Update Outcome Period Values Section ? </label><br>
 
-                    <h1> Outcome Period Values </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>outcome-period-update-date">  </span></p>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                        <h3>ETF Starting NAV/Period Return</h3> 
-                        <h3>SPX Index Reference Price</h3>
-                        <h3>Downside Buffer</h3>
-                        <h3>Expected Upside Participation</h3> 
-                        <h3>Days Remaining</h3>
+                        <h1> Outcome Period Values </h1>
+                        <p>  Data as of 
+                            <span id="<?php echo $this->prefix ?>">  
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>outcome-period-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "outcome-period-date-data", true )) ?> " />
+                            </span>
+                        </p>
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
+                            <h3>ETF Starting NAV/Period Return</h3> 
+                            <h3>SPX Index Reference Price</h3>
+                            <h3>Downside Buffer</h3>
+                            <h3>Expected Upside Participation</h3> 
+                            <h3>Days Remaining</h3>
+                        </div>
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>spx-index-price" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "spx-index-price-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "downside-buffer-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expected-upside" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expected-upside-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "days-remaining-data", true ) ) ?>" />
+                        </div>
                     </div>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>spx-index-price" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "spx-index-price-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "downside-buffer-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expected-upside" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expected-upside-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "days-remaining-data", true ) ) ?>" />
-                    </div>
-                </div>
 
-                <div class="template-tables-preview" id="<?php echo $this->prefix ?>current-outcome-period">
-                    <input type="checkbox" id="<?php echo $this->prefix ?>current-outcome-period-section">
-                    <label for="<?php echo $this->prefix ?>current-outcome-period-section"> Update Current Outcome Period Values Section ? </label><br>
+                    <div class="template-tables-preview" id="<?php echo $this->prefix ?>current-outcome-period">
+                        <input type="checkbox" id="<?php echo $this->prefix ?>current-outcome-period-section">
+                        <label for="<?php echo $this->prefix ?>current-outcome-period-section"> Update Current Outcome Period Values Section ? </label><br>
 
-                    <h1> Current Outcome Period Values </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>current-outcome-period-update-date">  </span></p>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                        <h3>ETF Starting NAV/Period Return</h3> 
-                        <h3>SPX Period Return</h3>
-                        <h3>Remaining Buffer</h3>
-                        <h3>Downside Before Buffer</h3> 
-                        <h3>Remaining Outcome Period</h3>
+                        <h1> Current Outcome Period Values </h1>
+                        <p>  Data as of 
+                            <span id="<?php echo $this->prefix ?>">  
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-outcome-period-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "current-outcome-period-date-data", true )) ?> " />
+                            </span>
+                        </p>
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
+                            <h3>ETF Starting NAV/Period Return</h3> 
+                            <h3>SPX Period Return</h3>
+                            <h3>Remaining Buffer</h3>
+                            <h3>Downside Before Buffer</h3> 
+                            <h3>Remaining Outcome Period</h3>
+                        </div>
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-etf-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-etf-return-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-spx-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-spx-return-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-buffer-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-downside-buffer-data", true ) ) ?>" />
+                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-outcome" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-outcome-data", true ) ) ?>" />
+                        </div>
                     </div>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-etf-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-etf-return-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-spx-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-spx-return-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-buffer-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-downside-buffer-data", true ) ) ?>" />
-                        <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-outcome" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-outcome-data", true ) ) ?>" />
-                    </div>
-                </div>
+
+                <?php } ?>
 
                 <div class="template-tables-preview" >
                     <input type="checkbox" id="<?php echo $this->prefix ?>performance-section">
                     <label for="<?php echo $this->prefix ?>performance-section"> Update Performance Section ? </label><br>
 
                     <h1> Performance </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>preformance-update-date">  </span></p>
+                    <p>  Data as of 
+                        <span id="<?php echo $this->prefix ?>">  
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>preformance-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "", true )) ?> " />
+                        </span>
+                    </p>
                     <div class="table-horizontal-row-grid"> 
                         <h3></h3>
                         <h3>3 Month</h3>
@@ -151,27 +179,27 @@
                     <div id="<?php echo $this->prefix ?>performance-section-containers"> 
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> Market Price </p>
-                            <p id='<?php echo $this->prefix ?>market-price-three' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>market-price-six' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>market-price-year' style="margin: 20px 0;"> </p>
-                            <p style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>market-price-inception' style="margin: 20px 0;"> </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-three-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-six-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-year-data", true )) ?> " />
+                            <p style="margin: 20px 0;"> - </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-inception-data", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> Fund NAV </p>
-                            <p id='<?php echo $this->prefix ?>nav-three' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>nav-six' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>nav-year' style="margin: 20px 0;"> </p>
-                            <p style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>nav-inception' style="margin: 20px 0;"> </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-three-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-six-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-year-data", true )) ?> " />
+                            <p style="margin: 20px 0;"> - </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-inception-data", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> S&P 500 </p>
-                            <p id='<?php echo $this->prefix ?>sp-three' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>sp-six' style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>sp-year' style="margin: 20px 0;"> </p>
-                            <p style="margin: 20px 0;"> </p>
-                            <p id='<?php echo $this->prefix ?>sp-inception' style="margin: 20px 0;"> </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-three-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-six-data", true )) ?> " />
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-year-data", true )) ?> " />
+                            <p style="margin: 20px 0;"> - </p>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-inception-data", true )) ?> " />
                         </div>
                     </div>
                 </div>
@@ -187,11 +215,11 @@
                         <h3>Payable Date</h3> 
                         <h3>Amount</h3>
                     </div>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
-                        <p id="<?php echo $this->prefix ?>ex-date"> </p>
-                        <p id="<?php echo $this->prefix ?>rec-date"> </p>
-                        <p id="<?php echo $this->prefix ?>pay-date"> </p>
-                        <p id="<?php echo $this->prefix ?>amount-date"> </p>
+                    <div style="padding: 10px 0;" class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>ex-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "ex-date-data", true )) ?> " />
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rec-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "rec-date-data", true )) ?> " />
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>pay-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "pay-date-data", true )) ?> " />
+                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>amount-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "dis-rate-share-data", true )) ?> " />
                     </div>
                     <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
                         <p id="<?php echo $this->prefix ?>"> ?? </p>
@@ -206,7 +234,11 @@
                     <label for="<?php echo $this->prefix ?>top-holdings-section"> Update Top 10 Holding Section ? </label><br>
 
                     <h1> Top 10 Holdings </h1>
-                    <p>  Data as of <span id="<?php echo $this->prefix ?>top-holding-update-date">  </span></p>
+                    <p>  Data as of 
+                        <span id="<?php echo $this->prefix ?>top-holding-update-date">  
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>top-holding-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "top-holding-update-date-data", true )) ?> " />
+                        </span>
+                    </p>
                     <div class="table-horizontal-row-grid"> 
                         <h3>% of Net Assets</h3>
                         <h3>Name</h3>

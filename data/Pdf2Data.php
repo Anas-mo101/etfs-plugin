@@ -183,7 +183,7 @@ class Pdf2Data {
             $pattern = '/TrueShares Structured Outcome ' . $etf_pre . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
             preg_match($pattern, $text, $matches);
             $pdf_data_array = $matches;
-            // not completed due finanical restrications on api
+            // not completed due restrications on api usage
             return $pdf_data_array;
         }
 
@@ -249,7 +249,7 @@ class Pdf2Data {
                 continue;
             }
             $unordered_pdf_data_array = explode(' ',trim($matches[1]));
-            $pdf_data_array = array('etf' => $etf_title ,'ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date,'dis_rate_share' => $unordered_pdf_data_array[2]);
+            $pdf_data_array = array('etf_name' => $etf_title ,'ex_date' => $ex_date, 'rec_date' => $rec_date, 'pay_date' => $pay_date,'dis_rate_share' => $unordered_pdf_data_array[2]);
             $pdf_data[] = $pdf_data_array;
         }   
         wp_reset_query();

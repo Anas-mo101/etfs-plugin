@@ -100,7 +100,8 @@
     }?>
     <div style="display: flex; gap: 30px;"> 
         <div>
-            <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview </button></div>
+            <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview from files </button></div>
+            <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Manual Edit </button></div>
             <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
             <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Preview Success </p>
             <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>

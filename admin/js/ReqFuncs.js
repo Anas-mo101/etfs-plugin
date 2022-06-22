@@ -64,4 +64,22 @@ jQuery( document ).ready( function( $ ) {
             $('#ETF-Pre-status-failed-url').css('display', 'block');
         });
     });
+
+    $( '#etf-manual-edit-button' ).click( function(e) {
+        document.getElementById("ETF-Pre-popup-underlay").style.display = "block";
+        document.getElementById('ETF-Pre-holdings-containers').innerHTML = '';
+
+        for(let x = 0; x < 4; x++){
+            const htmlHolder = `<div style="padding: 10px 0;" class="table-horizontal-row-grid"> 
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                    <input type="text" class="fund-details-input-feilds" id="" value="" />
+                                </div>`;
+            document.getElementById('ETF-Pre-holdings-containers').innerHTML = document.getElementById('ETF-Pre-holdings-containers').innerHTML + htmlHolder;
+        }
+        save_previewed_data();
+    })
 });

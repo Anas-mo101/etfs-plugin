@@ -4,7 +4,6 @@ class SFTP{
     var $single_inseration = false;
     var $sftp;
     var $_config;
-    var $_files = array('nav' => '','holding' => '','ror' => '','dis' => '');
     private $table_name = "etfs_sftp_config_db"; 
     private static $instance = null;
 

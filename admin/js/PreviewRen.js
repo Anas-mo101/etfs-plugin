@@ -1,21 +1,22 @@
+
 const populatePreviewTable = (res) => { 
     let ror_state = res.monthly_ror['fetch failed'] ? false : true;
     let dist_state = res.dist_memo['fetch failed'] ? false : true;
 
     // Fund Details
     let currentDate = new Date().toLocaleDateString();
-    document.getElementById('ETF-Pre-sec-yield').innerHTML = ror_state ? res.monthly_ror.sec_yeild : 'No Data';
-    document.getElementById('ETF-Pre-rate-date-fund-details').innerHTML = currentDate;
+    document.getElementById('ETF-Pre-sec-yield').value = ror_state ? res.monthly_ror.sec_yeild : 'No Data';
+    document.getElementById('ETF-Pre-rate-date-fund-details').value = currentDate;
 
     // Fund Data & Pricing
-    document.getElementById('ETF-Pre-rate-date').innerHTML = currentDate;
-    document.getElementById('ETF-Pre-rate-date-net').innerHTML = res.nav.body[0]['Rate Date'];
-    document.getElementById('ETF-Pre-nav-assets').innerHTML = res.nav.body[0]['Net Assets'];
-    document.getElementById('ETF-Pre-nav-value').innerHTML = res.nav.body[0]['NAV'];
-    document.getElementById('ETF-Pre-shares-outstanding').innerHTML = res.nav.body[0]['Shares Outstanding'];
-    document.getElementById('ETF-Pre-premium-discount-percentage').innerHTML = res.nav.body[0]['Premium/Discount'] + '%';
-    document.getElementById('ETF-Pre-closing-price').innerHTML = res.nav.body[0]['Rate Date'];
-    document.getElementById('ETF-Pre-median-spread-per').innerHTML = res.nav.body[0]['Median 30 Day Spread Percentage'];
+    document.getElementById('ETF-Pre-rate-date').value = currentDate;
+    document.getElementById('ETF-Pre-rate-date-net').value = res.nav.body[0]['Rate Date'];
+    document.getElementById('ETF-Pre-nav-assets').value = res.nav.body[0]['Net Assets'];
+    document.getElementById('ETF-Pre-nav-value').value = res.nav.body[0]['NAV'];
+    document.getElementById('ETF-Pre-shares-outstanding').value = res.nav.body[0]['Shares Outstanding'];
+    document.getElementById('ETF-Pre-premium-discount-percentage').value = res.nav.body[0]['Premium/Discount'] + '%';
+    document.getElementById('ETF-Pre-closing-price').value = res.nav.body[0]['Rate Date'];
+    document.getElementById('ETF-Pre-median-spread-per').value = res.nav.body[0]['Median 30 Day Spread Percentage'];
 
     // Graph data 
     let preGraphDataSet = document.getElementById('ETF-Pre-graph-json-data').value;
@@ -47,36 +48,36 @@ const populatePreviewTable = (res) => {
     });
 
     // Outcome Period Values
-    document.getElementById('ETF-Pre-outcome-period-update-date').innerHTML = currentDate;
+    document.getElementById('ETF-Pre-outcome-period-update-date').value = currentDate;
 
     // Current Outcome Period Values
-    document.getElementById('ETF-Pre-current-outcome-period-update-date').innerHTML = currentDate;
+    document.getElementById('ETF-Pre-current-outcome-period-update-date').value = currentDate;
 
     // Performance
-    document.getElementById('ETF-Pre-preformance-update-date').innerHTML = currentDate;
-    document.getElementById('ETF-Pre-market-price-three').innerHTML = ror_state ? res.monthly_ror.market_price.three_months : 'No Data';
-    document.getElementById('ETF-Pre-market-price-six').innerHTML = ror_state ? res.monthly_ror.market_price.six_months : 'No Data';
-    document.getElementById('ETF-Pre-market-price-year').innerHTML = ror_state ? res.monthly_ror.market_price.one_year : 'No Data';
-    document.getElementById('ETF-Pre-market-price-inception').innerHTML = ror_state ? res.monthly_ror.market_price.inception : 'No Data';
+    document.getElementById('ETF-Pre-preformance-update-date').value = currentDate;
+    document.getElementById('ETF-Pre-market-price-three').value = ror_state ? res.monthly_ror.market_price.three_months : 'No Data';
+    document.getElementById('ETF-Pre-market-price-six').value = ror_state ? res.monthly_ror.market_price.six_months : 'No Data';
+    document.getElementById('ETF-Pre-market-price-year').value = ror_state ? res.monthly_ror.market_price.one_year : 'No Data';
+    document.getElementById('ETF-Pre-market-price-inception').value = ror_state ? res.monthly_ror.market_price.inception : 'No Data';
 
-    document.getElementById('ETF-Pre-nav-three').innerHTML = ror_state ? res.monthly_ror.fund_nav.three_months : 'No Data';
-    document.getElementById('ETF-Pre-nav-six').innerHTML = ror_state ? res.monthly_ror.fund_nav.six_months : 'No Data';
-    document.getElementById('ETF-Pre-nav-year').innerHTML = ror_state ? res.monthly_ror.fund_nav.one_year : 'No Data';
-    document.getElementById('ETF-Pre-nav-inception').innerHTML = ror_state ? res.monthly_ror.fund_nav.inception : 'No Data';
+    document.getElementById('ETF-Pre-nav-three').value = ror_state ? res.monthly_ror.fund_nav.three_months : 'No Data';
+    document.getElementById('ETF-Pre-nav-six').value = ror_state ? res.monthly_ror.fund_nav.six_months : 'No Data';
+    document.getElementById('ETF-Pre-nav-year').value = ror_state ? res.monthly_ror.fund_nav.one_year : 'No Data';
+    document.getElementById('ETF-Pre-nav-inception').value = ror_state ? res.monthly_ror.fund_nav.inception : 'No Data';
 
-    document.getElementById('ETF-Pre-sp-three').innerHTML = ror_state ? res.monthly_ror.sp.three_months : 'No Data';
-    document.getElementById('ETF-Pre-sp-six').innerHTML = ror_state ? res.monthly_ror.sp.six_months : 'No Data';
-    document.getElementById('ETF-Pre-sp-year').innerHTML = ror_state ? res.monthly_ror.sp.one_year : 'No Data';
-    document.getElementById('ETF-Pre-sp-inception').innerHTML = ror_state ? res.monthly_ror.sp.inception : 'No Data';
+    document.getElementById('ETF-Pre-sp-three').value = ror_state ? res.monthly_ror.sp.three_months : 'No Data';
+    document.getElementById('ETF-Pre-sp-six').value = ror_state ? res.monthly_ror.sp.six_months : 'No Data';
+    document.getElementById('ETF-Pre-sp-year').value = ror_state ? res.monthly_ror.sp.one_year : 'No Data';
+    document.getElementById('ETF-Pre-sp-inception').value = ror_state ? res.monthly_ror.sp.inception : 'No Data';
 
 
     // Distribution Detail
-    document.getElementById('ETF-Pre-ex-date').innerHTML = dist_state ? res.dist_memo.ex_date : 'No Data';
-    document.getElementById('ETF-Pre-rec-date').innerHTML = dist_state ? res.dist_memo.rec_date : 'No Data';
-    document.getElementById('ETF-Pre-pay-date').innerHTML = dist_state ? res.dist_memo.pay_date : 'No Data';
-    document.getElementById('ETF-Pre-amount-date').innerHTML = dist_state ? res.dist_memo.dis_rate_share : 'No Data';
+    document.getElementById('ETF-Pre-ex-date').value = dist_state ? res.dist_memo.ex_date : 'No Data';
+    document.getElementById('ETF-Pre-rec-date').value = dist_state ? res.dist_memo.rec_date : 'No Data';
+    document.getElementById('ETF-Pre-pay-date').value = dist_state ? res.dist_memo.pay_date : 'No Data';
+    document.getElementById('ETF-Pre-amount-date').value = dist_state ? res.dist_memo.dis_rate_share : 'No Data';
 
-    // TOP 10 HOLDINGS
+    // TOP 10 HOLDINGS // sort by market value 
     let holderShown = [];
     document.getElementById('ETF-Pre-holdings-containers').innerHTML = '';
     document.getElementById('ETF-Pre-top-holding-update-date').innerHTML = currentDate;
@@ -96,8 +97,14 @@ const populatePreviewTable = (res) => {
 
 
     document.getElementById("ETF-Pre-popup-underlay").style.display = "block";
+    save_previewed_data(res,holderShown,preGraphDataSet);
+}
 
-    document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () =>{ 
+function save_previewed_data(res,holderShown = [],preGraphDataSet = []){
+    let ror_state = res.monthly_ror['fetch failed'] ? false : true;
+    let dist_state = res.dist_memo['fetch failed'] ? false : true;
+    let currentDate = new Date().toLocaleDateString();
+    document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () => { 
         console.log("save data");
 
         //set data in feilds 
