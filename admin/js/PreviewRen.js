@@ -19,11 +19,7 @@ const populatePreviewTable = (res) => {
     document.getElementById('ETF-Pre-median-spread-per').value = res.nav.body[0]['Median 30 Day Spread Percentage'];
 
     // Graph data 
-    let preGraphDataSet = document.getElementById('ETF-Pre-graph-json-data').value;
-    preGraphDataSet = preGraphDataSet == '' || preGraphDataSet == null ? [] : JSON.parse(preGraphDataSet); 
-    let parsedNav = parseFloat(res.nav.body[0]['NAV']);
-    const newGraphData =  [Date.now(),parsedNav];
-    preGraphDataSet.push(newGraphData);
+    
     Highcharts.chart("ETF-Pre-graphcontainer", {
         time: { useUTC: false },
         navigator: { enabled: true },
@@ -104,39 +100,54 @@ function save_previewed_data(res,holderShown = [],preGraphDataSet = []){
     let ror_state = res.monthly_ror['fetch failed'] ? false : true;
     let dist_state = res.dist_memo['fetch failed'] ? false : true;
     let currentDate = new Date().toLocaleDateString();
+
+    // --> fund detials
+    document.getElementById('ETF-Pre-rate-date-fund-details-data').value = currentDate;
+    document.getElementById("ETF-Pre-inception-date-data").value = document.getElementById("ETF-Pre-inc-date-previewform").value.trim();
+    document.getElementById("ETF-Pre-cusip-data").value = document.getElementById("ETF-Pre-cus-ip-previewform").value.trim();
+    document.getElementById("ETF-Pre-fund-listing-data").value = document.getElementById("ETF-Pre-fund-listing-previewform").value.trim();
+    document.getElementById("ETF-Pre-iopv-symbol-data").value = document.getElementById("ETF-Pre-iopv-symbol-previewform").value.trim();
+    document.getElementById("ETF-Pre-primary-exchange-data").value = document.getElementById("ETF-Pre-primary-exchange-previewform").value.trim();
+    document.getElementById("ETF-Pre-nav-sybmol-data").value = document.getElementById("ETF-Pre-nav-symbol-previewform").value.trim();
+    document.getElementById("ETF-Pre-ticker-data").value = document.getElementById("ETF-Pre-ticker-previewform").value.trim();
+    document.getElementById("ETF-Pre-expense-raito-data").value = document.getElementById("ETF-Pre-expense-ratio-previewform").value.trim();
+    document.getElementById("ETF-Pre-sec-yeild-data").value = ror_state ? res.monthly_ror.sec_yeild : '';
+
+    // --> Fund Data & Pricing
+    document.getElementById('ETF-Pre-fund-pricing-date-data').value = currentDate;
+    document.getElementById('ETF-Pre-net-assets-data').value = res.nav.body[0]['Net Assets'];
+    document.getElementById('ETF-Pre-na-v-data').value = res.nav.body[0]['NAV'];
+    document.getElementById('ETF-Pre-shares-out-standig-data').value = res.nav.body[0]['Shares Outstanding'];
+    document.getElementById('ETF-Pre-discount-percentage-data').value = res.nav.body[0]['Premium/Discount'] + '%';
+    document.getElementById('ETF-Pre-closing-price-data').value = res.nav.body[0]['Rate Date'];
+    document.getElementById('ETF-Pre-thirty-day-median-data').value = res.nav.body[0]['Median 30 Day Spread Percentage'];
+
+    // --> graph
+    document.getElementById("ETF-Pre-graph-json-data").value = JSON.stringify(preGraphDataSet);
+    let preGraphDataSet = document.getElementById('ETF-Pre-graph-json-data').value;
+    preGraphDataSet = preGraphDataSet == '' || preGraphDataSet == null ? [] : JSON.parse(preGraphDataSet); 
+    let parsedNav = parseFloat(res.nav.body[0]['NAV']);
+    const newGraphData =  [Date.now(),parsedNav];
+    preGraphDataSet.push(newGraphData);
+
     document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () => { 
         console.log("save data");
 
         //set data in feilds 
-        // --> fund detials
+        
         if(document.getElementById("ETF-Pre-fund-detials-section").checked){
             // add update date
-            document.getElementById('ETF-Pre-rate-date-fund-details-data').value = currentDate;
-            document.getElementById("ETF-Pre-inception-date-data").value = document.getElementById("ETF-Pre-inc-date-previewform").value.trim();
-            document.getElementById("ETF-Pre-cusip-data").value = document.getElementById("ETF-Pre-cus-ip-previewform").value.trim();
-            document.getElementById("ETF-Pre-fund-listing-data").value = document.getElementById("ETF-Pre-fund-listing-previewform").value.trim();
-            document.getElementById("ETF-Pre-iopv-symbol-data").value = document.getElementById("ETF-Pre-iopv-symbol-previewform").value.trim();
-            document.getElementById("ETF-Pre-primary-exchange-data").value = document.getElementById("ETF-Pre-primary-exchange-previewform").value.trim();
-            document.getElementById("ETF-Pre-nav-sybmol-data").value = document.getElementById("ETF-Pre-nav-symbol-previewform").value.trim();
-            document.getElementById("ETF-Pre-ticker-data").value = document.getElementById("ETF-Pre-ticker-previewform").value.trim();
-            document.getElementById("ETF-Pre-expense-raito-data").value = document.getElementById("ETF-Pre-expense-ratio-previewform").value.trim();
-            document.getElementById("ETF-Pre-sec-yeild-data").value = ror_state ? res.monthly_ror.sec_yeild : '';
+
         }
 
-        // --> Fund Data & Pricing
+        
         if(document.getElementById("ETF-Pre-fund-pricing-section").checked){
-            document.getElementById('ETF-Pre-fund-pricing-date-data').value = currentDate;
-            document.getElementById('ETF-Pre-net-assets-data').value = res.nav.body[0]['Net Assets'];
-            document.getElementById('ETF-Pre-na-v-data').value = res.nav.body[0]['NAV'];
-            document.getElementById('ETF-Pre-shares-out-standig-data').value = res.nav.body[0]['Shares Outstanding'];
-            document.getElementById('ETF-Pre-discount-percentage-data').value = res.nav.body[0]['Premium/Discount'] + '%';
-            document.getElementById('ETF-Pre-closing-price-data').value = res.nav.body[0]['Rate Date'];
-            document.getElementById('ETF-Pre-thirty-day-median-data').value = res.nav.body[0]['Median 30 Day Spread Percentage'];
+            
         }
         
-        // --> graph
+        
         if(document.getElementById("ETF-Pre-draw-graph-section").checked){
-            document.getElementById("ETF-Pre-graph-json-data").value = JSON.stringify(preGraphDataSet);
+            
         }
 
         // --> preformance 
