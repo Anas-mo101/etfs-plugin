@@ -41,7 +41,6 @@ class Pdf2Data {
         sleep(10);
 
         if( !isset($response['id']) ){
-            $this->write_log($response);
             return false;
         }
         
@@ -75,8 +74,6 @@ class Pdf2Data {
         $response = json_decode($response, true);
 
         if( !isset($response['output'][0]['uri']) ){
-            $this->write_log($response);
-            return false;
         }
 
         $res = $response['output'][0]['uri'];
@@ -101,25 +98,44 @@ class Pdf2Data {
         }
         return $this->get_file_data($url);
     }
+
+    function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+    }
     
-    function get_monthly_fund_data($pdf_file_link,$etf_name,$api_on){
-        $etf_pre = $this->get_etfs_full_pre($etf_name);
+    function get_monthly_fund_data($pdf_file_link,$etf_name,$etf_full_name,$api_on){
+        $etf_pre;
+        if($etf_full_name !== ''){
+            $etf_pre = $etf_full_name;
+        }else{
+            $etf_pre = $this->get_etfs_full_pre($etf_name);
+            if($etf_pre === FALSE){
+                $pdf_data_array = array('fetch failed' => 'Data not found for '. $etf_name .' ETF');
+                return $pdf_data_array;
+            }
+        }
+        
         $pdf_data_array;
 
-        if($api_on){
-            // Using API 
+        if($api_on === true){
+            // Using API // not completed
             $text = $this-> pdf_convertion_api_call($pdf_file_link);
             $pattern = '/TrueShares Structured Outcome ' . $etf_pre . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
             preg_match($pattern, $text, $matches);
             $pdf_data_array = $matches;
-            // not completed 
             return $pdf_data_array;
         }
 
         // Using PDFParser Library 
         $text = $this->convert_pdf_to_text($pdf_file_link);
 
-        $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF)/U';
+        $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF|z)/U';
         preg_match($pattern, $text, $matches);
 
         if(!$matches && count($matches) == 0){
@@ -148,7 +164,7 @@ class Pdf2Data {
 
             if(! $etf_pre) continue;
 
-            $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF)/U';
+            $pattern = '/(?:'.$etf_pre.' ETF)(.*)(?:ETF|\z)/U';
             preg_match($pattern, $text, $matches);
 
             if(!$matches && count($matches) == 0){
@@ -177,7 +193,7 @@ class Pdf2Data {
             $etf_pre = $this->get_etfs_full_pre($etf_name);
         }
 
-        if($api_on){
+        if($api_on === true){
             // Using API 
             $text = $this-> pdf_convertion_api_call($pdf_file_link);
             $pattern = '/TrueShares Structured Outcome ' . $etf_pre . ' ([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?/i';
@@ -258,12 +274,12 @@ class Pdf2Data {
 
 
     // get month based on etf 
-    function get_etfs_full_pre($etf_name){
+    public function get_etfs_full_pre($etf_name){
         switch ($etf_name) {
             case 'JANZ':
                 return 'January';
             case 'FEBZ':
-                return 'Febrary';
+                return 'February';
             case 'MARZ':
                 return 'March';
             case 'APRZ':
@@ -281,13 +297,13 @@ class Pdf2Data {
             case 'OCTZ':
                 return 'October';
             case 'NOVZ':
-                return 'Novamber';
+                return 'November';
             case 'DECZ':
                 return 'December';
             case 'LRNZ':
                 return 'AI & Deep Learning';
             default:
-                return 'Other';
+                return FALSE;
         }
     }
 

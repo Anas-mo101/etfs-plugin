@@ -3,13 +3,6 @@ $sftp_config = $sftp->get_config();?>
 
 <div style="display: flex; justify-content: space-between; margin: 10px 0">
     <h1 style="margin: auto 0;"> ETFs Settings </h1>
-    <div class="ETF-Pre-counter-container">
-        <p style="text-align: center;"> America/Chicago </p>
-        <div class="ETF-Pre-counter-sub-container">
-            <h3 id="ETF-Pre-cycle-counter"> <?php echo $sftp_config["Last_Cycle_Timestamp"] === NULL ? 'None Yet' : $sftp_config["Last_Cycle_Timestamp"] ; ?> </h3>
-        </div>
-        <p style="text-align: center;"> Last successful cycles </p>
-    </div>
 </div>
 <div>
     <div>
@@ -19,7 +12,7 @@ $sftp_config = $sftp->get_config();?>
                     <h3 style="margin: 10px 0 30px 0;">SFTP cycle settings</h3>
                     <div>
                         <div class="ETF-Pre-input-toggle-text">
-                            <h4 class="feilds-label-style">SFTP is <span id='ETF-Pre-toggle-state-text'> <?php echo ($sftp_config["Automate"] === "true") ? "on" : "off";?></span></h4>
+                            <h4 class="feilds-label-style">SFTP is <span id='ETF-Pre-toggle-state-text'> <?php echo ($sftp_config["Automate"] === "t") ? "on" : "off";?></span></h4>
                             <label style="margin: auto 0;" class="switch">
                                 <input <?php echo ($sftp_config["Automate"] === "t") ? "checked " : ''; ?> id="ETFs-Pre-auto" type="checkbox" >
                                 <span class="slider round"></span>
@@ -59,6 +52,10 @@ $sftp_config = $sftp->get_config();?>
                                 <option <?php echo ($sftp_config["Timing"] === "daily") ? "selected" : '' ; ?> value="daily">daily</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row-margin">
+                        <label style="margin: auto 0;"><h4 class="feilds-label-style">Last successful cycle</h4></label>
+                        <span> <span style="font-weight: 600;" id="ETF-Pre-cycle-counter"> <?php echo $sftp_config["Last_Cycle_Timestamp"] === NULL ? 'None Yet' : $sftp_config["Last_Cycle_Timestamp"] ; ?>  </span> <span>(America/Chicago)</span> </span>
                     </div>
                     <div class="row-margin ">
                         <div class="btn-row-margin">

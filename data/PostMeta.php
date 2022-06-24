@@ -65,15 +65,28 @@ class PostMeta{
         return 'success';
     }
 
+    function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+    }
+
     private function process_holdings(){
 
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return 'null data';
         }
 
+        $market_value = array_column($this->incoming_meta, 'MarketValue');
+        array_multisort($market_value, SORT_DESC, SORT_NUMERIC , $this->incoming_meta);
+
         $holding_ = array();
-        for ($i=0; $i < 4; $i++) { 
-            $holding_[] = $this->incoming_meta[$i]; // sort
+        for ($i=0; $i < 10; $i++) { 
+            $holding_[] = $this->incoming_meta[$i];
         }
 
         $new_holdings = json_encode($holding_);

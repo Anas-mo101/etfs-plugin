@@ -13,18 +13,16 @@
             <div id="<?php echo $this->prefix ?>popup-table-container">
  
                 <div class="template-tables-preview" id="<?php echo $this->prefix ?>fund-data-pricing">
-                    <input type="checkbox" id="<?php echo $this->prefix ?>fund-detials-section">
-                    <label for="<?php echo $this->prefix ?>fund-detials-section"> Update Fund Details Section ? </label><br>
 
-                    <h1> Fund Details </h1>
+                    <h1 style="font-weight: 600;"> Fund Details </h1>
                     <p>  Data as of 
-                        <span id="<?php echo $this->prefix ?>rate-date-fund-details">
-                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-fund-details" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "rate-date-fund-details-data", true )) ?> " />
+                        <span id="<?php echo $this->prefix ?>rate-date-fund-details-span">
+                            <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-fund-details" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "rate-date-fund-details-data", true ))); ?>" />
                         </span>
                     </p>
                     <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
                         <h3>Inception Date </h3> 
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>inc-date-previewform" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "inception-date-data", true )) ?> " />
+                        <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>inc-date-previewform" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "inception-date-data", true ))); ?>" />
                         <h3>CUSIP</h3>
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>cus-ip-previewform" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "cusip-data", true ) ) ?>" />
                     </div>
@@ -41,7 +39,7 @@
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-symbol-previewform" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "nav-sybmol-data", true ) ) ?>" />
                     </div>
                     <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
-                        <h3>  Ticker </h3>
+                        <h3> Ticker </h3>
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>ticker-previewform" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "ticker-data", true ) ) ?>" />
                         <h3> Expense Ratio </h3>
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expense-ratio-previewform" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expense-raito-data", true ) ) ?>" />
@@ -55,19 +53,17 @@
                 </div>
 
                 <div class="template-tables-preview" style="width: 50%;" id="<?php echo $this->prefix ?>fund-data-pricing">
-                    <input type="checkbox" id="<?php echo $this->prefix ?>fund-pricing-section">
-                    <label for="<?php echo $this->prefix ?>fund-pricing-section"> Update Fund Data & Pricing Section ? </label><br>
 
-                    <h1> Fund Data & Pricing </h1>
+                    <h1 style="font-weight: 600;"> Fund Data & Pricing </h1>
                     <p>  Data as of 
-                        <span id="<?php echo $this->prefix ?>rate-date">
-                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "fund-pricing-date-data'", true )) ?> " />
+                        <span id="<?php echo $this->prefix ?>rate-date-span">
+                            <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "rate-date-data", true )));?>" />
                         </span>
                     </p>
                     <div class="table-horizontal-row"> 
                         <h3>Net Assets as of 
                             <span id="<?php echo $this->prefix ?>"> 
-                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-net" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "fund-pricing-date-data", true )) ?> " />
+                                <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rate-date-net" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "fund-pricing-date-data", true ))); ?>" />
                             </span>
                         </h3>
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-assets" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-assets-data", true )) ?> " />
@@ -94,24 +90,26 @@
                     </div>
                 </div>
 
-                <div class="template-tables-preview" style="width: 60%;">
+                <div class="template-tables-preview-" style="width: 800px;">
+                    <h1 style="font-weight: 600;"> Historical NAV Graph </h1>
                     <div style='margin-bottom: 10px;'>
-                        <input type="checkbox" id="<?php echo $this->prefix ?>draw-graph-section">
-                        <label for="<?php echo $this->prefix ?>draw-graph-section"> Update Graph Section ? </label><br>
+                        <p>  Add new NAV Hostorical data (with today's date)
+                            <span>  
+                                <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>new-hist-nav-graph" value="" />
+                            </span>
+                        </p>
                     </div>
-                    <div id="<?php echo $this->prefix ?>graphcontainer"></div>
+                    <div id="<?php echo $this->prefix ?>graphcontainer">  </div>
                 </div>
 
                 <?php if(! in_category( 'Unstructured ETFs' )){ ?>
                     
                     <div class="template-tables-preview" id="<?php echo $this->prefix ?>outcome-period">
-                        <input type="checkbox" id="<?php echo $this->prefix ?>outcome-period-section">
-                        <label for="<?php echo $this->prefix ?>outcome-period-section"> Update Outcome Period Values Section ? </label><br>
-
-                        <h1> Outcome Period Values </h1>
+                       
+                        <h1 style="font-weight: 600;"> Outcome Period Values </h1>
                         <p>  Data as of 
                             <span id="<?php echo $this->prefix ?>">  
-                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>outcome-period-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "outcome-period-date-data", true )) ?> " />
+                                <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>outcome-period-update-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "outcome-period-date-data", true ))); ?>" />
                             </span>
                         </p>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
@@ -131,13 +129,11 @@
                     </div>
 
                     <div class="template-tables-preview" id="<?php echo $this->prefix ?>current-outcome-period">
-                        <input type="checkbox" id="<?php echo $this->prefix ?>current-outcome-period-section">
-                        <label for="<?php echo $this->prefix ?>current-outcome-period-section"> Update Current Outcome Period Values Section ? </label><br>
-
-                        <h1> Current Outcome Period Values </h1>
+                        
+                        <h1 style="font-weight: 600;"> Current Outcome Period Values </h1>
                         <p>  Data as of 
                             <span id="<?php echo $this->prefix ?>">  
-                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-outcome-period-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "current-outcome-period-date-data", true )) ?> " />
+                                <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-outcome-period-update-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "current-outcome-period-date-data", true ))); ?>" />
                             </span>
                         </p>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
@@ -159,13 +155,11 @@
                 <?php } ?>
 
                 <div class="template-tables-preview" >
-                    <input type="checkbox" id="<?php echo $this->prefix ?>performance-section">
-                    <label for="<?php echo $this->prefix ?>performance-section"> Update Performance Section ? </label><br>
-
-                    <h1> Performance </h1>
+                  
+                    <h1 style="font-weight: 600;"> Performance </h1>
                     <p>  Data as of 
                         <span id="<?php echo $this->prefix ?>">  
-                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>preformance-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "", true )) ?> " />
+                            <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>preformance-update-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "pref-date-data", true )));  ?>" />
                         </span>
                     </p>
                     <div class="table-horizontal-row-grid"> 
@@ -205,10 +199,8 @@
                 </div>
 
                 <div class="template-tables-preview" id="<?php echo $this->prefix ?>distribution-detail">
-                    <input type="checkbox" id="<?php echo $this->prefix ?>distribution-detail-section">
-                    <label for="<?php echo $this->prefix ?>distribution-detail-section"> Update Distribution Detail Section ? </label><br>
-
-                    <h1> Distribution Detail </h1>
+                  
+                    <h1 style="font-weight: 600;"> Distribution Detail </h1>
                     <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
                         <h3>EX-Date</h3> 
                         <h3>Record Date</h3>
@@ -230,13 +222,11 @@
                 </div>
 
                 <div class="template-tables-preview" >
-                    <input type="checkbox" id="<?php echo $this->prefix ?>top-holdings-section">
-                    <label for="<?php echo $this->prefix ?>top-holdings-section"> Update Top 10 Holding Section ? </label><br>
-
-                    <h1> Top 10 Holdings </h1>
+               
+                    <h1 style="font-weight: 600;"> Top 10 Holdings </h1>
                     <p>  Data as of 
-                        <span id="<?php echo $this->prefix ?>top-holding-update-date">  
-                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>top-holding-update-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "top-holding-update-date-data", true )) ?> " />
+                        <span id="">  
+                            <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>top-holding-update-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "top-holding-update-date-data", true ))); ?>" />
                         </span>
                     </p>
                     <div class="table-horizontal-row-grid"> 
@@ -247,7 +237,36 @@
                         <h3>Shares Held</h3>
                         <h3>Market Value</h3>
                     </div>
-                    <div id="<?php echo $this->prefix ?>holdings-containers"> </div>
+                    <div id="<?php echo $this->prefix ?>holdings-containers">
+                    <?php 
+                        $holding_data_raw = get_post_meta( get_the_ID(), $this->prefix . "top-holders-data", true ); 
+                        $holding_data = json_decode($holding_data_raw, true);
+                        if($holding_data){
+                            $row_seq_inc = 0;
+                            foreach ($holding_data as $index => $holding) { ?>
+                                <div style="padding: 10px 0;" class="table-horizontal-row-grid"> 
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-1" value="<?php echo $holding['Weightings'] ?>" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-2" value="<?php echo $holding['SecurityName'] ?>" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-3" value="<?php echo $holding['StockTicker'] ?>" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-4" value="<?php echo $holding['CUSIP'] ?>" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-5" value="<?php echo $holding['Shares'] ?>" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $index ?>-6" value="<?php echo $holding['MarketValue'] ?>" />
+                                </div> <?php 
+                                $row_seq_inc = $row_seq_inc + 1; 
+                            } 
+                        }else{ 
+                            for ($i=0; $i < 10; $i++) { ?>
+                                <div style="padding: 10px 0;" class="table-horizontal-row-grid"> 
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-1" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-2" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-3" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-4" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-5" />
+                                    <input type="text" class="fund-details-input-feilds" id="ETF-Pre-holding-<?php echo $i ?>-6" />
+                                </div>
+                      <?php }
+                        } ?>
+                    </div>
                 </div>
 
             </div>

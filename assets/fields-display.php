@@ -20,18 +20,18 @@
             $output = false;
         // Output if allowed
         if ( $output ) {  ?>
-            <div class="form-field form-required">
+            <div class="form-field form">
                 <?php
                 switch ( $customField[ 'type' ] ) {
                     case "text": {
                         // Plain text field
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                        echo '<input required type="text" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;" />';
+                        echo '<input type="text" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;" />';
                         break;
                     }
                     case "url": {
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                        echo '<input required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
+                        echo '<input type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
                         break;
                     }
                     case "g_url": {
@@ -48,8 +48,8 @@
                         }
 
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                        echo '<div style="display: flex; gap: 10px;"> <input '. $toggle_input_visiblity_b .' required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '-google-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
-                        echo '<input readonly '. $toggle_input_visiblity_a .' required type="url" name="' . $this->prefix . $customField[ 'name' ] . '-" id="' . $this->prefix . $customField[ 'name' ] . '-upload-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                        echo '<div style="display: flex; gap: 10px;"> <input '. $toggle_input_visiblity_b .' type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '-google-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;"  />';
+                        echo '<input readonly '. $toggle_input_visiblity_a .' type="url" name="' . $this->prefix . $customField[ 'name' ] . '-" id="' . $this->prefix . $customField[ 'name' ] . '-upload-link" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
                         if ( isset( $_POST['image_attachment_id'] ) ) : update_option( 'media_selector_attachment_id', absint( $_POST['image_attachment_id'] ) ); endif;  wp_enqueue_media(); 
                         ?> <button <?php echo $toggle_input_visiblity_a ?> id="<?php echo $this->prefix . $customField[ 'name' ] ?>-file-upload" type="button" onclick="mediaFileSelector('<?php echo $customField[ 'name' ] ?>',true,['application/csv', 'text/csv'])" class="button button-primary button-large"> Select file </button>
                         <p style="margin: auto 0;">OR</p>
@@ -59,7 +59,7 @@
                     }
                     case "pdf_url": { 
                         echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                        echo '<div style="display: flex; gap: 10px;"> <input readonly required type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                        echo '<div style="display: flex; gap: 10px;"> <input readonly type="url" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
                         if ( isset( $_POST['image_attachment_id'] ) ) : update_option( 'media_selector_attachment_id', absint( $_POST['image_attachment_id'] ) ); endif;
                         wp_enqueue_media(); 
                         ?> <form style="display: flex; gap: 10px;" method='post'>
@@ -87,7 +87,7 @@
                         break;
                     }
                     case "hidden": {
-                        echo '<input required type="hidden" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                        echo '<input type="hidden" name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
                         break;
                     }
                 }
@@ -99,11 +99,12 @@
         }
     }?>
     <div style="display: flex; gap: 30px;"> 
-        <div>
-            <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Preview from files </button></div>
-            <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Manual Edit </button></div>
+            <div>
+                <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Get ETF info from linked files </button>
+                <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Edit </button>
+            </div>
             <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
-            <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Preview Success </p>
+            <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Data fetched successfully </p>
             <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>
             <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed-url"> Enter Valid URL </p>
             <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>fetch-load">  </div>

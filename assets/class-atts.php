@@ -2,6 +2,14 @@
 
 $custom_fields = array( 
     array(
+        "name"          => "etf-full-name",
+        "title"         => "ETF Fund Name",
+        "description"   => "Requried for un-structured ETFs",
+        "type"          => "text",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "google-nav-url",
         "title"         => "Daily NAV Sheet URL",
         "description"   => "",
@@ -115,6 +123,14 @@ $custom_fields = array(
     ),
     array(
         "name"          => "rate-date-fund-details-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "rate-date-data",
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",
@@ -468,5 +484,7 @@ $custom_fields = array(
 );
 
 $etfs_all = array('JANZ', 'FEBZ', 'MARZ', 'APRZ', 'MAYZ', 'JUNZ', 'JULZ', 'AUGZ', 'SEPZ', 'OCTZ', 'NOVZ', 'DECZ', 'DIVZ', 'LRNZ', 'ECOZ', 'FLDZ');
+
+$etfs_structured = array('JANZ', 'FEBZ', 'MARZ', 'APRZ', 'MAYZ', 'JUNZ', 'JULZ', 'AUGZ', 'SEPZ', 'OCTZ', 'NOVZ', 'DECZ');
 
 $etfs_unstructured = array('DIVZ', 'LRNZ', 'ECOZ', 'FLDZ');

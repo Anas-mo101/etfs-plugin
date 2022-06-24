@@ -38,6 +38,7 @@ class SFTP{
         $sql = "CREATE TABLE $wp_table_name (
                     id varchar(12) UNIQUE DEFAULT '',
                     Automate char(1) NOT NULL DEFAULT 'f',
+                    Active_Cycle char(1) NOT NULL DEFAULT 'f',
                     Host varchar(255) NOT NULL DEFAULT '',
                     User varchar(255) NOT NULL DEFAULT '',
                     Pass varchar(255) NOT NULL DEFAULT '',
@@ -62,6 +63,7 @@ class SFTP{
             array( 
                 'Id' => 'sftp_main_db', 
                 'Automate' => 'f', 
+                'Active_Cycle' => 'f',
                 'Host' => '*', 
                 'User' => '*',
                 'Pass' => '*', 
@@ -133,6 +135,14 @@ class SFTP{
         global $wpdb;
         $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
         $data = ['Automate' => 'f' ];
+        $where = [ 'Id' => 'sftp_main_db' ]; 
+        $wpdb->update( $wp_table_name, $data, $where ); 
+    }
+
+    function cycle_state($state){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
+        $data = ['Active_Cycle' => $state ];
         $where = [ 'Id' => 'sftp_main_db' ]; 
         $wpdb->update( $wp_table_name, $data, $where ); 
     }
@@ -237,7 +247,8 @@ class SFTP{
         $local_save_file_path = $local_save_dir["path"] .'/'. $file_name;
         $stream = @fopen($remote_file, 'r');
         if (! $stream) return false;
-        $contents = fread($stream, filesize($remote_file));
+        $contents = '';
+        while (!feof($stream)) { $contents .= fread($stream, 8192); }        
         file_put_contents($local_save_file_path, $contents);
         @fclose($stream);
         return $local_save_file_path;
@@ -249,6 +260,7 @@ class SFTP{
     }
 
     function auto_cycle(){
+        $this->cycle_state('t');
         // set file names to look for
         $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist' );
 
@@ -273,6 +285,7 @@ class SFTP{
         // connect to sftp server
         if(($con_res = $this->connect()) !== true){
             $this->force_turn_off();
+            $this->cycle_state('f');
             return $con_res;
         }
 
@@ -294,6 +307,7 @@ class SFTP{
 
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
             $this->force_turn_off();
+            $this->cycle_state('f');
             return "no required files available, do allocate correct file naming bellow";
         }
         
@@ -314,7 +328,6 @@ class SFTP{
                 if($path_info['extension'] === "csv"){
                     $columns = (new CsvProvider())->load_and_fetch_headers($path);
                     $data = (new CsvProvider())->load_and_fetch($path, $columns);
-
                     if(! $data || count($data) == 0){
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
@@ -358,6 +371,8 @@ class SFTP{
         // disconnect to sftp server
         $this->disconnect();
         $this->cycle_timestamp();
+        $this->cycle_state('f');
+        $this->write_log('first sftp cycle is successfull');
         return "first sftp cycle is successfull";
     }
 

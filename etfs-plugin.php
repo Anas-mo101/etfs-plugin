@@ -56,13 +56,16 @@ if ( !class_exists('EtfPlugin') ) {
 
         var $unstructured_etfs_list;
 
+        var $etfs_structured;
+
         var $automation = false;
 
-        function __construct($in_feilds,$in_etf,$in_uns_etfs){
+        function __construct($in_feilds,$in_etf,$in_uns_etfs,$etfs_structured){
             
             $this->customFields = $in_feilds;
             $this->etfs_list = $in_etf;
             $this->unstructured_etfs_list = $in_uns_etfs;
+            $this->etfs_structured = $etfs_structured; 
 
             add_action('init', array($this, 'etfs_post_init') );
 
@@ -74,9 +77,12 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
             add_action( 'do_meta_boxes', array($this, 'removeDefaultCustomFields' ), 10, 3 );
 
-            add_shortcode('render-etf-page', array($this, 'renderProductPage'));
-            add_shortcode('render-top-holders-table', array($this, 'renderTopHolders'));
-            add_shortcode('render-subadvisor-section', array($this, 'renderSubadvisor'));
+            add_shortcode('render-etf-page', array($this, 'render_product_page'));
+            add_shortcode('render-top-holders-table', array($this, 'render_top_holders'));
+            add_shortcode('render-subadvisor-section', array($this, 'render_subadvisor'));
+            add_shortcode('render-nav-graph', array($this, 'render_graph')); 
+            add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb')); 
+            add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
@@ -88,21 +94,11 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
 
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
-        }
-
-        function write_log($log) {
-            if (true === WP_DEBUG) {
-                if (is_array($log) || is_object($log)) {
-                    error_log(print_r($log, true));
-                } else {
-                    error_log($log);
-                }
-            }
+            add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
         }
 
         function activiate(){
             $this->etfs_post_type();
-     
             $sftp = SFTP::getInstance();
             $sftp->sftp_db_init();
             flush_rewrite_rules();
@@ -110,7 +106,6 @@ if ( !class_exists('EtfPlugin') ) {
 
         function deactivate(){
             wp_clear_scheduled_hook( 'get_sftp_data' );
-            
             flush_rewrite_rules();
         }
 
@@ -125,6 +120,7 @@ if ( !class_exists('EtfPlugin') ) {
             $url_monlthy_ror = $_POST['monthlyRorURL'];
             $url_dist_memo = $_POST['distMemoURL'];
             $etf_name = $_POST['etfName'];
+            $etf_full_name = $_POST['eftFullName'];
 
             $url_state = $_POST['gsURLstate'];
             $url_h_state = $_POST['hlURLstate'];
@@ -152,8 +148,8 @@ if ( !class_exists('EtfPlugin') ) {
                 $data_h = (new CsvProvider())->load_and_fetch($url_h,$columns_h);
             }
             $responesData_h = Array('headers' => $columns_h, 'body' =>  $data_h);
-            $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,false);
-            $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,false);
+            $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,$etf_full_name,false);
+            $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
             $csv_res = Array( 'nav' => $responesData, 'holdings' =>  $responesData_h, 'monthly_ror' => $monthly_ror_pdf_data, 'dist_memo' => $dist_memo_pdf_data);
 			wp_send_json($csv_res);
         }
@@ -196,8 +192,6 @@ if ( !class_exists('EtfPlugin') ) {
          * registers etf post type
          */
         function etfs_post_type() {
-
-            
             register_post_type('etfs',array(
                 'labels' => array(
                 'name' => _x('ETFs', 'post type general name'),
@@ -223,7 +217,7 @@ if ( !class_exists('EtfPlugin') ) {
               'capability_type' => 'post',
               'hierarchical' => false,
               'taxonomies'  => array( 'category' ),
-              'supports' => array('title','custom-fields')
+              'supports' => array('title', 'editor','custom-fields')
             ));
 
             register_post_type('subadvisors',array(
@@ -318,8 +312,30 @@ if ( !class_exists('EtfPlugin') ) {
         */
         function createCustomFields() {
             if ( function_exists( 'add_meta_box' ) ) {
+                $sftp = SFTP::getInstance();
+                $config = $sftp->get_config();
+                $state = $config['Automate'] === 't' ? 'SFTP enabled' : 'SFTP disabled';
+                $color = $config['Automate'] === 't' ? 'green' : 'red';
+                $cycle_state = $config['Active_Cycle'] === 't' ? 'Cycle Active' : 'Cycle Inactive';
+                $cycle_color = $config['Active_Cycle'] === 't' ? 'green' : 'red';
                 foreach ( $this->postTypes as $postType ) {
-                    add_meta_box( 'my-custom-fields', 'ETF Settings', array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
+                    add_meta_box( 'my-custom-fields',  
+                    '<span> ETF Settings </span>  
+                    <div style="display: flex; justify-content: flex-end;">
+                        <span style="display: flex;">
+                            <h4 style="margin: auto 15px;">  ' . $state . ' </h4>
+                            <span style="margin: auto 0;">
+                                <div style="background-color: ' . $color . ';border: solid 1px;border-radius: 50%;width: 15px;margin: auto 0px;height: 15px;"></div> 
+                            </span>
+                        </span>
+                        <span style="display: flex;">
+                            <h4 style="margin: auto 15px;">  ' . $cycle_state . ' </h4>
+                            <span style="margin: auto 0;">
+                                <div style="background-color: ' . $cycle_color . ';border: solid 1px;border-radius: 50%;width: 15px;margin: auto 0px;height: 15px;"></div> 
+                            </span>
+                        </span>
+                    </div>'
+                    ,array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
                 }
             }
         }
@@ -341,6 +357,15 @@ if ( !class_exists('EtfPlugin') ) {
                 wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
                 wp_enqueue_style( 'SettingStyling', $dir . 'admin/css/SettingStyling.css' );
                 wp_enqueue_script('settingsConfig', $dir . 'admin/js/settingsConfig.js' );
+            }
+        }
+
+        function etfs_template_scripts( $hook ) {
+            global $post;
+            if ( is_single() &&  "etfs" === $post->post_type){
+                wp_enqueue_script('highstock', 'https://code.highcharts.com/stock/highstock.js' );
+                wp_enqueue_script('data', 'https://code.highcharts.com/stock/modules/data.js' );
+                wp_enqueue_script('accessibility', 'https://code.highcharts.com/stock/modules/accessibility.js' );
             }
         }
 
@@ -378,22 +403,41 @@ if ( !class_exists('EtfPlugin') ) {
         }
         
         // call shortcode [render-etf-page] to render product table
-        function renderProductPage() {
+        function render_product_page() {
             ob_start();
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/etf-product-page.php');
             return ob_get_clean();
         }
         
         // call shortcode [render-top-holders-table] to render product table
-        function renderTopHolders() {
+        function render_top_holders() {
             ob_start();
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/toptenshortcode.php');
             return ob_get_clean();
         }
 
-        function renderSubadvisor() {
+        function render_subadvisor() {
             ob_start();
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/subadvisorshortcode.php');
+            return ob_get_clean();
+        }
+
+        function render_graph() {
+            ob_start();
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/nav-graph.php');
+            return ob_get_clean();
+        }
+
+        function render_content_cuz_elementor_dumb() {
+            ob_start();
+            global $post;
+            echo $post->post_content; 
+            return ob_get_clean();
+        }
+
+        function render_frontpage_etfs() {
+            ob_start();
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/frontpage_etfs_boxes.php');
             return ob_get_clean();
         }
     }
@@ -401,7 +445,7 @@ if ( !class_exists('EtfPlugin') ) {
 
 if(class_exists('ETFPlugin')){
     include 'alt_autoload.php';
-    $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured);
+    $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured);
 }
     
 register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
