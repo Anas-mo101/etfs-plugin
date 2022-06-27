@@ -24,6 +24,7 @@ function save_manually_edited_data(){
         // --> Fund Data & Pricing
         document.getElementById('ETF-Pre-rate-date-data').value = format_date(document.getElementById('ETF-Pre-rate-date').value.trim());
         document.getElementById('ETF-Pre-fund-pricing-date-data').value = format_date(document.getElementById('ETF-Pre-rate-date-net').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
+        
         document.getElementById('ETF-Pre-net-assets-data').value = document.getElementById('ETF-Pre-nav-assets').value.trim();
         document.getElementById('ETF-Pre-na-v-data').value = document.getElementById('ETF-Pre-nav-value').value.trim();
         document.getElementById('ETF-Pre-shares-out-standig-data').value = document.getElementById('ETF-Pre-shares-outstanding').value.trim();
@@ -38,6 +39,7 @@ function save_manually_edited_data(){
             const newGraphData =  [Date.now(),new_hostorical_nav];
             old_hostorical_nav.push(newGraphData);
             document.getElementById("ETF-Pre-graph-json-data").value = JSON.stringify(old_hostorical_nav);
+            document.getElementById('ETF-Pre-graph-json-date-data').value = new Date().toLocaleDateString();
         }
         
         // --> preformance 
@@ -147,6 +149,7 @@ function save_file_fetched_data(res){
         document.getElementById('ETF-Pre-thirty-day-median-data').value = res.nav.body[current_etf_nav_index]['Median 30 Day Spread Percentage'];
     
         // --> graph
+        document.getElementById('ETF-Pre-graph-json-date-data').value = currentDate;
         let preGraphDataSet = document.getElementById('ETF-Pre-graph-json-data').value;
         preGraphDataSet = preGraphDataSet == '' || preGraphDataSet == null ? [] : JSON.parse(preGraphDataSet); 
         let parsedNav = parseFloat(res.nav.body[current_etf_nav_index]['NAV']);

@@ -1,8 +1,6 @@
 <?php
 
 class Pdf2Data {
-
-
     // post file link to convert
     function convert_pdf($pdf_file){
         $curl = curl_init();
@@ -97,16 +95,6 @@ class Pdf2Data {
             return false;
         }
         return $this->get_file_data($url);
-    }
-
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
     }
     
     function get_monthly_fund_data($pdf_file_link,$etf_name,$etf_full_name,$api_on){

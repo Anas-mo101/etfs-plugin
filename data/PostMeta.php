@@ -1,10 +1,5 @@
 <?php
 
-//update_post_meta( post-id, meta-key , new-meta );
-
-
-// should be feed the array result of fetch_etf_data()
-// and be able to update meta according to tha array
 class PostMeta{
 
     var $post_id;
@@ -19,9 +14,7 @@ class PostMeta{
     }
 
     function process_incoming(){
-
         $process = array_search($this->file_name,$this->files_map,true);
-
         switch ($process) {
             case 'Holding':
                 return $this->process_holdings();
@@ -35,7 +28,7 @@ class PostMeta{
         }
     }
 
-    private function process_daily_nav(){
+    private function process_daily_nav(){ 
         $nav_meta_keys = array(
             'ETF-Pre-na-v-data' => 'NAV',
             'ETF-Pre-net-assets-data' => 'Net Assets',
@@ -44,7 +37,6 @@ class PostMeta{
             'ETF-Pre-closing-price-data' => 'Rate Date',
             'ETF-Pre-thirty-day-median-data' => 'Median 30 Day Spread Percentage',
         );
-
         
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return 'null data';
@@ -54,8 +46,26 @@ class PostMeta{
             $post_to_update = get_page_by_title( $meta['Fund Ticker'], OBJECT, 'etfs' );
             if(! $post_to_update) continue;
 
-            update_post_meta($post_to_update->ID,'ETF-Pre-fund-pricing-date-data',date("d/m/y"));
+            $previous_graph_data = get_post_meta( $post_to_update->ID, "ETF-Pre-graph-json-data", true );
+            $previous_graph_data_arr = json_decode($previous_graph_data, true);
 
+            $current_time_in_millisecond = microtime(true);
+            $current_time_in_microsecond = floor($current_time_in_millisecond * 1000);
+            $now_date = date("Y-m-d",$current_time_in_millisecond);
+
+            $previous_graph_data_arr_latest_timestamp = end($previous_graph_data_arr);
+            $previous_graph_data_arr_latest_timestamp = $previous_graph_data_arr_latest_timestamp[0];
+            $pre_date = date("Y-m-d",$previous_graph_data_arr_latest_timestamp/1000);
+
+            if($pre_date !== $now_date){
+                $new_graph_nav = array($current_time_in_microsecond, floatval($meta['NAV']));
+                $previous_graph_data_arr[] = $new_graph_nav;
+                $updated_graph_data = json_encode($previous_graph_data_arr);
+                update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-data',$updated_graph_data);
+                update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/y"));
+            }
+
+            update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',date("m/d/y"));
             foreach ($nav_meta_keys as $key => $value) {
                 if(isset($meta[$value])){
                     update_post_meta($post_to_update->ID,$key,$meta[$value]);
@@ -65,24 +75,13 @@ class PostMeta{
         return 'success';
     }
 
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-    }
-
     private function process_holdings(){
-
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return 'null data';
         }
 
         $market_value = array_column($this->incoming_meta, 'MarketValue');
-        array_multisort($market_value, SORT_DESC, SORT_NUMERIC , $this->incoming_meta);
+        array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $this->incoming_meta);
 
         $holding_ = array();
         for ($i=0; $i < 10; $i++) { 
@@ -100,7 +99,7 @@ class PostMeta{
                 return 'null data';
             }
 
-            update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("d/m/y"));
+            update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
             update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
         }
         wp_reset_query();
@@ -116,7 +115,10 @@ class PostMeta{
             $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
             if(! $post_to_update) continue;
 
+            update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', date("m/d/y"));
             update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['ex_date']);
+
+            update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', date("m/d/y"));
 
             update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-inception-data', $meta['fund_nav']['inception']);
             update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-year-data', $meta['fund_nav']['one_year']);
@@ -143,7 +145,6 @@ class PostMeta{
         foreach ($this->incoming_meta as $meta) {
             $post_to_update = get_page_by_title( $meta['etf_name'], OBJECT, 'etfs' );
             if(! $post_to_update) continue;
-
             update_post_meta($post_to_update->ID,'ETF-Pre-ex-date-data', $meta['ex_date']);
             update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
             update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);

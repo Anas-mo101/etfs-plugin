@@ -155,7 +155,12 @@
             </div>
             <div>
                 <p class="trueshare-box-subadv"> SUBADVISOR: </p>
-                <p class="trueshare-box-subadvname"> <?php echo get_post_meta( $post_ecoz->ID, 'ETF-Pre-sub-advisor-name', true ); ?> </p>
+                <p class="trueshare-box-subadvname"> 
+                    <?php 
+                        $sub_ecoz = get_post_meta( $post_ecoz->ID, 'ETF-Pre-sub-advisor-name', true ); 
+                        echo get_the_title( $sub_ecoz );
+                    ?> 
+                </p>
             </div>
             <div class="trueshare-learn-more" onclick="location.href='/etfs/ecoz'">
                 <p> LEARN MORE </p>

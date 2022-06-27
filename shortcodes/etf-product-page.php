@@ -55,7 +55,7 @@
                     <td class="table-ts-in pb bg-dark"><a href="/etfs/<?php echo strtolower($etf)?>/"> <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"><a style= "color:#12223D;" href="/etfs/<?php echo strtolower($etf)?>/" > <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"> <?php echo $long_name ?> </td>
-                    <td class="table-ts-in pb"> <?php echo $market_value ? $market_value : 'null'; ?> </td>
+                    <td class="table-ts-in pb"> <?php echo $market_value ? $market_value : '-'; ?> </td>
                     <td class="table-ts-in pb"> - </td>  
                     <td class="table-ts-in pb">S&P 500</td>
                     <td class="table-ts-in pb"> - </td>

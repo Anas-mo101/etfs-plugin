@@ -4,17 +4,14 @@ $sub_adv = get_post( $sub_adv_id );
 $sub_adv_title; $sub_adv_content; $sub_adv_thumbnail;
 $show_sub_adv_if_true = false;
 
-if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv->post_content)){
+if($sub_adv_id !== '' && $sub_adv && is_object($sub_adv)){
     $sub_adv_title = $sub_adv->post_title; 
     $sub_adv_content = $sub_adv->post_content; 
     $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
     $show_sub_adv_if_true = true;
-}
-
-?>
-​
+}?>
 <style>
-​
+
     @media only screen and (max-width: 600px) {
         
         .cat-subadvisor{
@@ -22,7 +19,7 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
             padding-top: 55px!important;
             margin: 0;
         }
-​
+
         .title-subadvisor{
             font-size: 44px!important;
             padding-bottom: 15px!important;
@@ -33,18 +30,15 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
             font-size: 14px!important;
             line-height: 25px!important;
         }
-​
         .spacer-img{
             display: none;
         }
-​
+
         .sub-feature{
             display:none;
         }
     }
-​
     @media only screen and (max-width: 1024px){
-​
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
@@ -55,7 +49,6 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
             letter-spacing: 4px;
             padding-top: 55px!important;
         }
-​
         .title-subadvisor{
             color: #12223D;
             font-family: "Avenir Next", Sans-serif;
@@ -64,7 +57,6 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
             line-height: 56px;
             margin: 0 0 37px 0;
         }
-​
         .row-subadvisor{
             display: flex;
             margin-right: auto;
@@ -84,7 +76,6 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
         .col-1-subadvisor-widget{
             padding: 0px;
         }
-​
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
@@ -109,14 +100,11 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
                 visibility: 0;
             
         }
-​
         .spacer-img{
             display: none;
         }
     }
-​
     @media only screen and (min-width: 1025px) {
-​
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
@@ -176,8 +164,7 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
         }
     }
 </style>
-​
-<?php if($show_sub_adv_if_true){ ?>
+<?php if($show_sub_adv_if_true === true){ ?>
 <section>
     <div class="row-subadvisor">
         <div class="col-1-subadvisor">
@@ -197,7 +184,6 @@ if(is_object($sub_adv) && ! is_null($sub_adv->post_title) && ! is_null($sub_adv-
                 </a>
         </div>
     </div>
-​
     <div class="col-2-subadvisor">
         <div class="spacer-img" style="padding-top: 100px;" >
         </div>
