@@ -334,8 +334,8 @@ if ( !class_exists('EtfPlugin') ) {
                                 <div style="background-color: ' . $cycle_color . ';border: solid 1px;border-radius: 50%;width: 15px;margin: auto 0px;height: 15px;"></div> 
                             </span>
                         </span>
-                    </div>'
-                    ,array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
+                    </div>',
+                    array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
                 }
             }
         }
@@ -437,7 +437,7 @@ if ( !class_exists('EtfPlugin') ) {
 
         function render_frontpage_etfs() {
             ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/frontpage_etfs_boxes.php');
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/frontpage-etfs-boxes.php');
             return ob_get_clean();
         }
     }
@@ -446,10 +446,11 @@ if ( !class_exists('EtfPlugin') ) {
 if(class_exists('ETFPlugin')){
     include 'alt_autoload.php';
     $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured);
+
+    register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
+    register_deactivation_hook( __FILE__, array($etfPlugin, 'deactivate') );
 }
     
-register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
 
-register_deactivation_hook( __FILE__, array($etfPlugin, 'deactivate') );
 
 

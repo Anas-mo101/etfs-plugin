@@ -34,7 +34,7 @@ class PostMeta{
             'ETF-Pre-net-assets-data' => 'Net Assets',
             'ETF-Pre-shares-out-standig-data' => 'Shares Outstanding',
             'ETF-Pre-discount-percentage-data' => 'Premium/Discount Percentage',
-            'ETF-Pre-closing-price-data' => 'Rate Date',
+            'ETF-Pre-closing-price-data' => 'Market Price',
             'ETF-Pre-thirty-day-median-data' => 'Median 30 Day Spread Percentage',
         );
         
