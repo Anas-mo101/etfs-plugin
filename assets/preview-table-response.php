@@ -11,6 +11,7 @@
                 </button>
             </div>
             <div id="<?php echo $this->prefix ?>popup-table-container">
+             <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="<?php echo $this->prefix ?>popup-table-inner-container">
  
                 <div class="template-tables-preview" id="<?php echo $this->prefix ?>fund-data-pricing">
 
@@ -268,7 +269,7 @@
                         } ?>
                     </div>
                 </div>
-
+             </div>            
             </div>
             <div id="<?php echo $this->prefix ?>popup-bottombar-container">
                 <button type="button" id="<?php echo $this->prefix ?>popup-submit-button"> Save </button>

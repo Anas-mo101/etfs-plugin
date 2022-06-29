@@ -66,6 +66,7 @@ class PostMeta{
             }
 
             update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',date("m/d/y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-fund-pricing-date-data',date("m/d/y"));
             foreach ($nav_meta_keys as $key => $value) {
                 if(isset($meta[$value])){
                     update_post_meta($post_to_update->ID,$key,$meta[$value]);

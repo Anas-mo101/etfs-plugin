@@ -22,14 +22,19 @@
             $sftp = SFTP::getInstance();
             $config = $sftp->get_config();
             $local_save_dir = wp_get_upload_dir();
-            $local_save_file_path = $local_save_dir["path"] .'/'. $config['Nav'];
-            $columns = (new CsvProvider())->load_and_fetch_headers($local_save_file_path);
-            $_nav_data = (new CsvProvider())->load_and_fetch($local_save_file_path, $columns);
+
+            $_nav_data = null;
+            if($config['Nav'] !== "*"){
+                $local_save_file_path = $local_save_dir["path"] .'/'. $config['Nav'];
+                $columns = (new CsvProvider())->load_and_fetch_headers($local_save_file_path);
+                $_nav_data = (new CsvProvider())->load_and_fetch($local_save_file_path, $columns);
+            }
+            
             $now = time();
 
             foreach ($this->etfs_structured as $etf) {
-                $market_value;
-                if (is_array($_nav_data)) {
+                $market_value = '';
+                if (is_array($_nav_data) && $config['Nav'] !== "*") {
                     foreach ($_nav_data as $_nav_data_record) {
                         if($_nav_data_record['Fund Ticker'] === $etf){
                             $market_value = $_nav_data_record['Market Price'];
@@ -55,7 +60,7 @@
                     <td class="table-ts-in pb bg-dark"><a href="/etfs/<?php echo strtolower($etf)?>/"> <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"><a style= "color:#12223D;" href="/etfs/<?php echo strtolower($etf)?>/" > <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"> <?php echo $long_name ?> </td>
-                    <td class="table-ts-in pb"> <?php echo $market_value ? $market_value : '-'; ?> </td>
+                    <td class="table-ts-in pb"> <?php echo $market_value !== '' ? $market_value : '-'; ?> </td>
                     <td class="table-ts-in pb"> - </td>  
                     <td class="table-ts-in pb">S&P 500</td>
                     <td class="table-ts-in pb"> - </td>

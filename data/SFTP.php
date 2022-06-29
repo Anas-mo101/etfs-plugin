@@ -15,7 +15,6 @@ class SFTP{
         {
             self::$instance = new SFTP();
         }
-    
         return self::$instance;
     }
 

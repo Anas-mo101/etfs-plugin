@@ -93,6 +93,7 @@ if ( !class_exists('EtfPlugin') ) {
 
             add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
 
+            add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
             add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
         }
@@ -316,22 +317,16 @@ if ( !class_exists('EtfPlugin') ) {
                 $config = $sftp->get_config();
                 $state = $config['Automate'] === 't' ? 'SFTP enabled' : 'SFTP disabled';
                 $color = $config['Automate'] === 't' ? 'green' : 'red';
-                $cycle_state = $config['Active_Cycle'] === 't' ? 'Cycle Active' : 'Cycle Inactive';
-                $cycle_color = $config['Active_Cycle'] === 't' ? 'green' : 'red';
+                $cycle_state = $config['Active_Cycle'] === 't' ? '(The SFTP Cycle is being updated. Please do not make any changes to ETF pages at this time)' : '';
+                $cycle_color = $config['Active_Cycle'] === 't' ? 'red' : 'black';
                 foreach ( $this->postTypes as $postType ) {
                     add_meta_box( 'my-custom-fields',  
-                    '<span> ETF Settings </span>  
+                    '<span style="color: ' . $cycle_color . ';"> ETF Settings ' . $cycle_state . '</span>  
                     <div style="display: flex; justify-content: flex-end;">
                         <span style="display: flex;">
                             <h4 style="margin: auto 15px;">  ' . $state . ' </h4>
                             <span style="margin: auto 0;">
                                 <div style="background-color: ' . $color . ';border: solid 1px;border-radius: 50%;width: 15px;margin: auto 0px;height: 15px;"></div> 
-                            </span>
-                        </span>
-                        <span style="display: flex;">
-                            <h4 style="margin: auto 15px;">  ' . $cycle_state . ' </h4>
-                            <span style="margin: auto 0;">
-                                <div style="background-color: ' . $cycle_color . ';border: solid 1px;border-radius: 50%;width: 15px;margin: auto 0px;height: 15px;"></div> 
                             </span>
                         </span>
                     </div>',
@@ -360,6 +355,16 @@ if ( !class_exists('EtfPlugin') ) {
             }
         }
 
+        function write_log($log) {
+            if (true === WP_DEBUG) {
+                if (is_array($log) || is_object($log)) {
+                    error_log(print_r($log, true));
+                } else {
+                    error_log($log);
+                }
+            }
+        }
+
         function etfs_template_scripts( $hook ) {
             global $post;
             if ( is_single() &&  "etfs" === $post->post_type){
@@ -368,6 +373,16 @@ if ( !class_exists('EtfPlugin') ) {
                 wp_enqueue_script('accessibility', 'https://code.highcharts.com/stock/modules/accessibility.js' );
             }
         }
+
+        function mind_defer_scripts( $tag, $handle, $src ) {
+            $defer = array('highstock', 'data', 'accessibility');
+
+            if ( in_array( $handle, $defer ) ) {
+               return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
+            }
+              
+            return $tag;
+        } 
 
         /**
         * Display the new Custom Fields meta box

@@ -4,14 +4,15 @@ $sub_adv = get_post( $sub_adv_id );
 $sub_adv_title; $sub_adv_content; $sub_adv_thumbnail;
 $show_sub_adv_if_true = false;
 
-if($sub_adv_id !== '' && $sub_adv && is_object($sub_adv)){
+if($sub_adv_id !== 'none'){
     $sub_adv_title = $sub_adv->post_title; 
     $sub_adv_content = $sub_adv->post_content; 
     $sub_adv_thumbnail = get_the_post_thumbnail_url($sub_adv_id, 'full');
     $show_sub_adv_if_true = true;
 }?>
-<style>
 
+<?php if($show_sub_adv_if_true === true){ ?>
+<style>
     @media only screen and (max-width: 600px) {
         
         .cat-subadvisor{
@@ -164,7 +165,7 @@ if($sub_adv_id !== '' && $sub_adv && is_object($sub_adv)){
         }
     }
 </style>
-<?php if($show_sub_adv_if_true === true){ ?>
+
 <section>
     <div class="row-subadvisor">
         <div class="col-1-subadvisor">

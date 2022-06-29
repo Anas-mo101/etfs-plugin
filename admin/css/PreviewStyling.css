@@ -76,7 +76,8 @@
     height: inherit;
     border: solid 2px rgb(225, 225, 225);
     margin: 10px 0;
-    display: flex;
+    display: grid;
+    justify-content: center;
     overflow: scroll;
     flex-direction: column;
     padding: 0 50px;
