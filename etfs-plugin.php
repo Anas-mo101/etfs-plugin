@@ -72,6 +72,7 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'after_setup_theme', array($this,'insert_uns_category'));
 
             add_action( 'admin_menu', array($this, 'createCustomFields' ) );
+            add_action( 'admin_menu', array($this, 'customFieldsFunds' ) );
             add_action('admin_menu', array($this,'sub_menu_callback'));
 
             add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
@@ -223,18 +224,18 @@ if ( !class_exists('EtfPlugin') ) {
 
             register_post_type('subadvisors',array(
                 'labels' => array(
-                'name' => _x('Sub Advisors', 'post type general name'),
-                'singular_name' => _x('Sub Advisors', 'post type singular name'),
-                'add_new' => _x('Add New', 'Sub Advisor'),
-                'add_new_item' => __('Add New Sub Advisor'),
-                'edit_item' => __('Edit Sub Advisor'),
-                'new_item' => __('New Sub Advisor'),
-                'view_item' => __('View Sub Advisor'),
-                'search_items' => __('Search Sub Advisor'),
-                'not_found' =>  __('No Sub Advisors found'),
-                'not_found_in_trash' => __('No Sub Advisors found in Trash'),
+                'name' => _x('Sub-Advisors', 'post type general name'),
+                'singular_name' => _x('Sub-Advisors', 'post type singular name'),
+                'add_new' => _x('Add New', 'Sub-Advisor'),
+                'add_new_item' => __('Add New Sub-Advisor'),
+                'edit_item' => __('Edit Sub-Advisor'),
+                'new_item' => __('New Sub-Advisor'),
+                'view_item' => __('View Sub-Advisor'),
+                'search_items' => __('Search Sub-Advisor'),
+                'not_found' =>  __('No Sub-Advisors found'),
+                'not_found_in_trash' => __('No Sub-Advisors found in Trash'),
                 'parent_item_colon' => '',
-                'menu_name' => 'Sub Advisors'
+                'menu_name' => 'Sub-Advisors'
               ),
               'public' => true,
               'show_ui' => true,
@@ -335,6 +336,15 @@ if ( !class_exists('EtfPlugin') ) {
             }
         }
 
+        // Create custom field (Fund Documents)
+        function customFieldsFunds(){
+            if ( function_exists( 'add_meta_box' ) ) {
+                foreach ( $this->postTypes as $postType ) {
+                    add_meta_box( 'my-custom-fields-pdf', 'Fund Documents', array($this, 'displayCustomFieldsPdf' ), $postType, 'normal', 'high' );
+                }
+            }
+        }
+
         function etfs_admin_edit_scripts( $hook ) {
             global $post;
             $dir = plugin_dir_url( __FILE__ );
@@ -395,11 +405,21 @@ if ( !class_exists('EtfPlugin') ) {
             require_once 'assets/fields-display.php'; 
         }
 
+        // Display the new Custom Fields (Fund Documents)
+        function displayCustomFieldsPdf() {
+            global $post;  
+            if ( $post->post_type == "etfs" ){
+                require_once 'assets/fund-fields-display.php';
+            } 
+        }
+
         /**
         * Save the new Custom Fields values
         */
         function saveCustomFields( $post_id, $post ) {
             if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) )
+                return;
+            if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) )
                 return;
             if ( !current_user_can( 'edit_post', $post_id ) )
                 return;
