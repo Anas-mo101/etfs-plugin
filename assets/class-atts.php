@@ -538,6 +538,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "pdf-structured-outcome-faq",
+        "title"         => "Structured Outcome FAQ",
+        "description"   => "",
+        "type"          => "pdf_url_fd",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "pdf-dlte",
         "title"         => "Demystifying Liquidity and Taxes in ETPS",
         "description"   => "",
