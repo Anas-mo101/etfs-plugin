@@ -72,6 +72,7 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'after_setup_theme', array($this,'insert_uns_category'));
 
             add_action( 'admin_menu', array($this, 'createCustomFields' ) );
+            add_action( 'admin_menu', array($this, 'customFieldsFunds' ) );
             add_action('admin_menu', array($this,'sub_menu_callback'));
 
             add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
@@ -340,6 +341,15 @@ if ( !class_exists('EtfPlugin') ) {
             }
         }
 
+        // Create custom field (Fund Documents)
+        function customFieldsFunds(){
+            if ( function_exists( 'add_meta_box' ) ) {
+                foreach ( $this->postTypes as $postType ) {
+                    add_meta_box( 'my-custom-fields-pdf', 'Fund Documents', array($this, 'displayCustomFieldsPdf' ), $postType, 'normal', 'high' );
+                }
+            }
+        }
+
         function etfs_admin_edit_scripts( $hook ) {
             global $post;
             $dir = plugin_dir_url( __FILE__ );
@@ -380,11 +390,21 @@ if ( !class_exists('EtfPlugin') ) {
             require_once 'assets/fields-display.php'; 
         }
 
+        // Display the new Custom Fields (Fund Documents)
+        function displayCustomFieldsPdf() {
+            global $post;  
+            if ( $post->post_type == "etfs" ){
+                require_once 'assets/fund-fields-display.php';
+            } 
+        }
+
         /**
         * Save the new Custom Fields values
         */
         function saveCustomFields( $post_id, $post ) {
             if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) )
+                return;
+            if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) )
                 return;
             if ( !current_user_can( 'edit_post', $post_id ) )
                 return;
