@@ -2,9 +2,9 @@
   
 <style>
     #container {
-        height: 1098 px;
-        min - width: 310 px;
-        width: 100 % ;
+        height: 1098px;
+        min-width: 310px;
+        width: 100%;
     } 
 </style>
 
@@ -16,8 +16,8 @@
     preGraphDataSet = graphStrigJson == '' || graphStrigJson == null ? [] : JSON.parse(graphStrigJson); 
 </script>
 
-<div class = "chart-wrapper" >
-	<div id = "container" > < /div> 
+<div class="chart-wrapper">
+	<div id="container"></div> 
 </div>
 <script defer>
     jQuery(document).ready(function() {
