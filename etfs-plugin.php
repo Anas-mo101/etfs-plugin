@@ -58,14 +58,17 @@ if ( !class_exists('EtfPlugin') ) {
 
         var $etfs_structured;
 
+        var $etfs_custom_pdf_fields;
+
         var $automation = false;
 
-        function __construct($in_feilds,$in_etf,$in_uns_etfs,$etfs_structured){
+        function __construct($in_feilds,$in_etf,$in_uns_etfs,$etfs_structured,$pdf_fields){
             
             $this->customFields = $in_feilds;
             $this->etfs_list = $in_etf;
             $this->unstructured_etfs_list = $in_uns_etfs;
             $this->etfs_structured = $etfs_structured; 
+            $this->custom_pdf_fields = $pdf_fields;
 
             add_action('init', array($this, 'etfs_post_init') );
 
@@ -400,16 +403,28 @@ if ( !class_exists('EtfPlugin') ) {
         function displayCustomFields() {
             global $post;  
             if ( $post->post_type == "etfs" ){
-                require_once 'assets/preview-table-response.php';
-            } 
-            require_once 'assets/fields-display.php'; 
+                require_once 'assets/preview-table-response.php'; 
+                create_custom_efts_fields($this->customFields,$this->prefix,'2','my-custom-fields'); ?>
+                <div style="display: flex; gap: 30px;"> 
+                    <div>
+                        <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Get ETF info from linked files </button>
+                        <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Edit </button>
+                    </div>
+                    <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
+                        <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Data fetched successfully </p>
+                        <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>
+                        <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed-url"> Enter Valid URL </p>
+                        <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>fetch-load">  </div>
+                    </div>
+                </div>
+            <?php } 
         }
 
         // Display the new Custom Fields (Fund Documents)
         function displayCustomFieldsPdf() {
             global $post;  
             if ( $post->post_type == "etfs" ){
-                require_once 'assets/fund-fields-display.php';
+                create_custom_efts_fields($this->custom_pdf_fields,$this->prefix,'1','my-custom-fields-pdf');
             } 
         }
 
@@ -426,6 +441,17 @@ if ( !class_exists('EtfPlugin') ) {
             if ( ! in_array( $post->post_type, $this->postTypes ) )
                 return;
             foreach ( $this->customFields as $customField ) {
+                if ( current_user_can( $customField['capability'], $post_id ) ) {
+                    if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) && trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
+                        $value = $_POST[ $this->prefix . $customField['name'] ];
+                        update_post_meta( $post_id, $this->prefix . $customField[ 'name' ], $value );
+                    } else {
+                        delete_post_meta( $post_id, $this->prefix . $customField[ 'name' ] );
+                    }
+                }
+            }
+
+            foreach ( $this->custom_pdf_fields as $customField ) {
                 if ( current_user_can( $customField['capability'], $post_id ) ) {
                     if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) && trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
                         $value = $_POST[ $this->prefix . $customField['name'] ];
@@ -480,7 +506,7 @@ if ( !class_exists('EtfPlugin') ) {
 
 if(class_exists('ETFPlugin')){
     include 'alt_autoload.php';
-    $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured);
+    $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured,$custom_pdf_fields);
 
     register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
     register_deactivation_hook( __FILE__, array($etfPlugin, 'deactivate') );

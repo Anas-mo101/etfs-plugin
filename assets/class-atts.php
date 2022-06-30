@@ -488,12 +488,15 @@ $custom_fields = array(
         "type"          => "select",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
-    ),
+    )
+);
+
+$custom_pdf_fields = array( 
     array(
         "name"          => "pdf-investment-case",
         "title"         => "Investment Case",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -501,7 +504,7 @@ $custom_fields = array(
         "name"          => "pdf-summary-prospectus",
         "title"         => "Summary Prospectus",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -509,7 +512,7 @@ $custom_fields = array(
         "name"          => "pdf-prospectus",
         "title"         => "Prospectus",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -517,7 +520,7 @@ $custom_fields = array(
         "name"          => "pdf-sai",
         "title"         => "SAI",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -525,7 +528,7 @@ $custom_fields = array(
         "name"          => "pdf-annual-report",
         "title"         => "Annual Report",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -533,7 +536,7 @@ $custom_fields = array(
         "name"          => "pdf-semi-annual-report",
         "title"         => "Semi-Annual Report",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -541,7 +544,7 @@ $custom_fields = array(
         "name"          => "pdf-dlte",
         "title"         => "Demystifying Liquidity and Taxes in ETPS",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -549,7 +552,7 @@ $custom_fields = array(
         "name"          => "pdf-brochure",
         "title"         => "Brochure",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -557,15 +560,7 @@ $custom_fields = array(
         "name"          => "pdf-press-release",
         "title"         => "Press Release",
         "description"   => "",
-        "type"          => "pdf_url_fd",
-        "scope"         => array( "etfs" ),
-        "capability"    => "edit_posts"
-    ),
-    array(
-        "name"          => "pdf-brochure",
-        "title"         => "Brochure",
-        "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -573,7 +568,7 @@ $custom_fields = array(
         "name"          => "pdf-part-f-soi-1",
         "title"         => "Part F Schedule of Investments One",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
@@ -581,7 +576,7 @@ $custom_fields = array(
         "name"          => "pdf-part-f-soi-2",
         "title"         => "Part F Schedule of Investments Two",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     )
