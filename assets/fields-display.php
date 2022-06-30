@@ -71,7 +71,7 @@ function create_custom_efts_fields($fields_to_create, $etfs_prefix, $wrap_no='',
                             $query = new WP_Query(array( 'post_type' => 'subadvisors','numberposts' => -1));
                             $select = get_post_meta( $post->ID, $etfs_prefix . $customField[ 'name' ], true);
                             echo '<label for="' . $etfs_prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>
-                                <select name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '">';
+                                <div style="margin-bottom: 10px;"> <select name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '">';
                                     $_select = ($select == 'none') ? 'selected' : '';
                                     echo '<option ' .  $_select . ' value="none"> none </option>';
                                     while ($query->have_posts()) {
@@ -81,7 +81,7 @@ function create_custom_efts_fields($fields_to_create, $etfs_prefix, $wrap_no='',
                                         $_select = ($select == $post_id) ? 'selected' : '';
                                         echo '<option ' . $_select . ' value="' . $post_id . '"> '. $post_title .' </option>';
                                     }
-                                echo '</select>';
+                                echo '</select> </div>';
                             wp_reset_query();
                             break;
                         }

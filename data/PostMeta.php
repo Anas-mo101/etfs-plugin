@@ -47,14 +47,16 @@ class PostMeta{
             if(! $post_to_update) continue;
 
             $previous_graph_data = get_post_meta( $post_to_update->ID, "ETF-Pre-graph-json-data", true );
-            $previous_graph_data_arr = json_decode($previous_graph_data, true);
+            $previous_graph_data_arr = $previous_graph_data !== '' ? json_decode($previous_graph_data, true) : array();
+            $previous_graph_data_arr = is_array($previous_graph_data_arr) ? $previous_graph_data_arr : array();
 
             $current_time_in_millisecond = microtime(true);
             $current_time_in_microsecond = floor($current_time_in_millisecond * 1000);
             $now_date = date("Y-m-d",$current_time_in_millisecond);
 
             $previous_graph_data_arr_latest_timestamp = end($previous_graph_data_arr);
-            $previous_graph_data_arr_latest_timestamp = $previous_graph_data_arr_latest_timestamp[0];
+            $previous_graph_data_arr_latest_timestamp = gettype($previous_graph_data_arr_latest_timestamp) === 'array' ? $previous_graph_data_arr_latest_timestamp : false;
+            $previous_graph_data_arr_latest_timestamp = $previous_graph_data_arr_latest_timestamp !== false ? $previous_graph_data_arr_latest_timestamp[0] : false;
             $pre_date = date("Y-m-d",$previous_graph_data_arr_latest_timestamp/1000);
 
             if($pre_date !== $now_date){

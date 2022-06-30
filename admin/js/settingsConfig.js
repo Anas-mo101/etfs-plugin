@@ -105,7 +105,7 @@ jQuery( document ).ready( function( $ ) {
                 cancel_onclick(false);
                 $("#ETF-Pre-creds-state").html(response.cycle);
                 $("#ETF-Pre-creds-state").show();
-                if(response.cycle === 'no required files available, do allocate correct file naming bellow'){
+                if(response.cycle === 'No Required Files Available, Do Allocate Correct File Naming Below'){
                     edit_file_button();
                     $('#ETFs-Pre-auto').prop('checked', false); 
                 }else if(response.cycle === 'The ssh2 PHP extension is not available' || 
