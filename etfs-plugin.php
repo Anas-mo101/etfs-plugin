@@ -507,7 +507,6 @@ if ( !class_exists('EtfPlugin') ) {
 if(class_exists('ETFPlugin')){
     include 'alt_autoload.php';
     $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured,$custom_pdf_fields);
-
     register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
     register_deactivation_hook( __FILE__, array($etfPlugin, 'deactivate') );
 }
