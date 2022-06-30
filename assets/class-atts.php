@@ -483,7 +483,7 @@ $custom_fields = array(
     ),
     array(
         "name"          => "sub-advisor-name",
-        "title"         => "Subadvisor Name",
+        "title"         => "Sub-advisor Name",
         "description"   => "",
         "type"          => "select",
         "scope"         => array( "etfs" ),

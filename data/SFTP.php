@@ -208,10 +208,10 @@ class SFTP{
         if ( ! extension_loaded( 'ssh2' ) ) return "The ssh2 PHP extension is not available";
 
         $connection = ssh2_connect($this->_config["Host"], $this->_config["Port"]);
-        if (!$connection) return "connection failed";
+        if (!$connection) return "Connection Failed";
 
         $auth = @ssh2_auth_password($connection, $this->_config["User"], $this->_config["Pass"]);
-        if (!$auth) return "authentication failed";
+        if (!$auth) return "Authentication Failed";
 
         $this->sftp = ssh2_sftp($connection);
 
@@ -308,7 +308,7 @@ class SFTP{
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
             $this->force_turn_off();
             $this->cycle_state('f');
-            return "no required files available, do allocate correct file naming bellow";
+            return "No Required Files Available, Do Allocate Correct File Naming Below";
         }
         
         // save file on our server
@@ -372,8 +372,8 @@ class SFTP{
         $this->disconnect();
         $this->cycle_timestamp();
         $this->cycle_state('f');
-        $this->write_log('first sftp cycle is successfull');
-        return "first sftp cycle is successfull";
+        $this->write_log('First SFTP Cycle Is Successful');
+        return "First SFTP Cycle Is Successful";
     }
 
     function get_dir_conntent(){

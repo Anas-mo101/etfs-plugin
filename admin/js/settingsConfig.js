@@ -186,14 +186,14 @@ jQuery( document ).ready( function( $ ) {
             cache: false,
             success: function( response ) {
                 cancel_file();
-                $("#ETF-Pre-file-state").html("file requirement update successfull");
+                $("#ETF-Pre-file-state").html("File Requirement Update Successfull");
                 $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
             }
         })
         .fail(function(error) {
             console.log(`response failed: ${error}`);
             $("#ETFs-Pre-loadinganimation-file-settings").css('display', 'none');
-            $("#ETF-Pre-file-state").html("file requirement update unsuccessfull");
+            $("#ETF-Pre-file-state").html("File Requirement Update Unsuccessfull");
         });
     });
     

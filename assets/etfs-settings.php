@@ -2,14 +2,14 @@
 $sftp_config = $sftp->get_config();?>
 
 <div style="display: flex; justify-content: space-between; margin: 10px 0">
-    <h1 style="margin: auto 0;"> ETFs Settings </h1>
+    <h1 style="margin: auto 0;"> ETF Settings </h1>
 </div>
 <div>
     <div>
         <div class="ETF-Pre-settings-container">
             <div class="ETF-Pre-form-input-contianer">
                 <form class="ETF-Pre-form-sftp-contianer">
-                    <h3 style="margin: 10px 0 30px 0;">SFTP cycle settings</h3>
+                    <h3 style="margin: 10px 0 30px 0;">SFTP Cycle Settings</h3>
                     <div>
                         <div class="ETF-Pre-input-toggle-text">
                             <h4 class="feilds-label-style">SFTP is <span id='ETF-Pre-toggle-state-text'> <?php echo ($sftp_config["Automate"] === "t") ? "on" : "off";?></span></h4>
@@ -21,7 +21,7 @@ $sftp_config = $sftp->get_config();?>
                     </div> 
                     <div class="row-margin">
                         <div class="">
-                        <label style="margin: auto 0;"><h4 class="feilds-label-style">Host:</h4> </label>
+                        <label style="margin: auto 0;"><h4 class="feilds-label-style">Host</h4> </label>
                         <input style="width: 60%;" id="ETFs-Pre-host" type="text" value=<?php echo ($sftp_config["Host"] === "*") ? '"" placeholder="*"' : '"' . $sftp_config["Host"] . '"'; ?> />
                         </div>
                     </div>
@@ -33,13 +33,13 @@ $sftp_config = $sftp->get_config();?>
                     </div>
                     <div class="row-margin">
                         <div class="">
-                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Password:</h4> </label>
+                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Password</h4> </label>
                             <input style="width: 60%;" id="ETFs-Pre-pass" type="password" value=<?php echo ($sftp_config["Pass"] === "*") ? '"" placeholder="*"' : '"' . $sftp_config["Pass"] . '"'; ?> />
                         </div>
                     </div>
                     <div class="row-margin">
                         <div class="">
-                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Port:</h4> </label>
+                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Port</h4> </label>
                             <input style="width: 60%;" id="ETFs-Pre-port" type="text" value=<?php echo ($sftp_config["Port"] === "*") ? '"" placeholder="*"' : '"' . $sftp_config["Port"] . '"'; ?> />
                         </div>
                     </div>
@@ -54,7 +54,7 @@ $sftp_config = $sftp->get_config();?>
                         </div>
                     </div>
                     <div class="row-margin">
-                        <label style="margin: auto 0;"><h4 class="feilds-label-style">Last successful cycle</h4></label>
+                        <label style="margin: auto 0;"><h4 class="feilds-label-style">Last Successful Cycle</h4></label>
                         <span> <span style="font-weight: 600;" id="ETF-Pre-cycle-counter"> <?php echo $sftp_config["Last_Cycle_Timestamp"] === NULL ? 'None Yet' : $sftp_config["Last_Cycle_Timestamp"] ; ?>  </span> <span>(America/Chicago)</span> </span>
                     </div>
                     <div class="row-margin ">
@@ -71,7 +71,7 @@ $sftp_config = $sftp->get_config();?>
             <script> function drop_handler(event){ var nodeCopy = document.getElementById(event.dataTransfer.getData('text')).cloneNode(true); nodeCopy.id = nodeCopy.id + '-selected'; event.target.innerHTML = nodeCopy.innerText; } </script>
             <div class="ETF-Pre-form-input-contianer ETF-Pre-file-settings">
                 <div style="width: 100%;" class="ETF-Pre-form-sftp-contianer">
-                    <h3 style="margin: 10px 0 30px 0;">SFTP file naming</h3>
+                    <h3 style="margin: 10px 0 30px 0;">SFTP File Naming</h3>
                     <div class="row-margin">
                         <div class="ETF-Pre-label-input-grid">
                             <label style="margin: auto 0;"><h4 class="feilds-label-style">Daily NAV (csv):</h4> </label>
@@ -122,12 +122,12 @@ $sftp_config = $sftp->get_config();?>
 
                 <div style="width: 100%;">
                     <div style="display: flex; gap: 30px; justify-content: center; align-items: center;">
-                        <p style="margin: auto 0;">List Veiw</p>
+                        <p style="margin: auto 0;">List View</p>
                         <label class="switch">
                             <input id="ETFs-Pre-toggle-file-view" type="checkbox" >
                             <span class="slider round"></span>
                         </label>
-                        <p style="margin: auto 0;">Grid Veiw</p>
+                        <p style="margin: auto 0;">Grid View</p>
                     </div>
                     <div class="stage">
                         <div style='display: none;' id="ETFs-Pre-scaned-file-dir" class="folder-wrap level-current scrolling">
