@@ -27,7 +27,7 @@ $sftp_config = $sftp->get_config();?>
                     </div>
                     <div class="row-margin">
                         <div class="">
-                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Username:</h4> </label>
+                            <label style="margin: auto 0;"><h4 class="feilds-label-style">Username</h4> </label>
                             <input style="width: 60%;" id="ETFs-Pre-user" type="text" value=<?php echo ($sftp_config["User"] === "*") ? '"" placeholder="*"' : '"' . $sftp_config["User"] . '"'; ?> />
                         </div>
                     </div>
