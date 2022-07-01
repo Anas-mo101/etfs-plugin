@@ -90,7 +90,7 @@ function create_custom_efts_fields($fields_to_create, $etfs_prefix, $wrap_no='',
                             break;
                         }
                     } 
-                    if ( $customField[ 'description' ] ) echo '<p>' . $customField[ 'description' ] . '</p>'; ?>
+                    if ( $customField[ 'description' ] ) echo '<p style="margin: 0;">' . $customField[ 'description' ] . '</p>'; ?>
                 </div>
             <?php
             }

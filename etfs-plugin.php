@@ -410,7 +410,7 @@ if ( !class_exists('EtfPlugin') ) {
                         <button id="etf-sheet-sync-button" type="button" class="button button-primary button-large"> Get ETF info from linked files </button>
                         <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Edit </button>
                     </div>
-                    <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(dirname( __FILE__ ) ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
+                    <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(__FILE__ ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
                         <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Data fetched successfully </p>
                         <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>
                         <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed-url"> Enter Valid URL </p>
