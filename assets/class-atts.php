@@ -574,7 +574,7 @@ $custom_pdf_fields = array(
     ),
     array(
         "name"          => "pdf-part-f-soi-1",
-        "title"         => "Part F Schedule of Investments One",
+        "title"         => "Part F Schedule of Investments Q1",
         "description"   => "",
         "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
@@ -582,7 +582,23 @@ $custom_pdf_fields = array(
     ),
     array(
         "name"          => "pdf-part-f-soi-2",
-        "title"         => "Part F Schedule of Investments Two",
+        "title"         => "Part F Schedule of Investments Q2",
+        "description"   => "",
+        "type"          => "pdf_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "pdf-part-f-soi-3",
+        "title"         => "Part F Schedule of Investments Q3",
+        "description"   => "",
+        "type"          => "pdf_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "pdf-part-f-soi-4",
+        "title"         => "Part F Schedule of Investments Q4",
         "description"   => "",
         "type"          => "pdf_url",
         "scope"         => array( "etfs" ),

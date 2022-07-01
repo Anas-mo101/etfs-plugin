@@ -61,10 +61,7 @@ function create_custom_efts_fields($fields_to_create, $etfs_prefix, $wrap_no='',
                         }
                         case "pdf_url": { 
                             echo '<label for="' . $etfs_prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
-                            echo '<div style="display: flex; gap: 10px;"> <input readonly type="url" name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $etfs_prefix . $customField[ 'name' ], true ) ) . '" />';
-                            ?> <form style="display: flex; gap: 10px;" method='post'>
-                                <button id="<?php echo $etfs_prefix?>pdf_upload" type="button" onclick="mediaFileSelector('<?php echo $customField[ 'name' ] ?>',false,'application/pdf')" class="button button-primary button-large"> Select file </button>
-                            </form> </div> <?php
+                            echo '<input type="text" name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $etfs_prefix . $customField[ 'name' ], true ) ) . '" style="width: 100%;" />';
                             break;
                         }
                         case "select": {
