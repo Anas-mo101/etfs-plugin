@@ -1,6 +1,8 @@
 <?php $sftp = SFTP::getInstance();
-$sftp_config = $sftp->get_config();?>
+$sftp_config = $sftp->get_config();
 
+$no_exists_value = get_option( 'front-page-box-layout' );
+?>
 <div style="display: flex; justify-content: space-between; margin: 10px 0">
     <h1 style="margin: auto 0;"> ETF Settings </h1>
 </div>
@@ -143,6 +145,11 @@ $sftp_config = $sftp->get_config();?>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="ETF-Pre-form-input-contianer">
+                <form class="ETF-Pre-form-sftp-contianer">
+                    <?php include_once 'frontpage-box-layout.php' ?>
+                </form>
             </div>
         </div>
     </div>
