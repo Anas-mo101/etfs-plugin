@@ -92,6 +92,7 @@ if ( !class_exists('EtfPlugin') ) {
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
             add_action( 'wp_ajax_scansftpdir', array($this, 'get_sftp_dir'));
             add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
+            add_action( 'wp_ajax_fplayout', array($this, 'fp_layout'));
 
             add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
 
@@ -117,6 +118,20 @@ if ( !class_exists('EtfPlugin') ) {
         function etfs_post_init(){
             $this->etfs_post_type();
             $this->add_etfs_if_not_yet_added();
+        }
+
+        function fp_layout(){
+            $layout_setup = $_POST['etfs'];
+            $layout_setup_string = json_encode($layout_setup);
+
+            if(get_option('front-page-box-layout')){
+                update_option('front-page-box-layout', $layout_setup_string);
+            }else{
+                add_option('front-page-box-layout', $layout_setup_string);
+            }
+
+            $res = array('update' => 'update success');
+            wp_send_json($res);
         }
 
         function fetch_etf_data(){

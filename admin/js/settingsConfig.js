@@ -4,10 +4,35 @@ jQuery( document ).ready( function( $ ) {
     $('#ETFs-Pre-auto').on('click', toggle_switch_text);
     $('.cancel-button').on('click', cancel_onclick);
     $('.edit-button').on('click', edit_onclick);
+    cancel_fp_edits();
     cancel_onclick(false);
     cancel_file();
 
     $('.edit-file-button').on('click', () => { edit_file_button(); });
+
+    $('.fp-edit-button').on('click', () => { 
+        $('#drop-items').sortable({
+            animation: 350,
+            chosenClass: "sortable-chosen",
+            dragClass: "sortable-drag"
+        })
+        $('.fp-save-button, .fp-cancel-button').show();
+        $('.fp-edit-button').hide();  
+    });
+
+    $('.fp-cancel-button').on('click', () => { 
+        cancel_fp_edits(true);
+    });
+
+    function cancel_fp_edits(arg = false){
+        if(arg === true){
+            $('#drop-items').sortable('destroy');
+        }
+        $("#ETFs-Pre-loadinganimation-2").css('display', 'none');
+        $('.fp-toggle-button').prop('disabled', true);
+        $('.fp-save-button, .fp-cancel-button').hide();
+        $('.fp-edit-button').show();  
+    }
 
     function edit_file_button(){
         $("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").prop('disabled', false);
@@ -74,6 +99,52 @@ jQuery( document ).ready( function( $ ) {
         toggle_and_not_saved = false;
     }
     // ajax requests
+
+    $('.fp-save-button').on('click', () => {
+        $("#ETF-Pre-creds-state-2").hide();
+        $("#ETFs-Pre-loadinganimation-2").css('display', 'inline-block');
+        $('.fp-toggle-button').prop('disabled', false);
+
+        let etfs_arr = [];
+        counter = 1;
+        const card_order = $(".drop_card");
+        for (var obj of card_order) {
+            const card = {
+                'id': obj.id,
+                'order': counter,
+                'display': $(`#vis-${obj.id}`).is(":checked")
+            };
+            counter++;
+            etfs_arr.push(card);
+        };
+
+        console.log(etfs_arr);
+
+        const data = {
+            action: 'fplayout',
+            etfs: etfs_arr
+        };
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data,
+            cache: false,
+            success: function( response ) {
+                console.log(response);
+                cancel_fp_edits(true);
+
+            }
+        }).fail(function(error) {
+            console.log(`response failed: ${error}`);
+            cancel_fp_edits(true);
+            $("#ETFs-Pre-loadinganimation-2").css('display', 'none');
+            $("#ETF-Pre-creds-state-2").show();
+            $("#ETF-Pre-creds-state-2").html("server failed");
+        });
+    });
+
+
 
     $('.save-button').on('click', () => {
         $("#ETF-Pre-creds-state").hide();
