@@ -237,7 +237,7 @@ if ( !class_exists('EtfPlugin') ) {
               'capability_type' => 'post',
               'hierarchical' => false,
               'taxonomies'  => array( 'category' ),
-              'supports' => array('title', 'editor','custom-fields')
+              'supports' => array('title', 'editor','custom-fields','thumbnail')
             ));
 
             register_post_type('subadvisors',array(
