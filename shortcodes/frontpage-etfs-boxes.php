@@ -69,7 +69,7 @@ function set_box_($id){
             }
 
             $fp_options_layout_ = array_values(array_filter($fp_options_layout_));
-
+            
             $fp_count = 0;
             $count = count($fp_options_layout_);
             $odd_ = $count%2 === 1 ? true : false; 

@@ -61,18 +61,18 @@
                     if($_temp_ === null){ continue; }
                     $_display_sort[] = $_temp_;
                 }
+
+                foreach ($_temp_sort as $b) {   // adds new uns etfs
+                    if (array_search($b['id'], array_column($fp_options_layout_, 'id')) === FALSE) {
+                        $_display_sort[] = $b;
+                    }      
+                }
             }else{
                 $_display_sort =  $_temp_sort;
             }
 
             $order = array_column($_display_sort, 'order');
             array_multisort($order, SORT_ASC, SORT_NUMERIC, $_display_sort);
-
-            foreach ($_temp_sort as $b) {   // adds new uns etfs
-                if (array_search($b['id'], array_column($fp_options_layout_, 'id')) === FALSE) {
-                    $_display_sort[] = $b;
-                }      
-            }
 
             foreach ($_display_sort as $element) { ?>
                 <div id="<?php echo $element['id']; ?>" class="drop_card">

@@ -16,6 +16,7 @@ jQuery( document ).ready( function( $ ) {
             chosenClass: "sortable-chosen",
             dragClass: "sortable-drag"
         })
+        $('.fp-toggle-button').prop('disabled', false);
         $('.fp-save-button, .fp-cancel-button').show();
         $('.fp-edit-button').hide();  
     });
