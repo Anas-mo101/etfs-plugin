@@ -44,7 +44,7 @@ if($sub_adv_id !== 'none'){
             text-align: left;
             color: #63d5d3;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 500;
             line-height: 27px;
             letter-spacing: 4px;
@@ -53,7 +53,7 @@ if($sub_adv_id !== 'none'){
         .title-subadvisor{
             color: #12223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 40px;
+            font-size: 35px;
             font-weight: 600;
             line-height: 56px;
             margin: 0 0 37px 0;
@@ -80,7 +80,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             line-height: 35px;
             margin-bottom: 10px;
@@ -90,7 +90,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-desc{
             color: #11223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 400;
             line-height: 35px;
             margin-bottom: 35px;
@@ -110,7 +110,7 @@ if($sub_adv_id !== 'none'){
             text-align: left;
             color: #63d5d3;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 500;
             line-height: 0;
             letter-spacing: 4px;
@@ -120,7 +120,7 @@ if($sub_adv_id !== 'none'){
         .title-subadvisor{
             color: #12223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 40px;
+            font-size: 35px;
             font-weight: 600;
             line-height: 56px;
             margin: 0;
@@ -148,7 +148,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 600;
             line-height: 35px;
             margin-bottom: 10px;
@@ -158,7 +158,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-desc{
             color: #11223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 400;
             line-height: 35px;
             margin-bottom: 35px;
@@ -177,7 +177,7 @@ if($sub_adv_id !== 'none'){
                 <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
                 <a id="req-meet" href="/contact-us/">
                     <div id="banner-arrow" style="justify-content: normal; justify-items: baseline; display: flex;">
-                        <p style="color: #0C233F; padding-right: 26px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 20px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
+                        <p style="color: #0C233F; padding-right: 20px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 20px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
                         <div style="cursor: pointer">    
                             <div class="bi bi-arrow-right" style="color: #63D5D3;margin-bottom: 12px;font-size: 30px"></div>
                         </div>
