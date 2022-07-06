@@ -2,9 +2,9 @@
   
 <style>
     #container {
-        height: 1098 px;
-        min - width: 310 px;
-        width: 100 % ;
+        height: 1098px;
+        min-width: 310px;
+        width: 100%;
     } 
 </style>
 
@@ -16,8 +16,8 @@
     preGraphDataSet = graphStrigJson == '' || graphStrigJson == null ? [] : JSON.parse(graphStrigJson); 
 </script>
 
-<div class = "chart-wrapper" >
-	<div id = "container" > < /div> 
+<div class="chart-wrapper">
+	<div id="container"> </div> 
 </div>
 <script defer>
     jQuery(document).ready(function() {
@@ -87,7 +87,7 @@
                         minPadding: 0,
                         maxPadding: 0,
                         style: {
-                            fontSize: '20px',
+                            fontSize: '17px',
                             fontFamily: 'Avenir Next, sans-serif',
                             color: '#949494'
                         }
@@ -96,7 +96,7 @@
                 yAxis: {
                     labels: {
                         style: {
-                            fontSize: '20px',
+                            fontSize: '17px',
                             fontFamily: 'Avenir Next, sans-serif',
                             color: '#949494'
                         },
@@ -166,7 +166,7 @@
                         width: 110,
                         fill: 'transparent',
                         style: {
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: 500,
                             color: '#0C233F',
                             style: {
