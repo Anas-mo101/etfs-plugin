@@ -171,12 +171,12 @@ if($sub_adv_id !== 'none'){
         <div class="col-1-subadvisor">
             <div class="col-1-subadvisor-widget">
                 <div class="pnopspace">
-                    <p class="cat-subadvisor">SUB-ADVISOR</p>
-                    <p class="title-subadvisor"><?php echo $sub_adv_title ?></p>
+                    <p class="cat-subadvisor fade-in-animation">SUB-ADVISOR</p>
+                    <p class="title-subadvisor fade-in-animation"><?php echo $sub_adv_title ?></p>
                 </div>
                 <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
                 <a id="req-meet" href="/contact-us/">
-                    <div id="banner-arrow" style="justify-content: normal; justify-items: baseline; display: flex;">
+                    <div class="fade-in-up-animation" id="banner-arrow" style="justify-content: normal; justify-items: baseline; display: flex;">
                         <p style="color: #0C233F; padding-right: 26px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 20px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
                         <div style="cursor: pointer">    
                             <div class="bi bi-arrow-right" style="color: #63D5D3;margin-bottom: 12px;font-size: 30px"></div>
@@ -188,7 +188,7 @@ if($sub_adv_id !== 'none'){
     <div class="col-2-subadvisor">
         <div class="spacer-img" style="padding-top: 100px;" >
         </div>
-        <img style="vertical-align: middle; display: inline-block; width: 100%;" src="<?php echo $sub_adv_thumbnail ?>">
+        <img class="fade-in-animation" style="vertical-align: middle; display: inline-block; width: 100%;" src="<?php echo $sub_adv_thumbnail ?>">
     </div>
   </div>
 </section>
