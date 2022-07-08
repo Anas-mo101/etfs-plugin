@@ -480,6 +480,45 @@ $custom_fields = array(
         "type"          => "hidden",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
+    ),    array(
+        "name"          => "starting-nav-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "treasury-yeild-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "total-buffer-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "sp-start-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "sp-ref-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
     ),
     array(
         "name"          => "sub-advisor-name",

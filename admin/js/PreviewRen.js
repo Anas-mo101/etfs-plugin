@@ -58,6 +58,13 @@ function save_manually_edited_data(){
         document.getElementById('ETF-Pre-perf-sp-inception-data').value = document.getElementById('ETF-Pre-sp-inception').value.trim();
 
         if(document.getElementById('in-category-21').checked === false){
+            // --> vars
+            document.getElementById('ETF-Pre-starting-nav-data').value = document.getElementById('ETF-Pre-starting-nav').value.trim();
+            document.getElementById('ETF-Pre-treasury-yeild-data').value = document.getElementById('ETF-Pre-treasury-yeild').value.trim();
+            document.getElementById('ETF-Pre-total-buffer-data').value = document.getElementById('ETF-Pre-total-buffer').value.trim();
+            document.getElementById('ETF-Pre-sp-start-data').value = document.getElementById('ETF-Pre-sp-start').value.trim();
+            document.getElementById('ETF-Pre-sp-ref-data').value = document.getElementById('ETF-Pre-sp-ref').value.trim();
+
             // --> Outcome Period Values
             document.getElementById('ETF-Pre-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
             document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById("ETF-Pre-etf-starting-return").value.trim();

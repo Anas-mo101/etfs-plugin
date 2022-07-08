@@ -104,6 +104,31 @@
                 </div>
 
                 <?php if(! in_category( 'Unstructured ETFs' )){ ?>
+
+                    <div class="template-tables-preview" style="width: 50%;" id="<?php echo $this->prefix ?>fund-data-pricing">
+                        <h1 style="font-weight: 600;"> ETFs period variables </h1>
+                        <p> Used to calculate ETFs data. This section is not displayed </p>
+                        <div class="table-horizontal-row"> 
+                            <h3> ETF Starting NAV  </h3>
+                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>starting-nav" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "starting-nav-data", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> Treasury Yield </h3>
+                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>treasury-yeild" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "treasury-yeild-data", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> Total Buffer </h3>
+                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>total-buffer" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "total-buffer-data", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> S&P Year Start </h3>
+                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-start" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-start-data", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> S&P Reference </h3>
+                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-ref" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-ref-data", true )) ?> " />
+                        </div>
+                    </div>
                     
                     <div class="template-tables-preview" id="<?php echo $this->prefix ?>outcome-period">
                        
@@ -121,11 +146,11 @@
                             <h3>Days Remaining</h3>
                         </div>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>spx-index-price" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "spx-index-price-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "downside-buffer-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expected-upside" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expected-upside-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "days-remaining-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>spx-index-price" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "spx-index-price-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "downside-buffer-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expected-upside" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expected-upside-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "days-remaining-data", true ) ) ?>" />
                         </div>
                     </div>
 
@@ -145,11 +170,11 @@
                             <h3>Remaining Outcome Period</h3>
                         </div>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-etf-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-etf-return-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-spx-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-spx-return-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-buffer-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-downside-buffer-data", true ) ) ?>" />
-                            <input style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-outcome" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-outcome-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-etf-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-etf-return-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-spx-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-spx-return-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-buffer-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-downside-buffer-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>current-remaining-outcome" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "current-remaining-outcome-data", true ) ) ?>" />
                         </div>
                     </div>
 
