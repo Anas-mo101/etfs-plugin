@@ -10,8 +10,8 @@ class EtfCalculations{
 
     function get_remaining_buffer($id,$current_nav){ //Remaining Buffer (conditional)
         
-        $starting_nav = floatval(get_post_meta( $id, "ETF-Pre-graph-json-data", true ));
-        $total_buffer = floatval(get_post_meta( $id, "ETF-Pre-graph-json-data", true ));
+        $starting_nav = floatval(get_post_meta( $id, "ETF-Pre-starting-nav-data", true ));
+        $total_buffer = floatval(get_post_meta( $id, "ETF-Pre-total-buffer-data", true ));
 
         if($sp_period_return >= 0){
             return (-1) * $total_buffer;
@@ -31,8 +31,8 @@ class EtfCalculations{
     }
     
     function get_downside_buffer($id,$current_nav){ //ETF Downside to Buffer
-        $starting_nav = floatval(get_post_meta( $id, "ETF-Pre-graph-json-data", true ));
-        $total_buffer = floatval(get_post_meta( $id, "ETF-Pre-graph-json-data", true ));
+        $starting_nav = floatval(get_post_meta( $id, "ETF-Pre-starting-nav-data", true ));
+        $total_buffer = floatval(get_post_meta( $id, "ETF-Pre-total-buffer-data", true ));
 
         if($sp_period_return >= 0){
             $temp_ = ($starting_nav - $current_nav);
@@ -43,13 +43,13 @@ class EtfCalculations{
     }
 
     function get_current_sp($id,$ytd_sp_return){ // CURRENT_SP_LEVEL = S_P_YEAR_START_VALUE x (1+ YTD_SP_RETURN)
-        $sp_year_start = floatval(get_post_meta( $id, "ETF-Pre-S_P_YEAR_START_VALUE", true ));
+        $sp_year_start = floatval(get_post_meta( $id, "ETF-Pre-sp-start-data", true ));
         $temp_ = 1 + $ytd_sp_return;
         return $sp_year_start * $temp_;
     }
 
     function get_spx_period_return($id,$ytd_sp_return){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
-        $sp_ref_value = floatval(get_post_meta( $id, "S_P_REFERENCE_VALUE", true ));
+        $sp_ref_value = floatval(get_post_meta( $id, "ETF-Pre-sp-ref-data", true ));
         $temp_ = $this->get_current_sp($id,$ytd_sp_return);
         $_temp_ =  $temp_ / $sp_ref_value;
         return $_temp_ - 1;

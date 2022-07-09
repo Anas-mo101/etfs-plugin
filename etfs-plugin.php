@@ -135,43 +135,78 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function fetch_etf_data(){
-            $url = $_POST['gsURL'];
-            $url_h = $_POST['hlURL'];
-            $url_monlthy_ror = $_POST['monthlyRorURL'];
-            $url_dist_memo = $_POST['distMemoURL'];
             $etf_name = $_POST['etfName'];
             $etf_full_name = $_POST['eftFullName'];
 
-            $url_state = $_POST['gsURLstate'];
-            $url_h_state = $_POST['hlURLstate'];
+            // nav
+            $res_nav = null;
+            if(isset($_POST['gsURL'])){
+                $url = $_POST['gsURL'];
+                $columns; $data;
+                $url_state = $_POST['gsURLstate'];
+                if($url_state === "true"){
+                    $columns = (new GoogleSheetProvider())->getColumns($url);
+                    $data = (new GoogleSheetProvider())->getDataFromUrl($url, $columns);
+                }else{
+                    $columns = (new CsvProvider())->load_and_fetch_headers($url);
+                    $data = (new CsvProvider())->load_and_fetch($url, $columns);
+                }
 
-            $responesData = null;
-            $columns;
-            $data;
-            if($url_state === "true"){
-                $columns = (new GoogleSheetProvider())->getColumns($url);
-                $data = (new GoogleSheetProvider())->getDataFromUrl($url, $columns);
-            }else{
-                $columns = (new CsvProvider())->load_and_fetch_headers($url);
-                $data = (new CsvProvider())->load_and_fetch($url, $columns);
+                if( $data || count($data) > 0){
+                    $post_meta = new PostMeta($data,'Nav'); 
+                    $post_meta->set_selected($etf_name);
+                    $res_nav = $post_meta->process_incoming();
+                }
             }
-            $responesData = Array('headers' => $columns, 'body' =>  $data);
 
-            $responesData_h = null;
-            $columns_h;
-            $data_h;
-            if($url_h_state === "true"){
-                $columns_h = (new GoogleSheetProvider())->getColumns($url_h);
-                $data_h = (new GoogleSheetProvider())->getDataFromUrl($url_h,$columns_h);
-            }else{
-                $columns_h = (new CsvProvider())->load_and_fetch_headers($url_h);
-                $data_h = (new CsvProvider())->load_and_fetch($url_h,$columns_h);
+            // holdings
+            $res_holdings = null;
+            if(isset($_POST['hlURL'])){
+                $url_h = $_POST['hlURL'];
+                $columns_h;
+                $data_h;   
+                $url_h_state = $_POST['hlURLstate']; 
+                if($url_h_state === "true"){
+                    $columns_h = (new GoogleSheetProvider())->getColumns($url_h);
+                    $data_h = (new GoogleSheetProvider())->getDataFromUrl($url_h,$columns_h);
+                }else{
+                    $columns_h = (new CsvProvider())->load_and_fetch_headers($url_h);
+                    $data_h = (new CsvProvider())->load_and_fetch($url_h,$columns_h);
+                }
+
+                if( $data || count($data) > 0){
+                    $post_meta = new PostMeta($data_h,'Holding'); // pass  instead of name
+                    $post_meta->set_selected($etf_name);
+                    $res_holdings = $post_meta->process_incoming();
+                }
             }
-            $responesData_h = Array('headers' => $columns_h, 'body' =>  $data_h);
-            $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,$etf_full_name,false);
-            $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
-            $csv_res = Array( 'nav' => $responesData, 'holdings' =>  $responesData_h, 'monthly_ror' => $monthly_ror_pdf_data, 'dist_memo' => $dist_memo_pdf_data);
-			wp_send_json($csv_res);
+
+            $res_ror = null;
+            if(isset($_POST['monthlyRorURL'])){
+                $url_monlthy_ror = $_POST['monthlyRorURL'];
+                $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,$etf_full_name,false);
+                $post_meta = new PostMeta($monthly_ror_pdf_data,'Ror');
+                $post_meta->set_selected($etf_name);
+                $res_ror = $post_meta->process_incoming();
+            }
+
+            $res_dist = null;
+            if(isset($_POST['distMemoURL'])){
+                $url_dist_memo = $_POST['distMemoURL'];
+                $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
+                $post_meta = new PostMeta($dist_memo_pdf_data,'Dist');
+                $post_meta->set_selected($etf_name);
+                $res_dist = $post_meta->process_incoming();
+            }
+            
+            $_res = Array( 
+                'nav' => $res_nav, 
+                'holdings' =>  $res_holdings, 
+                'monthly_ror' => $res_ror, 
+                'dist_memo' => $res_dist
+            );
+
+			wp_send_json($_res);
         }
 
         function set_sftp_config(){
@@ -426,7 +461,7 @@ if ( !class_exists('EtfPlugin') ) {
                         <button id="etf-manual-edit-button" type="button" class="button button-primary button-large"> Edit </button>
                     </div>
                     <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>loadinganimation" > <img style="width:32px; height:32px;" src="<?php echo plugin_dir_url(__FILE__ ). 'admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation"> </div>
-                        <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Data fetched successfully </p>
+                        <p class="<?php echo $this->prefix ?>status-states"  style="display: none; color: green; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-success"> Data Saved successfully </p>
                         <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed"> Error Occured </p>
                         <p class="<?php echo $this->prefix ?>status-states" style="display: none; color: red; font-weight: bold; margin: auto 0;" id="<?php echo $this->prefix ?>status-failed-url"> Enter Valid URL </p>
                         <div class="<?php echo $this->prefix ?>status-states" style="display: none; margin: auto 0;" id="<?php echo $this->prefix ?>fetch-load">  </div>
