@@ -21,7 +21,6 @@ class PostMeta{
 
     function process_incoming(){
         $process = $this->files_map !== null ? array_search($this->file_name,$this->files_map,true) : $this->file_name;
-
         switch ($process) {
             case 'Holding':
                 return $this->process_holdings();
@@ -217,8 +216,14 @@ class PostMeta{
 
     // ======================= save calculated =========================== // 
 
-    function save_calculated($id){
+    private function process_calulations($id){
+        $calc = new Calculations();
 
+        $ans = $calc->get_period_return($id);
+        $ans = $calc->get_remaining_buffer($id);
+        $ans = $calc->get_downside_buffer($id);
+        $ans = $calc->get_current_sp($id);
+        $ans = $calc->get_spx_period_return($id);
     }
 }
 

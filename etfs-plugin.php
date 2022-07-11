@@ -415,7 +415,6 @@ if ( !class_exists('EtfPlugin') ) {
                 wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
                 wp_enqueue_style( 'settingStyling', $dir . 'admin/css/SettingStyling.css' );
                 wp_enqueue_script('settingsConfig', $dir . 'admin/js/settingsConfig.js' );
-
                 wp_enqueue_script('sortableJS', 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js');
                 wp_enqueue_script('jQuerySortableJS', 'https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js');
             }
