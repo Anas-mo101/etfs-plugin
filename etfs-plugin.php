@@ -140,7 +140,7 @@ if ( !class_exists('EtfPlugin') ) {
 
             // nav
             $res_nav = null;
-            if(isset($_POST['gsURL'])){
+            if(isset($_POST['gsURL']) && $_POST['gsURL'] !== ''){
                 $url = $_POST['gsURL'];
                 $columns; $data;
                 $url_state = $_POST['gsURLstate'];
@@ -161,7 +161,7 @@ if ( !class_exists('EtfPlugin') ) {
 
             // holdings
             $res_holdings = null;
-            if(isset($_POST['hlURL'])){
+            if(isset($_POST['hlURL']) && $_POST['hlURL'] !== ''){
                 $url_h = $_POST['hlURL'];
                 $columns_h;
                 $data_h;   
@@ -182,7 +182,7 @@ if ( !class_exists('EtfPlugin') ) {
             }
 
             $res_ror = null;
-            if(isset($_POST['monthlyRorURL'])){
+            if(isset($_POST['monthlyRorURL']) && $_POST['monthlyRorURL'] !== ''){
                 $url_monlthy_ror = $_POST['monthlyRorURL'];
                 $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,$etf_full_name,false);
                 $post_meta = new PostMeta($monthly_ror_pdf_data,'Ror');
@@ -191,7 +191,7 @@ if ( !class_exists('EtfPlugin') ) {
             }
 
             $res_dist = null;
-            if(isset($_POST['distMemoURL'])){
+            if(isset($_POST['distMemoURL']) && $_POST['distMemoURL'] !== ''){
                 $url_dist_memo = $_POST['distMemoURL'];
                 $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
                 $post_meta = new PostMeta($dist_memo_pdf_data,'Dist');
@@ -413,8 +413,11 @@ if ( !class_exists('EtfPlugin') ) {
                 }
             }elseif ( $hook == 'etfs_page_etfs_general_settings') {
                 wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
-                wp_enqueue_style( 'SettingStyling', $dir . 'admin/css/SettingStyling.css' );
+                wp_enqueue_style( 'settingStyling', $dir . 'admin/css/SettingStyling.css' );
                 wp_enqueue_script('settingsConfig', $dir . 'admin/js/settingsConfig.js' );
+
+                wp_enqueue_script('sortableJS', 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js');
+                wp_enqueue_script('jQuerySortableJS', 'https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js');
             }
         }
 

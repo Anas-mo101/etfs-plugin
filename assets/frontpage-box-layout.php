@@ -1,10 +1,5 @@
 <?php  ?>
-
 <h3 style="margin: 10px 0 30px 0;">Frontpage ETFs Layout</h3>
-
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
-
 <div class="drop">
     <div class="drop_container" id="drop-items">
     <?php

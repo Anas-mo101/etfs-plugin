@@ -20,7 +20,7 @@ class PostMeta{
     }
 
     function process_incoming(){
-        $process = $this->files_map !== null ? array_search($this->file_name,$this->files_map,true) : $file;
+        $process = $this->files_map !== null ? array_search($this->file_name,$this->files_map,true) : $this->file_name;
 
         switch ($process) {
             case 'Holding':
@@ -123,8 +123,8 @@ class PostMeta{
             $post_to_update = get_page_by_title( $this->selected_etfs , OBJECT, 'etfs' );
             if(! $post_to_update) return false;
 
-            update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
-            update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
+            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-top-holders-data',$new_holdings);
 
             return true;
         }else{
@@ -142,14 +142,14 @@ class PostMeta{
         return false;
     }
 
-    // ============================== ROR =======================================
+    // ============================== ROR ======================================= // 
 
     private function save_ror_single($etf_name,$meta){
         $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
         if(! $post_to_update) return;
 
         update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', date("m/d/y"));
-        update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['ex_date']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['sec_yeild']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', date("m/d/y"));
 
@@ -176,13 +176,8 @@ class PostMeta{
         }
 
         if($this->selected_etfs !== null && $this->files_map === null){
-
-            foreach ($this->incoming_meta as $etf_name => $meta) {
-                if($etf_name == $this->selected_etfs){
-                    $this->save_ror_single($etf_name,$meta);
-                    return true;
-                }
-            }
+            $this->save_ror_single($this->selected_etfs,$this->incoming_meta);
+            return true;
         }else{
             foreach ($this->incoming_meta as $etf_name => $meta) {
                 $this->save_ror_single($etf_name,$meta);
@@ -194,8 +189,8 @@ class PostMeta{
 
     // ===========================  Dist  ===========================================
 
-    private function save_dist_single($meta){
-        $post_to_update = get_page_by_title( $meta['etf_name'], OBJECT, 'etfs' );
+    private function save_dist_single($meta,$etf_name){
+        $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
         if(! $post_to_update) return;
         update_post_meta($post_to_update->ID,'ETF-Pre-ex-date-data', $meta['ex_date']);
         update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
@@ -209,12 +204,8 @@ class PostMeta{
         }
 
         if($this->selected_etfs !== null && $this->files_map === null){
-            foreach ($this->incoming_meta as $etf_name => $meta) {
-                if($meta['etf_name'] == $this->selected_etfs){
-                    $this->save_dist_single($meta);
-                    return true;
-                }
-            }
+            $this->save_dist_single($this->incoming_meta,$this->selected_etfs);
+            return true;
         }else{
             foreach ($this->incoming_meta as $meta) {
                 $this->save_dist_single($meta);
@@ -223,4 +214,11 @@ class PostMeta{
         }
         return false;
     }
+
+    // ======================= save calculated =========================== // 
+
+    function save_calculated($id){
+
+    }
 }
+
