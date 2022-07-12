@@ -18,57 +18,26 @@
         </tr>
         
         <?php
-            $this->etfs_structured;
-            $sftp = SFTP::getInstance();
-            $config = $sftp->get_config();
-            $local_save_dir = wp_get_upload_dir();
-
-            $_nav_data = null;
-            if($config['Nav'] !== "*"){
-                $local_save_file_path = $local_save_dir["path"] .'/'. $config['Nav'];
-                $columns = (new CsvProvider())->load_and_fetch_headers($local_save_file_path);
-                $_nav_data = (new CsvProvider())->load_and_fetch($local_save_file_path, $columns);
-            }
             
-            $now = time();
-
             foreach ($this->etfs_structured as $etf) {
-                $market_value = '';
-                if (is_array($_nav_data) && $config['Nav'] !== "*") {
-                    foreach ($_nav_data as $_nav_data_record) {
-                        if($_nav_data_record['Fund Ticker'] === $etf){
-                            $market_value = $_nav_data_record['Market Price'];
-                            break;
-                        }
-                    }
-                }
 
-                $long_name = (new Pdf2Data())->get_etfs_full_pre($etf); // save it as meta instead
-                $current_year = date("Y");
-                $future = strtotime("1 " . $long_name . " " . $current_year);
-                $timeleft = $future - $now;
-                $daysleft = round((($timeleft/24)/60)/60);
-                
-                if($daysleft < 0){
-                    $current_year = $current_year + 1;
-                    $future = strtotime("1 " . $long_name . " " . $current_year);
-                    $timeleft = $future - $now;
-                    $daysleft = round((($timeleft/24)/60)/60);
-                } ?> 
+                $post_to_diplay = get_page_by_title( $etf, OBJECT, 'etfs' );
+                $long_name = (new Pdf2Data())->get_etfs_full_pre($etf);
+                $daysleft = (new Calculations())->get_remaining_outcome_period(false,$etf); ?> 
 
                 <tr>
                     <td class="table-ts-in pb bg-dark"><a href="/etfs/<?php echo strtolower($etf)?>/"> <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"><a style= "color:#12223D;" href="/etfs/<?php echo strtolower($etf)?>/" > <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"> <?php echo $long_name ?> </td>
-                    <td class="table-ts-in pb"> <?php echo $market_value !== '' ? $market_value : '-'; ?> </td>
-                    <td class="table-ts-in pb"> - </td>  
-                    <td class="table-ts-in pb">S&P 500</td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-na-v-data', true); ?> </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-etf-return-data', true); ?> </td>  
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-product-index-data', true); ?>  </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-spx-return-data', true); ?> </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-product-participation-rate-data', true); ?> </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-remaining-buffer-data', true); ?> </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-downside-buffer-data', true); ?> </td>
                     <td class="table-ts-in pb"> - </td>
-                    <td class="table-ts-in pb"> - </td>
-                    <td class="table-ts-in pb"> - </td>
-                    <td class="table-ts-in pb"> - </td>
-                    <td class="table-ts-in pb"> - </td>
-                    <td class="table-ts-in pb"> <?php echo $daysleft ?> days</td>
+                    <td class="table-ts-in pb"> <?php echo ($daysleft > 1) ? $daysleft . ' days' : $daysleft . ' day'; ?> </td>
                     <td class="text-center table-ts-in pb p-link">
                         <a href="/wp-content/uploads/<?php echo $etf?>_Prospectus.pdf" class="bt-download-prospectus" download>
                     </td>

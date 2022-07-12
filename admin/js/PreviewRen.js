@@ -60,26 +60,30 @@ function save_manually_edited_data(){
         if(document.getElementById('in-category-21').checked === false){
             // --> vars
             document.getElementById('ETF-Pre-starting-nav-data').value = document.getElementById('ETF-Pre-starting-nav').value.trim();
+            document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById('ETF-Pre-starting-nav').value.trim();
             document.getElementById('ETF-Pre-treasury-yeild-data').value = document.getElementById('ETF-Pre-treasury-yeild').value.trim();
             document.getElementById('ETF-Pre-total-buffer-data').value = document.getElementById('ETF-Pre-total-buffer').value.trim();
             document.getElementById('ETF-Pre-sp-start-data').value = document.getElementById('ETF-Pre-sp-start').value.trim();
             document.getElementById('ETF-Pre-sp-ref-data').value = document.getElementById('ETF-Pre-sp-ref').value.trim();
 
+            document.getElementById('ETF-Pre-product-index-data').value = document.getElementById('ETF-Pre-product-index').value.trim();
+            document.getElementById('ETF-Pre-product-participation-rate-data').value = document.getElementById('ETF-Pre-product-participation-rate').value.trim();
+
             // --> Outcome Period Values
-            document.getElementById('ETF-Pre-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
-            document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById("ETF-Pre-etf-starting-return").value.trim();
-            document.getElementById("ETF-Pre-spx-index-price-data").value = document.getElementById("ETF-Pre-spx-index-price").value.trim();
-            document.getElementById("ETF-Pre-downside-buffer-data").value = document.getElementById("ETF-Pre-downside-buffer").value.trim();
-            document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-expected-upside").value.trim();
-            document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
+            // document.getElementById('ETF-Pre-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
+            // document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById("ETF-Pre-etf-starting-return").value.trim();
+            // document.getElementById("ETF-Pre-spx-index-price-data").value = document.getElementById("ETF-Pre-spx-index-price").value.trim();
+            // document.getElementById("ETF-Pre-downside-buffer-data").value = document.getElementById("ETF-Pre-downside-buffer").value.trim();
+            // document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-expected-upside").value.trim();
+            // document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
 
             // --> Current Outcome Period Values
-            document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
-            document.getElementById("ETF-Pre-current-etf-return-data").value = document.getElementById("ETF-Pre-current-etf-return").value.trim();
-            document.getElementById("ETF-Pre-current-spx-return-data").value = document.getElementById("ETF-Pre-current-spx-return").value.trim();
-            document.getElementById("ETF-Pre-current-remaining-buffer-data").value = document.getElementById("ETF-Pre-current-remaining-buffer").value.trim();
-            document.getElementById("ETF-Pre-current-downside-buffer-data").value = document.getElementById("ETF-Pre-current-downside-buffer").value.trim();
-            document.getElementById("ETF-Pre-current-remaining-outcome-data").value = document.getElementById("ETF-Pre-current-remaining-outcome").value.trim();
+            // document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
+            // document.getElementById("ETF-Pre-current-etf-return-data").value = document.getElementById("ETF-Pre-current-etf-return").value.trim();
+            // document.getElementById("ETF-Pre-current-spx-return-data").value = document.getElementById("ETF-Pre-current-spx-return").value.trim();
+            // document.getElementById("ETF-Pre-current-remaining-buffer-data").value = document.getElementById("ETF-Pre-current-remaining-buffer").value.trim();
+            // document.getElementById("ETF-Pre-current-downside-buffer-data").value = document.getElementById("ETF-Pre-current-downside-buffer").value.trim();
+            // document.getElementById("ETF-Pre-current-remaining-outcome-data").value = document.getElementById("ETF-Pre-current-remaining-outcome").value.trim();
         }
 
         // --> Distribution Detail

@@ -110,23 +110,35 @@
                         <p> Used to calculate ETFs data. This section is not displayed </p>
                         <div class="table-horizontal-row"> 
                             <h3> ETF Starting NAV  </h3>
-                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>starting-nav" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "starting-nav-data", true )) ?>" />
+                            <input type="number" step=".01" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>starting-nav" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "starting-nav-data", true )) ?>" />
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> Treasury Yield </h3>
-                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>treasury-yeild" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "treasury-yeild-data", true )) ?>" />
+                            <input type="number" step=".01" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>treasury-yeild" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "treasury-yeild-data", true )) ?>" />
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> Total Buffer </h3>
-                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>total-buffer" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "total-buffer-data", true )) ?>" />
+                            <input type="number" step=".01" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>total-buffer" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "total-buffer-data", true )) ?>" />
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> S&P Year Start </h3>
-                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-start" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-start-data", true )) ?>" />
+                            <input type="number" step=".01" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-start" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-start-data", true )) ?>" />
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> S&P Reference </h3>
-                            <input type="number" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-ref" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-ref-data", true )) ?>" />
+                            <input type="number" step=".01" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-ref" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "sp-ref-data", true )) ?>" />
+                        </div>
+                    </div>
+
+                    <div class="template-tables-preview" style="width: 50%;" id="<?php echo $this->prefix ?>fund-data-pricing">
+                        <h1 style="font-weight: 600;"> Product Table Manual Entries </h1>
+                        <div class="table-horizontal-row"> 
+                            <h3> Index  </h3>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>product-index" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "product-index-data", true )) ?>" />
+                        </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> Est. Upside Market Participation Rate </h3>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>product-participation-rate" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "product-participation-rate-data", true )) ?>" />
                         </div>
                     </div>
                     

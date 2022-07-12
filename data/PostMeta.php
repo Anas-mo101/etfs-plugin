@@ -215,15 +215,5 @@ class PostMeta{
     }
 
     // ======================= save calculated =========================== // 
-
-    private function process_calulations($id){
-        $calc = new Calculations();
-
-        $ans = $calc->get_period_return($id);
-        $ans = $calc->get_remaining_buffer($id);
-        $ans = $calc->get_downside_buffer($id);
-        $ans = $calc->get_current_sp($id);
-        $ans = $calc->get_spx_period_return($id);
-    }
 }
 
