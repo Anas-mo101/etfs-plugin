@@ -132,6 +132,7 @@
 
                     <div class="template-tables-preview" style="width: 50%;" id="<?php echo $this->prefix ?>fund-data-pricing">
                         <h1 style="font-weight: 600;"> Product Table Manual Entries </h1>
+                        <p> Displayed in product page. </p>
                         <div class="table-horizontal-row"> 
                             <h3> Index  </h3>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>product-index" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "product-index-data", true )) ?>" />
