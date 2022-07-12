@@ -44,7 +44,7 @@
         left: unset;
         width: unset;
         top:3%;
-        right: 18%;
+        right: 15%;
         font-size: 15px;
         font-weight: 600;
         font-family: 'Avenir Next';
@@ -53,7 +53,7 @@
       
     .button-prev{
         top: 2%;
-        right: 28%!important;
+        right: 29%!important;
         left: unset!important;
         font-size: 20px;
         color: #6ec1e4;
@@ -63,7 +63,7 @@
       
     .button-next{
         top: 2%;
-        right: 11%!important;
+        right: 8%!important;
         left: unset!important;
         font-size: 20px;
         color: #6ec1e4;
@@ -142,7 +142,7 @@ if(empty($top_holdings_array)){
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" ></script>
 
 <!-- Initialize Swiper -->
-<script >
+<script>
   var swiper = new Swiper(".mySwiper", {
     pagination: {
       el: ".swiper-pagination",
