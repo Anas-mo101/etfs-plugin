@@ -39,6 +39,13 @@ class Calculations{
         update_post_meta($id,'ETF-Pre-outcome-period-date-data',date("m/d/y"));
     }
 
+    function calc_all(){
+        $etfs = get_posts( array('post_type' => 'etfs', 'numberposts' => 999999 ) );
+        foreach ($etfs as $etf) {
+            init($etf->ID);
+        }
+    }
+
     function get_period_return($flag){ // PERIOD_RETURN => ($ETF_CURRENT_NAV/$ETF_STARTING_NAV)-1
         if ($this->starting_nav === null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
