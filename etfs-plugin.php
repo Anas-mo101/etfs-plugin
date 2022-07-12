@@ -6,7 +6,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           0.9.2 
+ * Version:           0.9.5 
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
@@ -198,6 +198,9 @@ if ( !class_exists('EtfPlugin') ) {
                 $post_meta->set_selected($etf_name);
                 $res_dist = $post_meta->process_incoming();
             }
+
+            $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
+            (new Calculations())->init($post_to_update->ID);
             
             $_res = Array( 
                 'nav' => $res_nav, 
