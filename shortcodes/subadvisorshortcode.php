@@ -176,10 +176,10 @@ if($sub_adv_id !== 'none'){
                 </div>
                 <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
                 <a id="req-meet" href="/contact-us/">
-                    <div class="fade-in-up-animation" id="banner-arrow" style="justify-content: normal; justify-items: baseline; display: flex;">
-                        <p style="color: #0C233F; padding-right: 20px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 20px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
+                    <div class="fade-in-up-animation sub-adv" id="" style="justify-content: normal; justify-items: baseline; display: flex;">
+                        <p style="color: #63d5d3; padding-right: 26px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 17px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
                         <div style="cursor: pointer">    
-                            <div class="bi bi-arrow-right" style="color: #63D5D3;margin-bottom: 12px;font-size: 30px"></div>
+                            <div class="bi bi-arrow-right" style="color:#63d5d3 ;margin-bottom: 12px;font-size: 25px"></div>
                         </div>
                     </div>
                 </a>
