@@ -84,6 +84,7 @@ if ( !class_exists('EtfPlugin') ) {
             add_shortcode('render-etf-page', array($this, 'render_product_page'));
             add_shortcode('render-top-holders-table', array($this, 'render_top_holders'));
             add_shortcode('render-subadvisor-section', array($this, 'render_subadvisor'));
+            add_shortcode('render-toptenmobile', array($this, 'render_toptenmobile'));
             add_shortcode('render-nav-graph', array($this, 'render_graph')); 
             add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb')); 
             add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
@@ -535,6 +536,12 @@ if ( !class_exists('EtfPlugin') ) {
         function render_subadvisor() {
             ob_start();
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/subadvisorshortcode.php');
+            return ob_get_clean();
+        }
+
+        function render_toptenmobile() {
+            ob_start();
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/toptenmobile.php');
             return ob_get_clean();
         }
 
