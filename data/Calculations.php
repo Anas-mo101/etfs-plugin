@@ -34,6 +34,16 @@ class Calculations{
         $this->get_current_sp(true);
         $this->get_spx_period_return();
         $this->get_remaining_outcome_period(true);
+
+        update_post_meta($id,'ETF-Pre-current-outcome-period-date-data',date("m/d/y"));
+        update_post_meta($id,'ETF-Pre-outcome-period-date-data',date("m/d/y"));
+    }
+
+    function calc_all(){
+        $etfs = get_posts( array('post_type' => 'etfs', 'numberposts' => 999999 ) );
+        foreach ($etfs as $etf) {
+            init($etf->ID);
+        }
     }
 
     function get_period_return($flag){ // PERIOD_RETURN => ($ETF_CURRENT_NAV/$ETF_STARTING_NAV)-1
@@ -128,7 +138,7 @@ class Calculations{
         }
 
         if($flag){
-            update_post_meta($this->id,'ETF-Pre-current-remaining-outcome-data', $daysleft);  
+            update_post_meta($this->id,'ETF-Pre-days-remaining-data', $daysleft);  
         }else{
             return $daysleft;
         } 
