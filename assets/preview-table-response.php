@@ -252,12 +252,6 @@
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>pay-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "pay-date-data", true )) ?> " />
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>amount-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "dis-rate-share-data", true )) ?> " />
                     </div>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
-                        <p id="<?php echo $this->prefix ?>"> ?? </p>
-                        <p id="<?php echo $this->prefix ?>"> ?? </p>
-                        <p id="<?php echo $this->prefix ?>"> ?? </p>
-                        <p id="<?php echo $this->prefix ?>"> ?? </p>
-                    </div>
                 </div>
 
                 <div class="template-tables-preview" >

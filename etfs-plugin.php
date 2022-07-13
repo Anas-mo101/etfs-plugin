@@ -1,7 +1,5 @@
 <?php
-/**
- * @package ETFPlugin
- */
+namespace EtfsPlugin;
 
 /**
  * Plugin Name:       ETFs
@@ -17,30 +15,12 @@
  * Description 
  * This plugin was made specifically for TrueShares to manage 
  * their ETFs effortlessly, the goal is automate the process
- * of gathering data from multiple files types then store it to
- * be presented by on the website. That was accomplished by 4 
- * step solution.
- *  -> add files link
- *  -> prview data
- *  -> save 
- *  -> update
- * 
- * Version 0.0.5 update
- * -> Automate 100% of process
- * -> No human interaction required
- * -> Values stored can be edited when required             /\
- * -> Implementation of SFTP to get required files         //\\
- * -> Automatically receive and proccess files            //  \\ 
- * -> Extract required data and store it                 //    \\
- * -> Repeat this process X times in a day              //      \\   
- * 
+ * of gathering data from multiple files types.
  * 
  */
 
 
-if( ! defined('ABSPATH') ){
-    die;
-}
+if( ! defined('ABSPATH') ){ die; }
 
 if ( !class_exists('EtfPlugin') ) {
 
@@ -59,8 +39,6 @@ if ( !class_exists('EtfPlugin') ) {
         var $etfs_structured;
 
         var $etfs_custom_pdf_fields;
-
-        var $automation = false;
 
         function __construct($in_feilds,$in_etf,$in_uns_etfs,$etfs_structured,$pdf_fields){
             
@@ -97,7 +75,12 @@ if ( !class_exists('EtfPlugin') ) {
 
             add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
 
-            add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
+            // add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
+            add_action( 'init', function () {
+                if ( ! has_action( 'get_sftp_data' ) ) {
+                    add_action( 'get_sftp_data', 'EtfsPlugin\do_sftp_cycle', 10, 2 );
+                }
+            } );
 
             add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
@@ -112,7 +95,9 @@ if ( !class_exists('EtfPlugin') ) {
         }
 
         function deactivate(){
-            wp_clear_scheduled_hook( 'get_sftp_data' );
+            if ( wp_next_scheduled ( 'get_sftp_data' )){
+                wp_clear_scheduled_hook( 'get_sftp_data' );
+            } 
             flush_rewrite_rules();
         }
 
@@ -218,13 +203,13 @@ if ( !class_exists('EtfPlugin') ) {
             $res = $sftp->set_config($_POST);
 
             if($res['cycle'] === 'first sftp cycle is successfull'){
-                if (! wp_next_scheduled ( 'get_sftp_data' ))  wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
-                $this->automation = true;
-            }elseif ($res["cycle"] === "blocked") {
-                $this->automation = false;
-                wp_clear_scheduled_hook( 'get_sftp_data' );
+                if (! wp_next_scheduled ( 'get_sftp_data' )){
+                    wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
+                }else{
+                    wp_clear_scheduled_hook( 'get_sftp_data' );
+                    wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
+                }
             }
-
             wp_send_json($res);
         }
 
@@ -571,6 +556,11 @@ if(class_exists('ETFPlugin')){
     $etfPlugin = new ETFPlugin($custom_fields,$etfs_all,$etfs_unstructured,$etfs_structured,$custom_pdf_fields);
     register_activation_hook( __FILE__, array($etfPlugin, 'activiate') );
     register_deactivation_hook( __FILE__, array($etfPlugin, 'deactivate') );
+
+    function do_sftp_cycle(){
+        $sftp = SFTP::getInstance();
+        $sftp->auto_cycle(true);
+    }
 }
     
 
