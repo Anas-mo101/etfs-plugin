@@ -4,7 +4,7 @@ $custom_fields = array(
     array(
         "name"          => "etf-full-name",
         "title"         => "ETF Fund Name",
-        "description"   => "Requried for un-structured ETFs",
+        "description"   => "Requried for un-structured ETFs. (Without the word 'ETF')",
         "type"          => "text",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"

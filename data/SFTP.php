@@ -1,4 +1,5 @@
 <?php
+namespace ETFsSFTP;
 
 class SFTP{ 
     var $single_inseration = false;
@@ -16,16 +17,6 @@ class SFTP{
             self::$instance = new SFTP();
         }
         return self::$instance;
-    }
-
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
     }
 
     function sftp_db_init(){
@@ -163,8 +154,6 @@ class SFTP{
             return $res;
         }
 
-
-
         // update $_config
         $this->_config["Automate"] = ($args["state"] === 'true') ? 't' : 'f';
         $this->_config["Host"] = $args["host"];
@@ -173,7 +162,6 @@ class SFTP{
         $this->_config["User"] = $args["user"];
         $this->_config["Timing"] = $args["freq"];
 
-        
         // update config db
         $this->update_config_db();
 
@@ -197,13 +185,17 @@ class SFTP{
         return $this->_config;
     }
 
-    function connect(){
-        if(!$this->_config || is_null($this->_config) || count($this->_config) == 0){
-            $this->_config = $this->get_config_db();
+    function connect($auto = false){
+        $this->get_config();
+
+        if($auto === true){
+            if($this->_config["Automate"] === 'f'){
+                return "SFTP is Off";
+            }
         }
         
         // libssh2 php extention -> https://www.libssh2.org/download/
-        // ssh2 php extention -> https://pecl.php.net/package/ssh2/ (1.3.1 for php 8.0 on local bitnami server)
+        // ssh2 php extention -> https://pecl.php.net/package/ssh2/ 
         if ( ! extension_loaded( 'ssh2' ) ) return "The ssh2 PHP extension is not available";
 
         $connection = ssh2_connect($this->_config["Host"], $this->_config["Port"]);
@@ -258,12 +250,18 @@ class SFTP{
         unset($this->sftp);
     }
 
-    function auto_cycle(){
+    function auto_cycle($auto = false){
         $this->cycle_state('t');
+
+        // connect to sftp server
+        if(($con_res = $this->connect($auto)) !== true){
+            // $this->force_turn_off();
+            $this->cycle_state('f');
+            return $con_res;
+        }
+
         // set file names to look for
         $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist' );
-
-
         foreach ($file_set_name as $key => $value )  {
             if(isset($this->_config["$key"]) && $this->_config["$key"] !== '*' ){
                 $file_set_name["$key"] = $this->_config[$key];
@@ -271,21 +269,12 @@ class SFTP{
                 unset($file_set_name["$key"]);
             }
         }
-
         
         $files_required = array();
         foreach ($file_set_name as $key => $value) {
             if(! is_null($value) && $value !== '*'){
                 $files_required[] = $value;
             }
-        }
-
-        
-        // connect to sftp server
-        if(($con_res = $this->connect()) !== true){
-            $this->force_turn_off();
-            $this->cycle_state('f');
-            return $con_res;
         }
 
         // scan file sftp dir & find required files
@@ -303,7 +292,6 @@ class SFTP{
 
         $files_required_and_available_remotely = array_combine($files_name,$files_path);
 
-
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
             $this->force_turn_off();
             $this->cycle_state('f');
@@ -319,19 +307,19 @@ class SFTP{
             }
         }
 
-        // separate by file types -> extract & save data from file 
+        // separate by file types -> extract & save data from each file at a time
         $save_meta_status = array();
         foreach($files_unprocessed_and_available_localy as $file_available){
-            foreach ($file_available as $name => $path) {
+            foreach ($file_available as $name => $path) { // $file_available = array($name => $path);
                 $path_info = pathinfo($name);
                 if($path_info['extension'] === "csv"){
-                    $columns = (new CsvProvider())->load_and_fetch_headers($path);
-                    $data = (new CsvProvider())->load_and_fetch($path, $columns);
+                    $columns = (new \CsvProvider())->load_and_fetch_headers($path);
+                    $data = (new \CsvProvider())->load_and_fetch($path, $columns);
                     if(! $data || count($data) == 0){
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$file_set_name); // pass  instead of name
+                        $post_meta = new \PostMeta($data,$name,$file_set_name); // pass  instead of name
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -344,20 +332,20 @@ class SFTP{
                     switch ($process) {
                         case 'ror':
                             // do ror processing
-                            $data = (new Pdf2Data())->get_all_monthly_fund_data($path);
+                            $data = (new \Pdf2Data())->get_all_monthly_fund_data($path);
                             break;
                         case 'dist':
                             // do dist memo processing
-                            $data = (new Pdf2Data())->get_all_distrubation_memo_data($path);
+                            $data = (new \Pdf2Data())->get_all_distrubation_memo_data($path);
                             break;
                         default: break; // unwanted file names
                     }
 
-                    if(! $data || count($data) == 0){
+                    if(count($data) == 0){
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$file_set_name);
+                        $post_meta = new \PostMeta($data,$name,$file_set_name);
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -371,7 +359,7 @@ class SFTP{
         $this->disconnect();
         $this->cycle_timestamp();
         $this->cycle_state('f');
-        $this->write_log('First SFTP Cycle Is Successful');
+        error_log('First SFTP Cycle Is Successful');
         return "First SFTP Cycle Is Successful";
     }
 
@@ -393,7 +381,7 @@ class SFTP{
         return $files_name;
     }
 
-    function set_files_name($args){ // not updating
+    function set_files_name($args){ 
 
         // validate $args
         if(isset($args['nav']) || (trim($args['nav']) !== '') ) {
@@ -417,4 +405,9 @@ class SFTP{
 
         return 'success';
     }
+}
+
+function do_sftp_cycle(){
+    $sftp = SFTP::getInstance();
+    $sftp->auto_cycle(true);
 }
