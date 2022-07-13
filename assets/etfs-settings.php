@@ -1,7 +1,5 @@
-<?php $sftp = SFTP::getInstance();
+<?php $sftp = \ETFsSFTP\SFTP::getInstance();
 $sftp_config = $sftp->get_config();
-
-$no_exists_value = get_option( 'front-page-box-layout' );
 ?>
 <div style="display: flex; justify-content: space-between; margin: 10px 0">
     <h1 style="margin: auto 0;"> ETF Settings </h1>

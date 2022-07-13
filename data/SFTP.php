@@ -1,4 +1,5 @@
 <?php
+namespace ETFsSFTP;
 
 class SFTP{ 
     var $single_inseration = false;
@@ -16,16 +17,6 @@ class SFTP{
             self::$instance = new SFTP();
         }
         return self::$instance;
-    }
-
-    function write_log($log) {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
     }
 
     function sftp_db_init(){
@@ -302,7 +293,7 @@ class SFTP{
         $files_required_and_available_remotely = array_combine($files_name,$files_path);
 
         if (!$files_required_and_available_remotely || count($files_required_and_available_remotely) === 0) {
-            // $this->force_turn_off();
+            $this->force_turn_off();
             $this->cycle_state('f');
             return "No Required Files Available, Do Allocate Correct File Naming Below";
         }
@@ -322,13 +313,13 @@ class SFTP{
             foreach ($file_available as $name => $path) { // $file_available = array($name => $path);
                 $path_info = pathinfo($name);
                 if($path_info['extension'] === "csv"){
-                    $columns = (new CsvProvider())->load_and_fetch_headers($path);
-                    $data = (new CsvProvider())->load_and_fetch($path, $columns);
+                    $columns = (new \CsvProvider())->load_and_fetch_headers($path);
+                    $data = (new \CsvProvider())->load_and_fetch($path, $columns);
                     if(! $data || count($data) == 0){
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$file_set_name); // pass  instead of name
+                        $post_meta = new \PostMeta($data,$name,$file_set_name); // pass  instead of name
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -341,11 +332,11 @@ class SFTP{
                     switch ($process) {
                         case 'ror':
                             // do ror processing
-                            $data = (new Pdf2Data())->get_all_monthly_fund_data($path);
+                            $data = (new \Pdf2Data())->get_all_monthly_fund_data($path);
                             break;
                         case 'dist':
                             // do dist memo processing
-                            $data = (new Pdf2Data())->get_all_distrubation_memo_data($path);
+                            $data = (new \Pdf2Data())->get_all_distrubation_memo_data($path);
                             break;
                         default: break; // unwanted file names
                     }
@@ -354,7 +345,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new PostMeta($data,$name,$file_set_name);
+                        $post_meta = new \PostMeta($data,$name,$file_set_name);
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -368,7 +359,7 @@ class SFTP{
         $this->disconnect();
         $this->cycle_timestamp();
         $this->cycle_state('f');
-        $this->write_log('First SFTP Cycle Is Successful');
+        error_log('First SFTP Cycle Is Successful');
         return "First SFTP Cycle Is Successful";
     }
 
@@ -414,4 +405,9 @@ class SFTP{
 
         return 'success';
     }
+}
+
+function do_sftp_cycle(){
+    $sftp = SFTP::getInstance();
+    $sftp->auto_cycle(true);
 }
