@@ -58,6 +58,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "premium-discount-url",
+        "title"         => "Premium Discount URL",
+        "description"   => "",
+        "type"          => "pdf_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "graph-json-data",
         "title"         => "Graph Json",
         "description"   => "",
@@ -544,6 +552,7 @@ $custom_fields = array(
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     )
+
 );
 
 $custom_pdf_fields = array( 
