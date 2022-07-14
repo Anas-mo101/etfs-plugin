@@ -113,7 +113,7 @@ class SFTP{
         $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db";
 
         date_default_timezone_set("America/Chicago");
-        $current_time = date("Y-m-d h:i:s");
+        $current_time = date("Y-m-d h:i:s A");
 
         $data = ['Last_Cycle_Timestamp' => $current_time ];
 
