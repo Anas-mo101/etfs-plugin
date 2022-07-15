@@ -168,7 +168,6 @@
                     </div>
 
                     <div class="template-tables-preview" id="<?php echo $this->prefix ?>current-outcome-period">
-                        
                         <h1 style="font-weight: 600;"> Current Outcome Period Values </h1>
                         <p>  Data as of 
                             <span id="<?php echo $this->prefix ?>">  
@@ -176,7 +175,7 @@
                             </span>
                         </p>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                            <h3>ETF Starting NAV/Period Return</h3> 
+                            <h3>ETF Current NAV/Period Return</h3> 
                             <h3>SPX Period Return</h3>
                             <h3>Remaining Buffer</h3>
                             <h3>Downside Before Buffer</h3> 
