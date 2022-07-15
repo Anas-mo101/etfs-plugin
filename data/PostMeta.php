@@ -149,6 +149,7 @@ class PostMeta{
 
         update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', date("m/d/y"));
         update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['sec_yeild']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', date("m/d/y"));
 

@@ -62,9 +62,11 @@ class Calculations{
     function get_remaining_buffer(){ //Remaining Buffer (conditional)
         if ($this->starting_nav === null 
             || $this->total_buffer === null 
-                || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+                || get_post_meta( $this->id, "?", true ) == ''
+                    || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
 
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
+        $sp_period_return = floatval(get_post_meta( $this->id, "", true ));
 
         if($sp_period_return >= 0){
             $ans = (-1) * $this->total_buffer;
@@ -87,8 +89,12 @@ class Calculations{
     }
     
     function get_downside_buffer(){ //ETF Downside to Buffer
-        if ($this->starting_nav === null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+        if ($this->starting_nav === null 
+            || get_post_meta( $this->id, "?", true ) == ''
+                || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
+        $sp_period_return = floatval(get_post_meta( $this->id, "", true ));
 
         if($sp_period_return >= 0){
             $temp_ = ($this->starting_nav - $current_nav);
@@ -100,8 +106,9 @@ class Calculations{
     }
 
     function get_current_sp($flag){ // CURRENT_SP_LEVEL = S_P_YEAR_START_VALUE x (1+ YTD_SP_RETURN)
-        if ($this->sp_year_start === null || get_post_meta( $this->id, "?", true ) == '') return;
-        $ytd_sp_return = floatval(get_post_meta( $this->id, "?", true ));
+        if ($this->sp_year_start === null 
+            || get_post_meta( $this->id, "ETF-Pre-ytd-sp-return-data", true ) == '') return;
+        $ytd_sp_return = floatval(get_post_meta( $this->id, "ETF-Pre-ytd-sp-return-data", true ));
 
         $temp_ = 1 + $ytd_sp_return;
         $ans = $this->sp_year_start * $temp_;
