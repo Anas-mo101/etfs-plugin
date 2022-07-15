@@ -136,7 +136,7 @@ class Pdf2Data {
         $pdf_data_array_market = array('three_months' => $unordered_pdf_data_array[4], 'six_months' => $unordered_pdf_data_array[7], 'one_year' => $unordered_pdf_data_array[3], 'inception' => $unordered_pdf_data_array[8]);
         $pdf_data_array_nav = array('three_months' => $unordered_pdf_data_array[21], 'six_months' => $unordered_pdf_data_array[20], 'one_year' => $unordered_pdf_data_array[17], 'inception' => $unordered_pdf_data_array[18]);
         $pdf_data_array_sp = array('three_months' => $unordered_pdf_data_array[28], 'six_months' => $unordered_pdf_data_array[27], 'one_year' => $unordered_pdf_data_array[33], 'inception' => $sp_incp_fixed);
-        $pdf_data_array = array('sec_yeild' => $unordered_pdf_data_array[11], 'market_price' =>  $pdf_data_array_market, 'fund_nav' => $pdf_data_array_nav, 'sp' => $pdf_data_array_sp);
+        $pdf_data_array = array('ytd_sp_return' => $unordered_pdf_data_array[30],'sec_yeild' => $unordered_pdf_data_array[11], 'market_price' =>  $pdf_data_array_market, 'fund_nav' => $pdf_data_array_nav, 'sp' => $pdf_data_array_sp);
         return $pdf_data_array;
     }
 
