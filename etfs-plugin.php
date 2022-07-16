@@ -53,7 +53,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'admin_menu', array($this, 'customFieldsFunds' ) );
             add_action('admin_menu', array($this,'sub_menu_callback'));
 
-            add_action( 'save_post', array($this, 'saveCustomFields' ), 1, 2 );
+            add_action( 'save_post', array($this, 'save_custom_fields' ), 1, 2 );
             add_action( 'do_meta_boxes', array($this, 'removeDefaultCustomFields' ), 10, 3 );
 
             add_shortcode('render-etf-page', array($this, 'render_product_page'));
@@ -371,7 +371,7 @@ if ( !class_exists('ETFPlugin') ) {
                             </span>
                         </span>
                     </div>',
-                    array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
+                    array($this, 'display_custom_fields' ), $postType, 'normal', 'high' );
                 }
             }
         }
@@ -380,7 +380,7 @@ if ( !class_exists('ETFPlugin') ) {
         function customFieldsFunds(){
             if ( function_exists( 'add_meta_box' ) ) {
                 foreach ( $this->postTypes as $postType ) {
-                    add_meta_box( 'my-custom-fields-pdf', 'Fund Documents', array($this, 'displayCustomFieldsPdf' ), $postType, 'normal', 'high' );
+                    add_meta_box( 'my-custom-fields-pdf', 'Fund Documents', array($this, 'display_custom_fields_pdf' ), $postType, 'normal', 'high' );
                 }
             }
         }
@@ -407,16 +407,6 @@ if ( !class_exists('ETFPlugin') ) {
             }
         }
 
-        function write_log($log) {
-            if (true === WP_DEBUG) {
-                if (is_array($log) || is_object($log)) {
-                    error_log(print_r($log, true));
-                } else {
-                    error_log($log);
-                }
-            }
-        }
-
         function etfs_template_scripts( $hook ) {
             global $post;
             if ( is_single() &&  "etfs" === $post->post_type){
@@ -428,18 +418,16 @@ if ( !class_exists('ETFPlugin') ) {
 
         function mind_defer_scripts( $tag, $handle, $src ) {
             $defer = array('highstock', 'data', 'accessibility');
-
             if ( in_array( $handle, $defer ) ) {
                return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
             }
-              
             return $tag;
         } 
 
         /**
         * Display the new Custom Fields meta box
         */
-        function displayCustomFields() {
+        function display_custom_fields() {
             global $post;  
             if ( $post->post_type == "etfs" ){
                 require_once 'assets/preview-table-response.php'; 
@@ -460,7 +448,7 @@ if ( !class_exists('ETFPlugin') ) {
         }
 
         // Display the new Custom Fields (Fund Documents)
-        function displayCustomFieldsPdf() {
+        function display_custom_fields_pdf() {
             global $post;  
             if ( $post->post_type == "etfs" ){
                 create_custom_efts_fields($this->custom_pdf_fields,$this->prefix,'1','my-custom-fields-pdf');
@@ -470,15 +458,12 @@ if ( !class_exists('ETFPlugin') ) {
         /**
         * Save the new Custom Fields values
         */
-        function saveCustomFields( $post_id, $post ) {
-            if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) )
-                return;
-            if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) )
-                return;
-            if ( !current_user_can( 'edit_post', $post_id ) )
-                return;
-            if ( ! in_array( $post->post_type, $this->postTypes ) )
-                return;
+        function save_custom_fields( $post_id, $post ) {
+            if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) ) return;
+            if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) ) return;
+            if ( !current_user_can( 'edit_post', $post_id ) ) return;
+            if ( ! in_array( $post->post_type, $this->postTypes ) ) return;
+
             foreach ( $this->customFields as $customField ) {
                 if ( current_user_can( $customField['capability'], $post_id ) ) {
                     if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) && trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
@@ -500,6 +485,8 @@ if ( !class_exists('ETFPlugin') ) {
                     }
                 }
             }
+
+            (new Calculations())->init($post_id);
         }
         
         // call shortcode [render-etf-page] to render product table

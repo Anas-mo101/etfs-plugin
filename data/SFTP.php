@@ -310,7 +310,7 @@ class SFTP{
         // separate by file types -> extract & save data from each file at a time
         $save_meta_status = array();
         foreach($files_unprocessed_and_available_localy as $file_available){
-            foreach ($file_available as $name => $path) { // $file_available = array($name => $path);
+            foreach ($file_available as $name => $path) {
                 $path_info = pathinfo($name);
                 if($path_info['extension'] === "csv"){
                     $columns = (new \CsvProvider())->load_and_fetch_headers($path);
@@ -354,6 +354,8 @@ class SFTP{
                 }
             }
         }
+
+        (new \Calculations())->calc_all();
 
         // disconnect to sftp server
         $this->disconnect();

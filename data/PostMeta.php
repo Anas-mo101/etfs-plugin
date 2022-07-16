@@ -214,8 +214,6 @@ class PostMeta{
             return true;
         }
         return false;
-    }
-
-    // ======================= save calculated =========================== // 
+    } 
 }
 

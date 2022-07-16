@@ -51,9 +51,10 @@ class Calculations{
 
         $ans = ($current_nav/$this->starting_nav);
         $ans = $ans - 1;
+        $ans = round($ans, 2);
         if($flag){
-            update_post_meta($this->id,'ETF-Pre-etf-period-return-data', $ans); 
-            update_post_meta($this->id,'ETF-Pre-current-period-return-data', $ans); 
+            update_post_meta($this->id,'ETF-Pre-etf-period-return-data', $ans . '%'); 
+            update_post_meta($this->id,'ETF-Pre-current-period-return-data', $ans . '%'); 
         }else{
             return $ans; 
         }
@@ -112,7 +113,6 @@ class Calculations{
 
         $temp_ = 1 + $ytd_sp_return;
         $ans = $this->sp_year_start * $temp_;
-        
         return $ans;
     }
 
@@ -122,7 +122,8 @@ class Calculations{
 
         $_temp_ =  $temp_ / $this->sp_ref_value;
         $ans = $_temp_ - 1;
-        update_post_meta($this->id,'ETF-Pre-current-spx-return-data', $ans);
+        $ans = round($ans,2);
+        update_post_meta($this->id,'ETF-Pre-current-spx-return-data', $ans . '%');
     }
 
     function get_remaining_outcome_period($flag,$title = null){
@@ -141,7 +142,7 @@ class Calculations{
         }
 
         if($flag){
-            update_post_meta($this->id,'ETF-Pre-days-remaining-data', $daysleft);  
+            update_post_meta($this->id,'ETF-Pre-current-remaining-outcome-data', $daysleft);  
         }else{
             return $daysleft;
         } 

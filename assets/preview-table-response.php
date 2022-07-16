@@ -159,11 +159,11 @@
                             <h3>Days Remaining</h3>
                         </div>
                         <div class="table-horizontal-row-grid table-horizontal-row-grid-5"> 
-                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) . '/' . htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-period-return-data", true ) ) ?>" /> 
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>etf-starting-return" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-starting-return-data", true ) ) . '/' . htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "etf-period-return-data", true ) )  ?>" /> 
                             <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>spx-index-price" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "spx-index-price-data", true ) ) ?>" />
                             <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>downside-buffer" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "downside-buffer-data", true ) ) ?>" />
                             <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>expected-upside" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "expected-upside-data", true ) ) ?>" />
-                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="<?php echo htmlspecialchars( get_post_meta( get_the_ID(), $this->prefix . "days-remaining-data", true ) ) ?>" />
+                            <input readonly style='margin: 15px 0;' type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>days-remaining" value="364" /> <!-- days-remaining-data -->
                         </div>
                     </div>
 
@@ -303,7 +303,7 @@
              </div>            
             </div>
             <div id="<?php echo $this->prefix ?>popup-bottombar-container">
-                <button type="button" id="<?php echo $this->prefix ?>popup-submit-button"> Save </button>
+                <button id="<?php echo $this->prefix ?>popup-submit-button"> Save </button>
             </div>
         </div>
     </div>

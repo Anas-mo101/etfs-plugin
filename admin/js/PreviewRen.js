@@ -74,7 +74,7 @@ function save_manually_edited_data(){
             // document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById("ETF-Pre-etf-starting-return").value.trim();
             // document.getElementById("ETF-Pre-spx-index-price-data").value = document.getElementById("ETF-Pre-spx-index-price").value.trim();
             // document.getElementById("ETF-Pre-downside-buffer-data").value = document.getElementById("ETF-Pre-downside-buffer").value.trim();
-            // document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-expected-upside").value.trim();
+            document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-product-participation-rate").value.trim();
             // document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
 
             // --> Current Outcome Period Values
