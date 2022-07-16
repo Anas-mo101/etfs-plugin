@@ -41,7 +41,7 @@ class Calculations{
     function calc_all(){
         $etfs = get_posts( array('post_type' => 'etfs', 'numberposts' => 999999 ) );
         foreach ($etfs as $etf) {
-            init($etf->ID);
+            $this->init($etf->ID);
         }
     }
 
