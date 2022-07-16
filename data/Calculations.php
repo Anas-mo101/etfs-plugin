@@ -31,7 +31,6 @@ class Calculations{
         $this->get_period_return(true);
         $this->get_remaining_buffer();
         $this->get_downside_buffer();
-        $this->get_current_sp(true);
         $this->get_spx_period_return();
         $this->get_remaining_outcome_period(true);
 
@@ -53,9 +52,10 @@ class Calculations{
         $ans = ($current_nav/$this->starting_nav);
         $ans = $ans - 1;
         if($flag){
-            update_post_meta($this->id,'ETF-Pre-current-etf-return-data', $ans);
+            update_post_meta($this->id,'ETF-Pre-etf-period-return-data', $ans); 
+            update_post_meta($this->id,'ETF-Pre-current-period-return-data', $ans); 
         }else{
-            return $ans;
+            return $ans; 
         }
     }
 
@@ -113,11 +113,7 @@ class Calculations{
         $temp_ = 1 + $ytd_sp_return;
         $ans = $this->sp_year_start * $temp_;
         
-        if($flag){
-            update_post_meta($this->id,'ETF-Pre-current-etf-return-data', $ans);
-        }else{
-            return $ans;
-        }
+        return $ans;
     }
 
     function get_spx_period_return(){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1

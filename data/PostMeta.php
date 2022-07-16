@@ -39,6 +39,7 @@ class PostMeta{
     private function save_nav_single($selected_meta){
         $nav_meta_keys = array(
             'ETF-Pre-na-v-data' => 'NAV',
+            'ETF-Pre-current-etf-return-data' => 'NAV',
             'ETF-Pre-net-assets-data' => 'Net Assets',
             'ETF-Pre-shares-out-standig-data' => 'Shares Outstanding',
             'ETF-Pre-discount-percentage-data' => 'Premium/Discount Percentage',

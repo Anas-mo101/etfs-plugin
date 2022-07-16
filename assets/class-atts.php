@@ -370,6 +370,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "etf-period-return-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "spx-index-price-data",
         "title"         => "",
         "description"   => "",
@@ -411,6 +419,14 @@ $custom_fields = array(
     ),
     array(
         "name"          => "current-etf-return-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "current-period-return-data",
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",
