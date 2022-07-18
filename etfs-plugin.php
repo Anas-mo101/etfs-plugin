@@ -72,8 +72,6 @@ if ( !class_exists('ETFPlugin') ) {
 
             add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
 
-            // add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
-
             add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
             add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
