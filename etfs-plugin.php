@@ -5,7 +5,7 @@
  * Description:       Manages Trueshares ETFs 
  * Version:           0.9.6 
  * Requires at least: 5.2
- * Requires PHP:      7.2
+ * Requires PHP:      7.4
  * Author:            Anmo
  */
 
@@ -56,13 +56,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'save_post', array($this, 'save_custom_fields' ), 1, 2 );
             add_action( 'do_meta_boxes', array($this, 'removeDefaultCustomFields' ), 10, 3 );
 
-            add_shortcode('render-etf-page', array($this, 'render_product_page'));
-            add_shortcode('render-top-holders-table', array($this, 'render_top_holders'));
-            add_shortcode('render-subadvisor-section', array($this, 'render_subadvisor'));
-            add_shortcode('render-toptenmobile', array($this, 'render_toptenmobile'));
-            add_shortcode('render-nav-graph', array($this, 'render_graph')); 
-            add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb')); 
-            add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
+            new \ETfsSC\ETFsShortcodes();
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
@@ -71,8 +65,6 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'wp_ajax_fplayout', array($this, 'fp_layout'));
 
             add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
-
-            // add_action( 'get_sftp_data', array($this, 'run_sftp_cycle'));
 
             add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
@@ -487,51 +479,6 @@ if ( !class_exists('ETFPlugin') ) {
             }
 
             (new Calculations())->init($post_id);
-        }
-        
-        // call shortcode [render-etf-page] to render product table
-        function render_product_page() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/etf-product-page.php');
-            return ob_get_clean();
-        }
-        
-        // call shortcode [render-top-holders-table] to render product table
-        function render_top_holders() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/toptenshortcode.php');
-            return ob_get_clean();
-        }
-
-        function render_subadvisor() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/subadvisorshortcode.php');
-            return ob_get_clean();
-        }
-
-        function render_toptenmobile() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/toptenmobile.php');
-            return ob_get_clean();
-        }
-
-        function render_graph() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/nav-graph.php');
-            return ob_get_clean();
-        }
-
-        function render_content_cuz_elementor_dumb() {
-            ob_start();
-            global $post;
-            echo $post->post_content; 
-            return ob_get_clean();
-        }
-
-        function render_frontpage_etfs() {
-            ob_start();
-            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/frontpage-etfs-boxes.php');
-            return ob_get_clean();
         }
     }
 }

@@ -40,6 +40,7 @@ require_once 'data/SFTP.php';
 require_once 'data/CsvProvider.php';
 require_once 'data/PostMeta.php';
 require_once 'data/Calculations.php';
+require_once 'data/ETFsShortcodes.php';
 
 
 foreach ($libs as $lib) {
