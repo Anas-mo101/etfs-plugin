@@ -51,7 +51,8 @@ class Calculations{
 
         $ans = ($current_nav/$this->starting_nav);
         $ans = $ans - 1;
-        $ans = round($ans, 2);
+	    $ans = $ans * 100;
+		$ans = round($ans, 2);
         if($flag){
             update_post_meta($this->id,'ETF-Pre-etf-period-return-data', $ans . '%'); 
             update_post_meta($this->id,'ETF-Pre-current-period-return-data', $ans . '%'); 
@@ -59,15 +60,25 @@ class Calculations{
             return $ans; 
         }
     }
+	
+	    function get_spx_period_return(){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
+        if ($this->sp_ref_value === null) return;
+        $temp_ = $this->get_current_sp(false);
+
+        $_temp_ =  $temp_ / $this->sp_ref_value;
+        $ans = $_temp_ - 1;
+        $ans = round($ans,2);
+        update_post_meta($this->id,'ETF-Pre-current-spx-return-data', $ans . '%');
+    }
 
     function get_remaining_buffer(){ //Remaining Buffer (conditional)
         if ($this->starting_nav === null 
             || $this->total_buffer === null 
-                || get_post_meta( $this->id, "?", true ) == ''
+                || get_post_meta( $this->id, "ETF-Pre-current-spx-return-data", true ) == ''
                     || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
 
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
-        $sp_period_return = floatval(get_post_meta( $this->id, "", true ));
+        $sp_period_return = floatval(get_post_meta( $this->id, "ETF-Pre-current-spx-return-data", true ));
 
         if($sp_period_return >= 0){
             $ans = (-1) * $this->total_buffer;
@@ -77,6 +88,7 @@ class Calculations{
             $temp_ = $this->get_period_return(false) - $temp_;
             $_temp_ = ($current_nav/$this->starting_nav);
             $ans = (-1) * $temp_ * $_temp_;
+			$ans = round($ans,2);
             update_post_meta($this->id,'ETF-Pre-current-remaining-buffer-data', $ans);
         }elseif ($sp_period_return < $this->total_buffer) {
             $temp_ = $sp_period_return - $this->total_buffer;
@@ -85,17 +97,18 @@ class Calculations{
             $_temp_ = ($current_nav/$this->starting_nav);
             $temp_deno = $temp_ * $_temp_;
             $ans = (-1) * ($temp_neu/$temp_deno);
+			$ans = round($ans,2);
             update_post_meta($this->id,'ETF-Pre-current-remaining-buffer-data', $ans);
         }
     }
     
     function get_downside_buffer(){ //ETF Downside to Buffer
         if ($this->starting_nav === null 
-            || get_post_meta( $this->id, "?", true ) == ''
+            || get_post_meta( $this->id, "ETF-Pre-current-spx-return-data", true ) == ''
                 || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
 
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
-        $sp_period_return = floatval(get_post_meta( $this->id, "", true ));
+        $sp_period_return = floatval(get_post_meta( $this->id, "ETF-Pre-current-spx-return-data", true ));
 
         if($sp_period_return >= 0){
             $temp_ = ($this->starting_nav - $current_nav);
@@ -116,15 +129,7 @@ class Calculations{
         return $ans;
     }
 
-    function get_spx_period_return(){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
-        if ($this->sp_ref_value === null) return;
-        $temp_ = $this->get_current_sp(false);
 
-        $_temp_ =  $temp_ / $this->sp_ref_value;
-        $ans = $_temp_ - 1;
-        $ans = round($ans,2);
-        update_post_meta($this->id,'ETF-Pre-current-spx-return-data', $ans . '%');
-    }
 
     function get_remaining_outcome_period($flag,$title = null){
         $long_name = $title === null ? (new Pdf2Data())->get_etfs_full_pre(get_the_title($this->id)) : (new Pdf2Data())->get_etfs_full_pre($title);
