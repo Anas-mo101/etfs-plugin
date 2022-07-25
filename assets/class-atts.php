@@ -648,7 +648,7 @@ $custom_pdf_fields = array(
         "name"          => "pdf-structured-outcome-faq",
         "title"         => "Structured Outcome FAQ",
         "description"   => "",
-        "type"          => "pdf_url_fd",
+        "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),
