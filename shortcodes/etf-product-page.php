@@ -29,8 +29,8 @@
                     <td class="table-ts-in pb bg-dark"><a href="/etfs/<?php echo strtolower($etf)?>/"> <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"><a style= "color:#12223D;" href="/etfs/<?php echo strtolower($etf)?>/" > <?php echo $etf?> </a></td>
                     <td class="table-ts-in pb"> <?php echo $long_name ?> </td>
-                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-na-v-data', true); ?> </td>
-                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-etf-return-data', true); ?> </td>  
+                    <td class="table-ts-in pb"> $<?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-na-v-data', true); ?> </td>
+                    <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-period-return-data', true); ?> </td>  
                     <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-product-index-data', true); ?>  </td>
                     <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-current-spx-return-data', true); ?> </td>
                     <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-product-participation-rate-data', true); ?> </td>
@@ -39,7 +39,7 @@
                     <td class="table-ts-in pb"> - </td>
                     <td class="table-ts-in pb"> <?php echo ($daysleft > 1) ? $daysleft . ' days' : $daysleft . ' day'; ?> </td>
                     <td class="text-center table-ts-in pb p-link">
-                        <a href="/wp-content/uploads/<?php echo $etf?>_Prospectus.pdf" class="bt-download-prospectus" download>
+						<a href="<?php echo get_post_meta($post_to_diplay->ID,'ETF-Pre-pdf-prospectus', true); ?>" class="bt-download-prospectus" download>
                     </td>
                 </tr>
             <?php } ?>
