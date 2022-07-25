@@ -581,6 +581,22 @@ $custom_fields = array(
 
 $custom_pdf_fields = array( 
     array(
+        "name"          => "pdf-data-as-of-date",
+        "title"         => "Fund Documents as of date",
+        "description"   => "mm/dd/yyyy",
+        "type"          => "text",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "pdf-fact-sheet",
+        "title"         => "Fact Sheet",
+        "description"   => "",
+        "type"          => "pdf_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "pdf-investment-case",
         "title"         => "Investment Case",
         "description"   => "",
@@ -655,6 +671,14 @@ $custom_pdf_fields = array(
     array(
         "name"          => "pdf-press-release",
         "title"         => "Press Release",
+        "description"   => "",
+        "type"          => "pdf_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "pdf-faq",
+        "title"         => "FAQ",
         "description"   => "",
         "type"          => "pdf_url",
         "scope"         => array( "etfs" ),
