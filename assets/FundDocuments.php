@@ -40,6 +40,8 @@ class FundDocuments{
             ) 
         );
 
+        // handle dublicate namings
+
         wp_send_json(array('update' => 'success'));
     }
 
@@ -60,7 +62,7 @@ class FundDocuments{
 
     function create_custom_efts_fund_fields(){ 
         global $post;
-        $feilds = $this->get_all(); ?>
+        $feilds = self::get_all(); ?>
         <div class="form-wrap-1">
             <?php wp_nonce_field( 'my-custom-fields-pdf', 'my-custom-fields-pdf_wpnonce', false, true );
                 foreach ($feilds as $feild) { ?>
@@ -72,24 +74,23 @@ class FundDocuments{
         </div> <?php 
     } 
 
-    function get_all(){
+    public static function get_all(){
         global $wpdb;
         $wp_table_name = $wpdb->prefix . "etfs_fund_docs_db"; 
         $config = $wpdb->get_results( "SELECT * FROM $wp_table_name", ARRAY_A);
         return $config;
     }
 
-    public static function save_feilds($_post){
-        $feilds = $this->get_all();
+    public static function save_feilds($_post,$post_id){
+        $feilds = self::get_all();
         foreach ( $feilds as $custom_field ) {
-            if ( isset( $_post[ self::$prefix . $custom_field['Field_Name'] ] ) && trim( $_post[ self::$prefix . $custom_field['Field_Name'] ] ) ) {
-                $value = $_post[ self::$prefix . $custom_field['Field_Name'] ];
-                update_post_meta( $post_id, self::$prefix . $custom_field[ 'Field_Name' ], $value );
+            if ( isset( $_post[ 'ETF-Pre-' . $custom_field['Field_Name'] ] ) && trim( $_post[ 'ETF-Pre-' . $custom_field['Field_Name'] ] ) ) {
+                $value = $_post[ 'ETF-Pre-' . $custom_field['Field_Name'] ];
+                update_post_meta( $post_id, 'ETF-Pre-' . $custom_field[ 'Field_Name' ], $value );
             } else {
-                delete_post_meta( $post_id, self::$prefix . $custom_field[ 'Field_Name' ] );
+                delete_post_meta( $post_id, 'ETF-Pre-' . $custom_field[ 'Field_Name' ] );
             }
         }
-
     }
 
     // Display the new Custom Fields (Fund Documents)

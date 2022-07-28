@@ -475,7 +475,7 @@ if ( !class_exists('ETFPlugin') ) {
                 }
             }
 
-            \ETFsFundDocs\FundDocuments::save_feilds($_POST);
+            \ETFsFundDocs\FundDocuments::save_feilds($_POST,$post_id);
 
             (new Calculations())->init($post_id);
         }
