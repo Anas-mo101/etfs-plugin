@@ -37,6 +37,8 @@ if ( !class_exists('ETFPlugin') ) {
 
         var $etfs_custom_pdf_fields;
 
+        var $FundDocs;
+
         function __construct($in_feilds,$in_etf,$in_uns_etfs,$etfs_structured,$pdf_fields){
             
             $this->customFields = $in_feilds;
@@ -50,7 +52,6 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'after_setup_theme', array($this,'insert_uns_category'));
 
             add_action( 'admin_menu', array($this, 'createCustomFields' ) );
-            add_action( 'admin_menu', array($this, 'customFieldsFunds' ) );
             add_action('admin_menu', array($this,'sub_menu_callback'));
 
             add_action( 'save_post', array($this, 'save_custom_fields' ), 1, 2 );
@@ -69,12 +70,13 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'wp_ajax_scansftpdir', array($this, 'get_sftp_dir'));
             add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
             add_action( 'wp_ajax_fplayout', array($this, 'fp_layout'));
-
             add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
 
             add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
             add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
+
+            new \ETFsFundDocs\FundDocuments();
         }
 
         function activiate(){
@@ -378,7 +380,15 @@ if ( !class_exists('ETFPlugin') ) {
         function customFieldsFunds(){
             if ( function_exists( 'add_meta_box' ) ) {
                 foreach ( $this->postTypes as $postType ) {
-                    add_meta_box( 'my-custom-fields-pdf', 'Fund Documents', array($this, 'display_custom_fields_pdf' ), $postType, 'normal', 'high' );
+                    add_meta_box( 'my-custom-fields-pdf', 
+                    '<span> Fund Documents </span>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div class="button button-primary button-large" onclick="document.getElementById(`ETF-Pre-popup-underlay-new-fund-field`).style.display = `flex`"> Add New Document </div>
+                    </div>',
+                    array($this, 'display_custom_fields' ), 
+                    $postType, 
+                    'normal', 
+                    'high' );
                 }
             }
         }
@@ -445,14 +455,6 @@ if ( !class_exists('ETFPlugin') ) {
             <?php } 
         }
 
-        // Display the new Custom Fields (Fund Documents)
-        function display_custom_fields_pdf() {
-            global $post;  
-            if ( $post->post_type == "etfs" ){
-                create_custom_efts_fields($this->custom_pdf_fields,$this->prefix,'1','my-custom-fields-pdf');
-            } 
-        }
-
         /**
         * Save the new Custom Fields values
         */
@@ -473,16 +475,7 @@ if ( !class_exists('ETFPlugin') ) {
                 }
             }
 
-            foreach ( $this->custom_pdf_fields as $customField ) {
-                if ( current_user_can( $customField['capability'], $post_id ) ) {
-                    if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) && trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
-                        $value = $_POST[ $this->prefix . $customField['name'] ];
-                        update_post_meta( $post_id, $this->prefix . $customField[ 'name' ], $value );
-                    } else {
-                        delete_post_meta( $post_id, $this->prefix . $customField[ 'name' ] );
-                    }
-                }
-            }
+            \ETFsFundDocs\FundDocuments::save_feilds($_POST);
 
             (new Calculations())->init($post_id);
         }

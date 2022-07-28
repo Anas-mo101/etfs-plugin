@@ -15,6 +15,35 @@ function isValidHttpUrl(string) {
 }
 
 jQuery( document ).ready( function( $ ) { 
+
+    $( '#ETF-Pre-add-field-submit-button' ).click( function(e) {
+        let f_n = $('#ETF-Pre-new-fund-field-doc').val().trim() !== '' ? $('#ETF-Pre-new-fund-field-doc').val().trim() : false;
+
+        if(f_n === false){
+            $('#ETF-Pre-new-fund-field-doc').after('<p style="color: red;">Name can not be empty.</p>')
+            e.preventDefault();
+            return;
+        }
+
+        data = {
+            action: 'add_new_fund_field',
+            field_name: f_n,
+        }
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data,
+            cache: false,
+            success: function( response ) {
+                
+            }
+        })
+        .fail(function(error) {
+            
+        });
+    });
+
+
     $.ajaxSetup({ cache: false });
     $( '#etf-sheet-sync-button' ).click( function(e) {
         e.preventDefault();
@@ -63,7 +92,7 @@ jQuery( document ).ready( function( $ ) {
     });
 
     $( '#etf-manual-edit-button' ).click( function(e) {
-        document.getElementById("ETF-Pre-popup-underlay").style.display = "block";
+        document.getElementById("ETF-Pre-popup-underlay").style.display = "flex";
         save_manually_edited_data()
     })
 

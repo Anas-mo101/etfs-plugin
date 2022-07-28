@@ -190,5 +190,7 @@ function save_file_fetched_data(res){
 }
 
 const closeForm = () =>{ 
-    document.getElementById("ETF-Pre-popup-underlay").style.display = "none";
+    Array.from(document.getElementsByClassName('ETF-Pre-general-popup-underlay')).forEach(function(element) {
+        element.style.display = 'none';
+    });
 }

@@ -1,5 +1,5 @@
 <?php ?>
-<div id="<?php echo $this->prefix ?>popup-underlay">
+<div class="<?php echo $this->prefix ?>general-popup-underlay" id="<?php echo $this->prefix ?>popup-underlay">
     <div id="<?php echo $this->prefix ?>popup-container">
         <div id="<?php echo $this->prefix ?>table-popup">
             <div id="<?php echo $this->prefix ?>popup-topbar-container">  
