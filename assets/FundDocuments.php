@@ -63,6 +63,9 @@ class FundDocuments{
     function create_custom_efts_fund_fields(){ 
         global $post;
         $feilds = self::get_all(); ?>
+        <div style="display: flex; justify-content: flex-end;">
+            <div class="button button-primary button-large" onclick="document.getElementById(`ETF-Pre-popup-underlay-new-fund-field`).style.display = `flex`"> Add New Document </div>
+        </div>
         <div class="form-wrap-1">
             <?php wp_nonce_field( 'my-custom-fields-pdf', 'my-custom-fields-pdf_wpnonce', false, true );
                 foreach ($feilds as $feild) { ?>
@@ -128,10 +131,7 @@ class FundDocuments{
     function set_fund_box(){
         if ( function_exists( 'add_meta_box' ) ) {
             add_meta_box( 'my-custom-fields-pdf', 
-            '<span> Fund Documents </span>
-            <div style="display: flex; justify-content: flex-end;">
-                <div class="button button-primary button-large" onclick="document.getElementById(`ETF-Pre-popup-underlay-new-fund-field`).style.display = `flex`"> Add New Document </div>
-            </div>',
+            '<span> Fund Documents </span>',
             array($this, 'display_custom_fields_pdf' ), 
             'etfs', 
             'normal', 
