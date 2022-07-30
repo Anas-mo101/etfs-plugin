@@ -20,7 +20,7 @@ jQuery( document ).ready( function( $ ) {
         let f_n = $('#ETF-Pre-new-fund-field-doc').val().trim() !== '' ? $('#ETF-Pre-new-fund-field-doc').val().trim() : false;
 
         if(f_n === false){
-            $('#ETF-Pre-new-fund-field-doc').after('<p style="color: red;">Name can not be empty.</p>')
+            $('#ETF-Pre-new-fund-field-doc-status').html('<p style="color: red;">Name can not be empty.</p>')
             e.preventDefault();
             return;
         }
@@ -34,15 +34,24 @@ jQuery( document ).ready( function( $ ) {
             url: ajaxurl,
             data,
             cache: false,
-            success: function( response ) {
-                
-            }
         })
-        .fail(function(error) {
-            
-        });
     });
 
+    $( '.ETF-Pre-delete-field-doc' ).click( function(e) {
+        _field_id = this.getAttribute('data-fieldid');
+        $('#ETF-Pre-popup-underlay-del-fund-field').css('display','flex');
+        $( "#ETF-Pre-del-field-submit-button" ).click(function() {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: 'del_new_fund_field',
+                    field_id: _field_id,
+                },
+                cache: false,
+            })
+        });
+    });
 
     $.ajaxSetup({ cache: false });
     $( '#etf-sheet-sync-button' ).click( function(e) {
@@ -92,7 +101,7 @@ jQuery( document ).ready( function( $ ) {
     });
 
     $( '#etf-manual-edit-button' ).click( function(e) {
-        document.getElementById("ETF-Pre-popup-underlay").style.display = "flex";
+        $('#ETF-Pre-popup-underlay').css('display', 'flex');
         save_manually_edited_data()
     })
 

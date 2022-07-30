@@ -77,6 +77,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
 
             new \ETFsFundDocs\FundDocuments();
+            \ETFsNoticeHandler\Notice_Handler::init();
         }
 
         function activiate(){
@@ -103,7 +104,7 @@ if ( !class_exists('ETFPlugin') ) {
         }
 
         function fp_layout(){
-            $layout_setup = $_POST['etfs'];
+            $layout_setup = sanitize_text_field( $_POST['etfs'] );
             $layout_setup_string = json_encode($layout_setup);
 
             if(get_option('front-page-box-layout')){
@@ -117,15 +118,15 @@ if ( !class_exists('ETFPlugin') ) {
         }
 
         function fetch_etf_data(){
-            $etf_name = $_POST['etfName'];
-            $etf_full_name = $_POST['eftFullName'];
+            $etf_name = sanitize_text_field( $_POST['etfName'] );
+            $etf_full_name = sanitize_text_field( $_POST['eftFullName'] );
 
             // nav
             $res_nav = null;
             if(isset($_POST['gsURL']) && $_POST['gsURL'] !== ''){
-                $url = $_POST['gsURL'];
+                $url = sanitize_url( $_POST['gsURL']);
                 $columns; $data;
-                $url_state = $_POST['gsURLstate'];
+                $url_state = sanitize_url( $_POST['gsURLstate'] );
                 if($url_state === "true"){
                     $columns = (new GoogleSheetProvider())->getColumns($url);
                     $data = (new GoogleSheetProvider())->getDataFromUrl($url, $columns);
@@ -144,10 +145,10 @@ if ( !class_exists('ETFPlugin') ) {
             // holdings
             $res_holdings = null;
             if(isset($_POST['hlURL']) && $_POST['hlURL'] !== ''){
-                $url_h = $_POST['hlURL'];
+                $url_h = sanitize_url($_POST['hlURL']);
                 $columns_h;
                 $data_h;   
-                $url_h_state = $_POST['hlURLstate']; 
+                $url_h_state = sanitize_url($_POST['hlURLstate']); 
                 if($url_h_state === "true"){
                     $columns_h = (new GoogleSheetProvider())->getColumns($url_h);
                     $data_h = (new GoogleSheetProvider())->getDataFromUrl($url_h,$columns_h);
@@ -174,7 +175,7 @@ if ( !class_exists('ETFPlugin') ) {
 
             $res_dist = null;
             if(isset($_POST['distMemoURL']) && $_POST['distMemoURL'] !== ''){
-                $url_dist_memo = $_POST['distMemoURL'];
+                $url_dist_memo = sanitize_url($_POST['distMemoURL']);
                 $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
                 $post_meta = new PostMeta($dist_memo_pdf_data,'Dist');
                 $post_meta->set_selected($etf_name);

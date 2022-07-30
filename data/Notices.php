@@ -1,5 +1,5 @@
 <?php
-
+namespace ETFsNoticeHandler;
 
 class Notice_Handler
 {
@@ -66,4 +66,4 @@ class Notice_Handler
     }
 }
 
-Notice_Handler::init();
+
