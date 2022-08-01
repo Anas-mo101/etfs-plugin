@@ -90,9 +90,6 @@ class FundDocuments{
         <div style="display: flex; justify-content: flex-end; margin-top: 20px; gap:10px;">
             <div class="button button-primary button-large" onclick="document.getElementById(`ETF-Pre-popup-underlay-new-fund-field`).style.display = `flex`"> Add New Document </div>
         </div>            
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-            <div class="button button-primary button-large"> Update </div>
-        </div>
         <?php 
     } 
 
@@ -121,31 +118,31 @@ class FundDocuments{
         if ( $post->post_type == "etfs" ){
             $this->create_custom_efts_fund_fields(); ?>
             <div class="<?php echo $this->prefix ?>general-popup-underlay" id="<?php echo $this->prefix ?>popup-underlay-new-fund-field">
-                <div style="width: 50%; height: 35%;" id="<?php echo $this->prefix ?>popup-container">
+                <div style="width: 35%; height: 35%;" id="<?php echo $this->prefix ?>popup-container">
                     <div id="<?php echo $this->prefix ?>table-popup">
                         <div id="<?php echo $this->prefix ?>popup-topbar-container">  
-                            <div style="font-weight: bold;" id="<?php echo $this->prefix ?>popup-title-container"> <h2 id="<?php echo $this->prefix ?>popup-title"> Add New Fund Document Field </h2> </div>
+                            <div style="font-weight: bold;" id="<?php echo $this->prefix ?>popup-title-container"> <h2 id="<?php echo $this->prefix ?>popup-title"> Add New Fund Document </h2> </div>
                             <button type="button" id="<?php echo $this->prefix ?>popup-close-button" onclick="closeForm()"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
                             </button>
                         </div>
-                        <div style="overflow: auto;" id="<?php echo $this->prefix ?>popup-table-container">
+                        <div style="overflow: auto; background-color: #ffffff;" id="<?php echo $this->prefix ?>popup-table-container">
                             <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="<?php echo $this->prefix ?>popup-table-inner-container">
-                                <label for="<?php echo $this->prefix ?>new-fund-field-doc"><b> Fund document Name </b></label>
+                                <label for="<?php echo $this->prefix ?>new-fund-field-doc"><b> Fund Document Name </b></label>
                                 <input type="text" id="<?php echo $this->prefix ?>new-fund-field-doc" style="width: 100%;" />
                                 <div id="<?php echo $this->prefix ?>new-fund-field-doc-status">  </div>
                             </div>            
                         </div>
                         <div id="<?php echo $this->prefix ?>popup-bottombar-container">
-                            <button class="button button-primary button-large" type="buttton" id="<?php echo $this->prefix ?>add-field-submit-button"> Add Field </button>
+                            <button class="button button-primary button-large" type="buttton" id="<?php echo $this->prefix ?>add-field-submit-button"> Confirm </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="<?php echo $this->prefix ?>general-popup-underlay" id="<?php echo $this->prefix ?>popup-underlay-del-fund-field">
-                <div style="width: 50%; height: 35%;" id="<?php echo $this->prefix ?>popup-container">
+                <div style="width: 35%; height: 35%;" id="<?php echo $this->prefix ?>popup-container">
                     <div id="<?php echo $this->prefix ?>table-popup">
                         <div style="flex-direction: row-reverse;" id="<?php echo $this->prefix ?>popup-topbar-container">  
                             <button type="button" id="<?php echo $this->prefix ?>popup-close-button" onclick="closeForm()"> 
@@ -156,7 +153,7 @@ class FundDocuments{
                         </div>
                         <div style="overflow: auto;" id="<?php echo $this->prefix ?>popup-table-container">
                             <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="<?php echo $this->prefix ?>popup-table-inner-container">
-                                <label for="<?php echo $this->prefix ?>new-fund-field-doc"><b> Delete this feild ? </b></label>
+                                <label for="<?php echo $this->prefix ?>new-fund-field-doc"><b> Delete this field ? </b></label>
                             </div>            
                         </div>
                         <div id="<?php echo $this->prefix ?>popup-bottombar-container">
