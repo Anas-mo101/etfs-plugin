@@ -182,7 +182,8 @@ class FundDocuments{
 
     function render_fund_buttons() {
         ob_start();
-        $post_id = 18374;
+        global $post;
+        if(!is_object($post)) return;
         $buttons = self::get_all(); ?>
         <style>
             @media only screen and (max-width: 1024px) {
@@ -235,10 +236,10 @@ class FundDocuments{
             }
         </style>
         <?php foreach ( $buttons as $button ) { 
-            if( get_post_meta( $post_id, $this->prefix . $button[ 'Field_ID' ], true ) === '') continue; ?>
+            if( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) === '') continue; ?>
             
             <div class="button-dw-fund-doc">
-                <a href="<?php echo esc_url( get_post_meta( $post_id, $this->prefix . $button[ 'Field_ID' ], true ) ); ?>" download="Fact Sheet" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+                <a href="<?php echo esc_url( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) ); ?>" download="Fact Sheet" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                     <span class="elementor-button-content-wrapper">
                         <span class="elementor-button-icon elementor-align-icon-right">
                             <svg xmlns="http://www.w3.org/2000/svg" id="Download_Arrow" width="34" height="34" viewBox="0 0 34 34">
