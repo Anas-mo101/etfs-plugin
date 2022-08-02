@@ -86,6 +86,12 @@
     padding: 0 50px;
 }
 
+@media only screen and (min-width: 768px) {
+    #ETF-Pre-popup-table-container{
+        padding: 0px;
+    }
+}
+
 .preview-table {
     width: 100%;
     border-collapse: collapse;
