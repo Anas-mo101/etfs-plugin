@@ -196,6 +196,7 @@ class FundDocuments{
 
                 .button-dw-fund-doc{
                     height: 56px;
+					margin-top: 20px;
                 }
 
                 .button-dw-fund-doc svg{
@@ -204,6 +205,12 @@ class FundDocuments{
                     font-size: 17px;
                 }
             }
+			
+			@media only screen and (max-width: 600px) {
+				   .button-dw-fund-doc{
+					margin-top: 9px;
+                }
+			}
 
             .button-dw-fund-doc a{
                 width: 100%;
