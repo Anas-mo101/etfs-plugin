@@ -150,7 +150,7 @@ class PostMeta{
 
         update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', date("m/d/y"));
         update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['sec_yeild']);
-        update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
+        // update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', date("m/d/y"));
 
@@ -180,8 +180,37 @@ class PostMeta{
             $this->save_ror_single($this->selected_etfs,$this->incoming_meta);
             return true;
         }else{
-            foreach ($this->incoming_meta as $etf_name => $meta) {
-                $this->save_ror_single($etf_name,$meta);
+            $query = new WP_Query(array( 'post_type' => 'etfs' , 'posts_per_page' => 9999999 ));
+            while ($query->have_posts()) {
+                $query->the_post();
+                $data = array();
+                $etf_title = get_the_title();
+                $etf_name = (new Pdf2Data())->get_etfs_full_pre($etf_title);
+                if(! $etf_name) continue;
+
+                $pattern = '/'.$etf_name.'/U';
+                foreach ($this->incoming_meta as $key => $value) {
+
+                    preg_match($pattern, $value['Fund Name'], $matches);
+                    if(!$matches || count($matches) == 0) continue;
+
+                    error_log($key);
+                    error_log($value['Fund Name']);
+                    error_log(print_r($matches,true));
+
+                    $nav_arr = $this->incoming_meta[$key];
+                    $mkt_arr = $this->incoming_meta[$key+1];
+                    $sp_arr = $this->incoming_meta[$key+2];
+
+
+                    $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'], 'inception' => $mkt_arr['Since Inception Cumulative']);
+                    $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'], 'inception' => $nav_arr['Since Inception Cumulative']);
+                    $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'], 'inception' => $sp_arr['Since Inception Cumulative']);
+                    $data_array = array('sec_yeild' => '-', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
+
+                    $this->save_ror_single($etf_title,$data_array);
+                    break;
+                }
             }
             return true;
         }

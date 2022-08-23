@@ -319,7 +319,7 @@ class SFTP{
                         $save_meta_status[] = array($name => 'failed to fetch data');
                     }else{
                         // update db with new data
-                        $post_meta = new \PostMeta($data,$name,$file_set_name); // pass  instead of name
+                        $post_meta = new \PostMeta($data,$name,$file_set_name); 
                         $res = $post_meta->process_incoming();
                         $save_meta_status[] = array($name => $res); 
                     }
@@ -330,10 +330,6 @@ class SFTP{
                     $data = array();
                     $process = array_search($name,$file_set_name,true);
                     switch ($process) {
-                        case 'ror':
-                            // do ror processing
-                            $data = (new \Pdf2Data())->get_all_monthly_fund_data($path);
-                            break;
                         case 'dist':
                             // do dist memo processing
                             $data = (new \Pdf2Data())->get_all_distrubation_memo_data($path);

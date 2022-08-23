@@ -290,6 +290,14 @@ class Pdf2Data {
                 return 'December';
             case 'LRNZ':
                 return 'AI & Deep Learning';
+            case 'FLDZ':
+                return 'RiverNorth Patriot';
+            case 'SPCZ':
+                return 'RiverNorth Enhanced Pre-Merger';
+            case 'ECOZ':
+                return 'ESG Active Opportunities';
+            case 'DIVZ':
+                return 'Low Volatility Equity';
             default:
                 return FALSE;
         }
