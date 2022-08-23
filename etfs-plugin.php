@@ -104,7 +104,6 @@ if ( !class_exists('ETFPlugin') ) {
         }
 
         function fp_layout(){
-            // $layout_setup = sanitize_text_field( $_POST['etfs'] );
             $layout_setup_string = json_encode($_POST['etfs']);
 
             if(get_option('front-page-box-layout')){
