@@ -49,11 +49,17 @@ const toggle_between_gs_and_up = (in_name) => {
         toggle_state_a = true;
     }
 
-    let toggle_state_b = false;
+    let toggle_state_b = false; 
     if(document.getElementById('ETF-Pre-google-holding-url-toggle-file-option').dataset.state === "google"){
         toggle_state_b = true;
     }
 
+    let toggle_state_c = false; 
+    if(document.getElementById('ETF-Pre-pdf-monthly-ror-url-toggle-file-option').dataset.state === "google"){
+        toggle_state_c = true;
+    }
+
     document.getElementById(`ETF-Pre-google-nav-url-toggle-data`).value = toggle_state_a;
     document.getElementById(`ETF-Pre-google-holding-url-toggle-data`).value = toggle_state_b;
+    document.getElementById(`ETF-Pre-pdf-monthly-ror-url-toggle-data`).value = toggle_state_c;
 }

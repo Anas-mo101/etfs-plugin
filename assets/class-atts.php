@@ -50,6 +50,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "pdf-monthly-ror-url-toggle-data",
+        "title"         => "Monthly ROR URL",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "pdf-disturbion-url",
         "title"         => "Distribution Memo URL",
         "description"   => "",
