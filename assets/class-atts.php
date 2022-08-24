@@ -45,7 +45,7 @@ $custom_fields = array(
         "name"          => "pdf-monthly-ror-url",
         "title"         => "Monthly ROR URL",
         "description"   => "",
-        "type"          => "pdf_url",
+        "type"          => "g_url",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),

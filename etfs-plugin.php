@@ -126,7 +126,7 @@ if ( !class_exists('ETFPlugin') ) {
             if(isset($_POST['gsURL']) && $_POST['gsURL'] !== ''){
                 $url = sanitize_url( $_POST['gsURL']);
                 $columns; $data;
-                $url_state = sanitize_url( $_POST['gsURLstate'] );
+                $url_state = $_POST['gsURLstate'];
                 if($url_state === "true"){
                     $columns = (new GoogleSheetProvider())->getColumns($url);
                     $data = (new GoogleSheetProvider())->getDataFromUrl($url, $columns);
@@ -148,7 +148,7 @@ if ( !class_exists('ETFPlugin') ) {
                 $url_h = sanitize_url($_POST['hlURL']);
                 $columns_h;
                 $data_h;   
-                $url_h_state = sanitize_url($_POST['hlURLstate']); 
+                $url_h_state = $_POST['hlURLstate']; 
                 if($url_h_state === "true"){
                     $columns_h = (new GoogleSheetProvider())->getColumns($url_h);
                     $data_h = (new GoogleSheetProvider())->getDataFromUrl($url_h,$columns_h);
@@ -158,20 +158,33 @@ if ( !class_exists('ETFPlugin') ) {
                 }
 
                 if( $data || count($data) > 0){
-                    $post_meta = new PostMeta($data_h,'Holding'); // pass  instead of name
+                    $post_meta = new PostMeta($data_h,'Holding'); 
                     $post_meta->set_selected($etf_name);
                     $res_holdings = $post_meta->process_incoming();
                 }
             }
 
+            // ror
             $res_ror = null;
             if(isset($_POST['monthlyRorURL']) && $_POST['monthlyRorURL'] !== ''){
-                $url_monlthy_ror = $_POST['monthlyRorURL'];
-                $monthly_ror_pdf_data = (new Pdf2Data())->get_monthly_fund_data($url_monlthy_ror,$etf_name,$etf_full_name,false);
-                $post_meta = new PostMeta($monthly_ror_pdf_data,'Ror');
-                $post_meta->set_selected($etf_name);
-                $res_ror = $post_meta->process_incoming();
+                $url_r = sanitize_url($_POST['monthlyRorURL']);
+                $columns_r; $data_r;   
+                $url_r_state = $_POST['monthlyRorstate']; 
+                if($url_r_state === "true"){
+                    $columns_r = (new GoogleSheetProvider())->getColumns($url_r);
+                    $data_r = (new GoogleSheetProvider())->getDataFromUrl($url_r,$columns_r);
+                }else{
+                    $columns_r = (new CsvProvider())->load_and_fetch_headers($url_r);
+                    $data_r = (new CsvProvider())->load_and_fetch($url_r,$columns_r);
+                }
+
+                if( $data_r || count($data_r) > 0){
+                    $post_meta = new PostMeta($data_r,'Ror'); 
+                    $post_meta->set_selected($etf_name);
+                    $res_ror = $post_meta->process_incoming();
+                }
             }
+
 
             $res_dist = null;
             if(isset($_POST['distMemoURL']) && $_POST['distMemoURL'] !== ''){
