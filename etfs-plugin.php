@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           0.9.6 
+ * Version:           0.9.7
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
