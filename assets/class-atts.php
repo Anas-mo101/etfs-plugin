@@ -61,7 +61,15 @@ $custom_fields = array(
         "name"          => "pdf-disturbion-url",
         "title"         => "Distribution Memo URL",
         "description"   => "",
-        "type"          => "pdf_url",
+        "type"          => "g_url",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "pdf-disturbion-url-toggle-data",
+        "title"         => "Distribution Memo URL",
+        "description"   => "",
+        "type"          => "hidden",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     ),

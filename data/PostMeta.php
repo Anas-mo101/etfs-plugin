@@ -233,6 +233,15 @@ class PostMeta{
         update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
         update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);
         update_post_meta($post_to_update->ID,'ETF-Pre-dis-rate-share-data', $meta['dis_rate_share']);
+
+        //==== testing =======
+
+        error_log('ex date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-ex-date-data', true ));
+        error_log('rec date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-rec-date-data', true ));
+        error_log('pay date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-pay-date-data', true ));
+        error_log('dis rate : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-dis-rate-share-data', true ));
+
+        //====================
     }
 
     private function process_dist(){
@@ -244,8 +253,8 @@ class PostMeta{
             $this->save_dist_single($this->incoming_meta,$this->selected_etfs);
             return true;
         }else{
-            foreach ($this->incoming_meta as $meta) {
-                $this->save_dist_single($meta);
+            foreach ($this->incoming_meta as $etf_name => $meta) {
+                $this->save_dist_single($meta,$etf_name);
             }
             return true;
         }

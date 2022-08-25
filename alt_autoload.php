@@ -42,6 +42,8 @@ require_once 'data/CsvProvider.php';
 require_once 'data/PostMeta.php';
 require_once 'data/Calculations.php';
 require_once 'data/Notices.php';
+require_once 'data/xlsm_parser/XSLMParser.php';
+require_once 'data/xlsm_parser/SimpleXLSX.php';
 
 
 foreach ($libs as $lib) {
