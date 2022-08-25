@@ -25,30 +25,30 @@ class XSLMParser{
         if($this->parsed_data === false) return false;
 
         $pattern = '/'.$etf_name.'/U'; 
-        $dis_rate_share_data = '';
+        
         for ($i=51; $i < count($this->parsed_data); $i++) { 
             preg_match($pattern, $this->parsed_data[$i][2], $matches); 
-            if(!$matches || count($matches) == 0) continue;
-            $dis_rate_share_data = $this->parsed_data[$i][10];
-        }
+            if($matches || count($matches) > 0){
+                $dis_rate_share_data = $this->parsed_data[$i][10];
+                $rec_date_data = explode(' ', $this->parsed_data[42][3])[0];
+                $ex_date_data = explode(' ', $this->parsed_data[43][3])[0];
+                $pay_date_data = explode(' ', $this->parsed_data[45][3])[0];
         
-        $rec_date_data = explode(' ', $this->parsed_data[42][3])[0];
-        $ex_date_data = explode(' ', $this->parsed_data[43][3])[0];
-        $pay_date_data = explode(' ', $this->parsed_data[45][3])[0];
-
-
-        return array(
-            'ex_date' => $ex_date_data,
-            'rec_date' => $rec_date_data,
-            'pay_date' => $pay_date_data,
-            'dis_rate_share' => $dis_rate_share_data,
-        );
+                return array(
+                    'ex_date' => $ex_date_data,
+                    'rec_date' => $rec_date_data,
+                    'pay_date' => $pay_date_data,
+                    'dis_rate_share' => $dis_rate_share_data,
+                );
+            }
+        }
+        return false;
     }
 
     function process_all_data(){
-        if($this->parsed_data === false) return false;
         $data = array();
-
+        if($this->parsed_data === false) return $data;
+        
         $rec_date_data = explode(' ', $this->parsed_data[42][3])[0];
         $ex_date_data = explode(' ', $this->parsed_data[43][3])[0];
         $pay_date_data = explode(' ', $this->parsed_data[45][3])[0];
@@ -63,17 +63,18 @@ class XSLMParser{
             for ($i=51; $i < count($this->parsed_data); $i++) { 
                 preg_match($pattern, $this->parsed_data[$i][2], $matches); 
                 if(!$matches || count($matches) == 0) continue;
-                $dis_rate_share_data = $this->parsed_data[$i][10];
 
-                $data[] = array(
-                    $etf_title => array(
-                        'ex_date' => $ex_date_data,
-                        'rec_date' => $rec_date_data,
-                        'pay_date' => $pay_date_data,
-                        'dis_rate_share' => $dis_rate_share_data,
-                    )
-                );
+                $dis_rate_share_data = $this->parsed_data[$i][10];
             }
+
+            $data[] = array(
+                $etf_title => array(
+                    'ex_date' => $ex_date_data,
+                    'rec_date' => $rec_date_data,
+                    'pay_date' => $pay_date_data,
+                    'dis_rate_share' => $dis_rate_share_data,
+                )
+            );
         }
         return $data;
     }

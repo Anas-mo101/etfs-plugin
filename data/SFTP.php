@@ -333,7 +333,7 @@ class SFTP{
                         case 'dist':
                             // do dist memo processing
                             $XLSMParser = new \ETFsXSLMParser\XSLMParser($url_dist_memo);
-                            $data = $XLSMParser->process_all_data($etf_name);
+                            $data = $XLSMParser->process_all_data();
                             break;
                         default: break; // unwanted file names
                     }
