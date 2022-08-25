@@ -12,11 +12,8 @@ class XSLMParser{
         $this->file_to_parse = $file_to_parse;
         
         if ( $xlsx = SimpleXLSX::parseData( file_get_contents($this->file_to_parse)) ) {
-            error_log('in');
             $this->parsed_data = $xlsx->rows();
-            error_log(print_r( $xlsx->rows(),true));
         } else {
-            error_log('out');
             $this->parsed_data = false;
         }
     }

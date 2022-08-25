@@ -185,6 +185,8 @@ if ( !class_exists('ETFPlugin') ) {
                     $data_r = (new CsvProvider())->load_and_fetch($url_r,$columns_r);
                 }
 
+                error_log(print_r($data_r,true));
+
                 if( $data_r || count($data_r) > 0){
                     $post_meta = new PostMeta($data_r,'Ror'); 
                     $post_meta->set_selected($etf_name);

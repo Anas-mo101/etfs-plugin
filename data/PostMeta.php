@@ -172,13 +172,10 @@ class PostMeta{
 
     private function find_ror_record($ref){
 
-        $etf_name = (new Pdf2Data())->get_etfs_full_pre($ref); // get etf fund name
-        if(! $etf_name) return false; 
-
-        $pattern = '/'.$etf_name.'/U'; // use fund name as reference to search data array
+        $pattern = '/'.$ref.'/U'; // use fund name as reference to search data array
         foreach ($this->incoming_meta as $key => $value) { // loop through input array data
 
-            preg_match($pattern, $value['Fund Name'], $matches); // look for match
+            preg_match($pattern, $value['Fund Ticker'], $matches); // look for match
 
             if($matches || count($matches) > 0){
                 $nav_arr = $this->incoming_meta[$key];
@@ -233,15 +230,6 @@ class PostMeta{
         update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
         update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);
         update_post_meta($post_to_update->ID,'ETF-Pre-dis-rate-share-data', $meta['dis_rate_share']);
-
-        //==== testing =======
-
-        error_log('ex date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-ex-date-data', true ));
-        error_log('rec date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-rec-date-data', true ));
-        error_log('pay date : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-pay-date-data', true ));
-        error_log('dis rate : ' . get_post_meta( $post_to_update->ID, 'ETF-Pre-dis-rate-share-data', true ));
-
-        //====================
     }
 
     private function process_dist(){
