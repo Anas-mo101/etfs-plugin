@@ -76,10 +76,18 @@ if ( !class_exists('ETFPlugin') ) {
             add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
             add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
 
+            add_filter('mime_types', array($this, 'etfs_mime_types'));
+
             new \ETFsFundDocs\FundDocuments();
             \ETFsNoticeHandler\Notice_Handler::init();
         }
 
+        function etfs_mime_types($mime){
+            // add to config.php -> define('ALLOW_UNFILTERED_UPLOADS', true); 
+            $mime['xlsm'] = 'application/vnd.ms-excel.sheet.macroEnabled.12'; 
+            return $mime;
+        }
+        
         function activiate(){
             $this->etfs_post_type();
             $sftp = \ETFsSFTP\SFTP::getInstance();
@@ -89,7 +97,7 @@ if ( !class_exists('ETFPlugin') ) {
 
         function deactivate(){
             if ( wp_next_scheduled ( 'get_sftp_data' )){
-                wp_clear_scheduled_hook( 'get_sftp_data' );
+                wp_clear_scheduled_hook('get_sftp_data');
             } 
             flush_rewrite_rules();
         }
@@ -175,10 +183,15 @@ if ( !class_exists('ETFPlugin') ) {
             $res_dist = null;
             if(isset($_POST['distMemoURL']) && $_POST['distMemoURL'] !== ''){
                 $url_dist_memo = sanitize_url($_POST['distMemoURL']);
-                $dist_memo_pdf_data = (new Pdf2Data())->get_distrubation_memo_data($url_dist_memo,$etf_name,$etf_full_name,false);
-                $post_meta = new PostMeta($dist_memo_pdf_data,'Dist');
-                $post_meta->set_selected($etf_name);
-                $res_dist = $post_meta->process_incoming();
+
+                $XLSMParser = new \ETFsXSLMParser\XSLMParser($url_dist_memo);
+                $data = $XLSMParser->process_single_data($etf_name);
+
+                if($data != false){
+                    $post_meta = new PostMeta($data,'Dist');
+                    $post_meta->set_selected($etf_name);
+                    $res_dist = $post_meta->process_incoming();
+                }
             }
 
             $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );

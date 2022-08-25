@@ -1,14 +1,19 @@
 var media_selector_frame;
 const mediaFileSelector = (identifier,tog_flag,file_type) => {
-    if (media_selector_frame) {
-        media_selector_frame = null;
-    }
+    if (media_selector_frame) media_selector_frame = null;
+
     media_selector_frame = wp.media({
-        title: 'Select PDF file',
-        button: { text: 'Insert' },
+        title: 'Select CSV/XLSM/XLSX file',
+        button: {
+            text: 'Insert'
+        },
         multiple: false,
-        library: { type: file_type }, 
-        uploader: { type: file_type }
+        library: {
+            type: file_type
+        }, 
+        uploader: {
+            type: file_type
+        }
     }).on('select', function () {
         var attachment = media_selector_frame.state().get('selection').first().toJSON();
         if(tog_flag){
@@ -54,6 +59,12 @@ const toggle_between_gs_and_up = (in_name) => {
         toggle_state_b = true;
     }
 
+    let toggle_state_d = false;
+    if(document.getElementById('ETF-Pre-pdf-disturbion-url-toggle-file-option').dataset.state === "google"){
+        toggle_state_d = true;
+    }
+
     document.getElementById(`ETF-Pre-google-nav-url-toggle-data`).value = toggle_state_a;
     document.getElementById(`ETF-Pre-google-holding-url-toggle-data`).value = toggle_state_b;
+    document.getElementById(`ETF-Pre-pdf-disturbion-url-toggle-data`).value = toggle_state_d;
 }

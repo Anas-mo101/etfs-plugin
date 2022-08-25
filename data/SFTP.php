@@ -324,19 +324,16 @@ class SFTP{
                         $save_meta_status[] = array($name => $res); 
                     }
                     //update meta using file name
-                }elseif($path_info['extension'] === "pdf"){
+                }elseif($path_info['extension'] === "xlsm" || $path_info['extension'] === "xlsx"){
                     // instead of using names to update each ETFs indiviaully
                     // use all etfs data avaiable to update etfs accordingly
                     $data = array();
                     $process = array_search($name,$file_set_name,true);
                     switch ($process) {
-                        case 'ror':
-                            // do ror processing
-                            $data = (new \Pdf2Data())->get_all_monthly_fund_data($path);
-                            break;
                         case 'dist':
                             // do dist memo processing
-                            $data = (new \Pdf2Data())->get_all_distrubation_memo_data($path);
+                            $XLSMParser = new \ETFsXSLMParser\XSLMParser($url_dist_memo);
+                            $data = $XLSMParser->process_all_data($etf_name);
                             break;
                         default: break; // unwanted file names
                     }

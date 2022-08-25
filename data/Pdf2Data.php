@@ -288,8 +288,12 @@ class Pdf2Data {
                 return 'November';
             case 'DECZ':
                 return 'December';
-            case 'LRNZ':
-                return 'AI & Deep Learning';
+            // case 'LRNZ':
+            //     return 'AI & Deep Learning';
+            // case 'DIVZ':
+            //     return 'Low Volatility Equity Income';
+            // case 'FLDZ':
+            //     return 'AI & Deep Learning';        
             default:
                 return FALSE;
         }

@@ -68,6 +68,11 @@ jQuery( document ).ready( function( $ ) {
         if(document.getElementById('ETF-Pre-google-holding-url-toggle-file-option').dataset.state === "google"){
             toggle_state_b = true;
         }
+
+        let toggle_state_d = false;
+        if(document.getElementById('ETF-Pre-pdf-disturbion-url-toggle-file-option').dataset.state === "google"){
+            toggle_state_d = true;
+        }
         
         var data = {
             action: 'gsd',
@@ -76,7 +81,8 @@ jQuery( document ).ready( function( $ ) {
             hlURLstate: toggle_state_b,
             hlURL: isValidHttpUrl(document.getElementById(`ETF-Pre-google-holding-url${ (toggle_state_b) ? "-google-link" : "-upload-link"}`).value.trim()),
             monthlyRorURL: isValidHttpUrl(document.getElementById('ETF-Pre-pdf-monthly-ror-url').value.trim()),
-            distMemoURL: isValidHttpUrl(document.getElementById('ETF-Pre-pdf-disturbion-url').value.trim()),
+            distMemoURLstate: toggle_state_d,
+            distMemoURL: isValidHttpUrl(document.getElementById(`ETF-Pre-pdf-disturbion-url${ (toggle_state_d) ? "-google-link" : "-upload-link"}`).value.trim()),
             etfName: document.getElementById('title').value.trim(),
             eftFullName: document.getElementById('ETF-Pre-etf-full-name').value.trim()
         };

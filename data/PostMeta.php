@@ -208,8 +208,8 @@ class PostMeta{
             $this->save_dist_single($this->incoming_meta,$this->selected_etfs);
             return true;
         }else{
-            foreach ($this->incoming_meta as $meta) {
-                $this->save_dist_single($meta);
+            foreach ($this->incoming_meta as $etf_name => $meta) {
+                $this->save_dist_single($meta,$etf_name);
             }
             return true;
         }
