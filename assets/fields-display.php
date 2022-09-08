@@ -82,6 +82,11 @@ function create_custom_efts_fields($fields_to_create, $etfs_prefix, $wrap_no='',
                             wp_reset_query();
                             break;
                         }
+                        case "textarea": {
+                            echo '<label for="' . $etfs_prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                            echo '<textarea style="width: 100%;" name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '" rows="5">'. htmlspecialchars( get_post_meta( $post->ID, $etfs_prefix . $customField[ 'name' ], true ) ) .'</textarea>';
+                            break;
+                        }
                         case "hidden": {
                             echo '<input type="hidden" name="' . $etfs_prefix . $customField[ 'name' ] . '" id="' . $etfs_prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $etfs_prefix . $customField[ 'name' ], true ) ) . '" />';
                             break;

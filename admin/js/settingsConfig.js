@@ -17,6 +17,7 @@ jQuery( document ).ready( function( $ ) {
             dragClass: "sortable-drag"
         })
         $('.fp-toggle-button').prop('disabled', false);
+        $('.fp-layout-fund-edit').prop('disabled', false);
         $('.fp-save-button, .fp-cancel-button').show();
         $('.fp-edit-button').hide();  
     });
@@ -31,6 +32,8 @@ jQuery( document ).ready( function( $ ) {
         }
         $("#ETFs-Pre-loadinganimation-2").css('display', 'none');
         $('.fp-toggle-button').prop('disabled', true);
+        $(`.dropdown-fund-details`).css('display', 'none');
+        $('.fp-layout-fund-edit').prop('disabled', true);
         $('.fp-save-button, .fp-cancel-button').hide();
         $('.fp-edit-button').show();  
     }
@@ -108,18 +111,19 @@ jQuery( document ).ready( function( $ ) {
 
         let etfs_arr = [];
         counter = 1;
-        const card_order = $(".drop_card");
+        const card_order = $(".drop_info");
         for (var obj of card_order) {
             const card = {
                 'id': obj.id,
                 'order': counter,
-                'display': $(`#vis-${obj.id}`).is(":checked")
+                'display': $(`#vis-${obj.id}`).is(":checked"),
+                'type': $(`#${obj.id}-fund-type`).val(),
+                'details': $(`#${obj.id}-fund-desc`).val(),
             };
             counter++;
             etfs_arr.push(card);
         };
 
-        console.log(etfs_arr);
 
         const data = {
             action: 'fplayout',
@@ -134,13 +138,13 @@ jQuery( document ).ready( function( $ ) {
             success: function( response ) {
                 console.log(response);
                 cancel_fp_edits(true);
-
             }
         }).fail(function(error) {
             console.log(`response failed: ${error}`);
             cancel_fp_edits(true);
             $("#ETFs-Pre-loadinganimation-2").css('display', 'none');
             $("#ETF-Pre-creds-state-2").show();
+            $(`.dropdown-fund-details`).css('display', 'none');
             $("#ETF-Pre-creds-state-2").html("server failed");
         });
     });
@@ -233,6 +237,14 @@ jQuery( document ).ready( function( $ ) {
             $("#ETF-Pre-file-state").show();
             $("#ETF-Pre-file-state").html("server fail");
         });
+    });
+
+    $('.fp-layout-fund-edit').on('click', (e) => {
+        if($(`#${e.currentTarget.dataset.fundId}-fund-details`).css( "display" ) === 'none'){
+            $(`#${e.currentTarget.dataset.fundId}-fund-details`).css('display', 'block');
+        } else{
+            $(`#${e.currentTarget.dataset.fundId}-fund-details`).css('display', 'none');
+        }
     });
 
     $('.update-files-button').on('click', () => {

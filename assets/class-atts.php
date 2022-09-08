@@ -10,6 +10,22 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "fund-footer-desc-data",
+        "title"         => "Footer Description",
+        "description"   => "Fund footer description",
+        "type"          => "textarea",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "fund-header-textarea-data",
+        "title"         => "Header Description",
+        "description"   => "Fund Header description",
+        "type"          => "textarea",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "google-nav-url",
         "title"         => "Daily NAV Sheet URL",
         "description"   => "",
@@ -66,6 +82,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "disturbion-detail-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "pdf-disturbion-url-toggle-data",
         "title"         => "Distribution Memo URL",
         "description"   => "",
@@ -99,6 +123,14 @@ $custom_fields = array(
     ),
     array(
         "name"          => "inception-date-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "inception-date-display-data",
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",
@@ -585,6 +617,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "preformance-section-desc-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "sub-advisor-name",
         "title"         => "Sub-advisor Name",
         "description"   => "",
@@ -592,7 +632,6 @@ $custom_fields = array(
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"
     )
-
 );
 
 $custom_pdf_fields = array( 

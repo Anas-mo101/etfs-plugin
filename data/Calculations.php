@@ -61,13 +61,14 @@ class Calculations{
         }
     }
 	
-	    function get_spx_period_return(){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
+	function get_spx_period_return(){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
         if ($this->sp_ref_value === null) return;
         $temp_ = $this->get_current_sp(false);
 
         $_temp_ =  $temp_ / $this->sp_ref_value;
         $ans = $_temp_ - 1;
         $ans = round($ans,2);
+        $ans = number_format($ans,2);
         update_post_meta($this->id,'ETF-Pre-current-spx-return-data', $ans . '%');
     }
 

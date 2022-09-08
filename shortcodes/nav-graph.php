@@ -23,6 +23,15 @@
     jQuery(document).ready(function() {
         setTimeout(function() {
             let chart = Highcharts.stockChart('container', {
+                legend: {
+                    enabled: true,
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -10,
+                    y: 210,
+                    floating: true,
+                    labelFormat: '<?php echo $post_title; ?> NAV'
+                },
                 rangeSelector: {
                     selected: 1
                 },
@@ -31,7 +40,8 @@
                 },
                 navigator: {
                     maskFill: 'rgba(99, 213, 211, 0.45)',
-                    height: 276,
+                    height: 86,
+                    top: 40,
                     margin: 60,
                     series: {
                         type: 'line',
@@ -52,14 +62,12 @@
                             enabled: false
                         },
                     },
-
-                    yAxis: {
-                        reversed: true,
-                        plotBands: [{
-                            color: '#ffffff',
-                            from: 0,
-                            to: 100000
-                        }]
+                    xAxis: {
+                        title: {
+                            text: 'Time Period Filter',
+                            align: 'low',
+                            y: -110
+                        },
                     },
                 },
                 chart: {
@@ -68,7 +76,7 @@
                     type: 'line',
                     backgroundColor: '#f3f3f3',
                     plotBackgroundColor: '#ffffff',
-                    plotAreaHeight: 653,
+                    marginTop: 200,
                     events: {
                         beforePrint: function() {
                             this.setSize(10000, null, false)
@@ -77,11 +85,18 @@
                             this.setSize(null, null, false)
                         },
                         load: function(event) {
-                            event.target.reflow(); // i tried this not working 
+                            event.target.reflow(); 
                         }
                     },
                 },
                 xAxis: {
+                    title: {
+                        text: 'Date',
+                        y: 20,
+                        style: {
+                            fontSize: '14px',
+                        }
+                    },
                     labels: {
                         format: '{value:%b %d, %Y}',
                         minPadding: 0,
@@ -94,6 +109,12 @@
                     }
                 },
                 yAxis: {
+                    title: {
+                        text: 'NAV',
+                        style: {
+                            fontSize: '14px',
+                        }
+                    },
                     labels: {
                         style: {
                             fontSize: '17px',
@@ -137,10 +158,6 @@
                             type: 'month',
                             count: 6,
                             text: '6M'
-                        },
-                        {
-                            type: 'ytd',
-                            text: 'YTD'
                         },
                         {
                             type: 'year',
@@ -192,7 +209,7 @@
                 },
                 series: [{
                     name: '<?php echo $post_title; ?>',
-                    color: '#63D5D3',
+                    color: '#63d5d3',
                     data: preGraphDataSet,
                     tooltip: {
                         valueDecimals: 2

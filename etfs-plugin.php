@@ -79,6 +79,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_filter('mime_types', array($this, 'etfs_mime_types'));
 
             new \ETFsFundDocs\FundDocuments();
+            new \ETFsDisDetail\DisturbutionDetail();
             \ETFsNoticeHandler\Notice_Handler::init();
         }
 
@@ -164,7 +165,7 @@ if ( !class_exists('ETFPlugin') ) {
                     $data_h = (new CsvProvider())->load_and_fetch($url_h,$columns_h);
                 }
 
-                if( $data || count($data) > 0){
+                if( $data_h || count($data_h) > 0){
                     $post_meta = new PostMeta($data_h,'Holding'); 
                     $post_meta->set_selected($etf_name);
                     $res_holdings = $post_meta->process_incoming();
@@ -185,7 +186,6 @@ if ( !class_exists('ETFPlugin') ) {
                     $data_r = (new CsvProvider())->load_and_fetch($url_r,$columns_r);
                 }
 
-                error_log(print_r($data_r,true));
 
                 if( $data_r || count($data_r) > 0){
                     $post_meta = new PostMeta($data_r,'Ror'); 
@@ -496,6 +496,11 @@ if ( !class_exists('ETFPlugin') ) {
                 if ( current_user_can( $customField['capability'], $post_id ) ) {
                     if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) && trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
                         $value = $_POST[ $this->prefix . $customField['name'] ];
+                        if($customField['name'] === 'fund-footer-desc-data' ||
+                             $customField['name'] === 'preformance-section-desc-data' || 
+                                $customField['name'] === 'fund-header-textarea-data'){
+                            $value = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"<br/>", $value);
+                        }
                         update_post_meta( $post_id, $this->prefix . $customField[ 'name' ], $value );
                     } else {
                         delete_post_meta( $post_id, $this->prefix . $customField[ 'name' ] );

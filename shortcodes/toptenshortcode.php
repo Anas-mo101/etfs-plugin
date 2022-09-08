@@ -23,12 +23,12 @@
 
 <table class="table-ts table-10" style="border-collapse: separate; display: table; overflow-x:auto; border-spacing: 0 17px; margin: 0;">
   <tr>
-    <th style="text-align: left; min-width: 200px; padding-left: 30px; "class="table-ts-title2">% of <br>Net Assets</th>
+    <th style="text-align: left; min-width: 200px; padding-left: 30px; "class="table-ts-title2">% of Net Assets</th>
     <th class="table-ts-title2" style="text-align: left; padding-left: 28px; min-width: 330px;">Name</th>
     <th class="table-ts-title2" style="text-align: left; padding-left: 28px;">Ticker</th>
     <th class="table-ts-title2" style="text-align: left; padding-left: 28px;">CUSIP</th>
     <th class="table-ts-title2" style="text-align: left; padding-left: 28px;">Shares Held</th>
-    <th style="text-align: left; padding-left: 28px;" class="table-ts-title2">Market Value</th>
+    <th style="text-align: right; padding-right: 20px;" class="table-ts-title2">Market Value</th>
   </tr>
 
 <?php $top_holdings_string_json = get_post_meta( get_the_ID(), "ETF-Pre-top-holders-data", true );
@@ -43,7 +43,7 @@ if(empty($top_holdings_array)){
             <td class="table-ts-in pb" style="text-align: left;"> <?php echo $holding["StockTicker"]; ?> </td>
             <td class="table-ts-in pb" style="text-align: left;"> <?php echo $holding["CUSIP"]; ?> </td>
             <td class="table-ts-in pb" style="text-align: left;"> <?php echo $holding["Shares"]; ?> </td>
-            <td class="table-ts-in pb"> <?php echo $holding["MarketValue"]; ?> </td>
+            <td class="table-ts-in pb" style="text-align: right;"> <?php echo $holding["MarketValue"]; ?> </td>
         </tr>
     <?php }
     echo '</table>' ;

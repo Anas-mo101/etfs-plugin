@@ -236,20 +236,46 @@
                     </div>
                 </div>
 
-                <div class="template-tables-preview" id="<?php echo $this->prefix ?>distribution-detail">
+                <div style="display: contents;" class="template-tables-preview">
+                  <h1 style="font-weight: 600; margin-bottom: 20px;"> Performance Description </h1>
                   
-                    <h1 style="font-weight: 600;"> Distribution Detail </h1>
-                    <div class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
+                  <textarea style="padding: 10px; font-size: 16px;" id="<?php echo $this->prefix ?>preformance-section-desc" rows="10"> <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "preformance-section-desc-data", true )) ?> </textarea>
+                </div>
+
+                <div class="template-tables-preview" id="<?php echo $this->prefix ?>distribution-detail">
+                    <div style="display: flex;gap: 20px;align-items: center;">
+                        <h1 style="font-weight: 600;"> Distribution Detail </h1>
+                        <button id="add-dis-detail-row" type="button" class="button button-primary button-large">
+                            <div> Add New Row  </div>
+                        </button>
+                        <div style="display: none;" id="dis-loading-show">  
+                            <img style="width:32px; height:32px;" src="<?php echo dirname(plugin_dir_url(__FILE__ )) . '/admin/images/Gear-0.2s-200px.gif'; ?>" alt="loading animation">
+                        </div>
+                    </div>
+                    <div class="table-horizontal-row-grid table-horizontal-row-grid-4-icon"> 
                         <h3>EX-Date</h3> 
                         <h3>Record Date</h3>
                         <h3>Payable Date</h3> 
                         <h3>Amount</h3>
+                        <h3></h3>
                     </div>
-                    <div style="padding: 10px 0;" class="table-horizontal-row-grid table-horizontal-row-grid-4"> 
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>ex-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "ex-date-data", true )) ?> " />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rec-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "rec-date-data", true )) ?> " />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>pay-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "pay-date-data", true )) ?> " />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>amount-date" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "dis-rate-share-data", true )) ?> " />
+                    <div id="dis-detail-row-container"> <?php 
+                        $current_data = get_post_meta( get_the_ID(), $this->prefix . 'disturbion-detail-data', true );
+                        $current_data = $current_data == '' ? '[]' : $current_data;
+                        $current_data_array = json_decode($current_data, true);
+                        for ($i=0; $i < count($current_data_array); $i++) {  ?>
+                            <div id="<?php echo the_title('','',false) . '-dis-' . $i ?>" style="padding: 10px 0;" class="table-horizontal-row-grid table-horizontal-row-grid-4-icon">
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-1" value="<?php echo $current_data_array[$i]['ex-date'] ?>" />
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-2" value="<?php echo $current_data_array[$i]['rec-date'] ?>" />
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-3" value="<?php echo $current_data_array[$i]['pay-date'] ?>" />
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-4" value="<?php echo $current_data_array[$i]['amount'] ?>" />
+                                <button class="del-dis-detail-row" data-count="<?php echo $i; ?>" type="button" style="border: none; background: inherit; cursor: pointer;">
+                                    <svg style="margin: auto 0;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill clear-set-file" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
 

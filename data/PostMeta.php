@@ -38,12 +38,8 @@ class PostMeta{
 
     private function save_nav_single($selected_meta){
         $nav_meta_keys = array(
-            'ETF-Pre-na-v-data' => 'NAV',
             'ETF-Pre-current-etf-return-data' => 'NAV',
-            'ETF-Pre-net-assets-data' => 'Net Assets',
-            'ETF-Pre-shares-out-standig-data' => 'Shares Outstanding',
             'ETF-Pre-discount-percentage-data' => 'Premium/Discount Percentage',
-            'ETF-Pre-closing-price-data' => 'Market Price',
             'ETF-Pre-thirty-day-median-data' => 'Median 30 Day Spread Percentage',
         );
 
@@ -71,12 +67,31 @@ class PostMeta{
             update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/y"));
         }
 
-        update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',date("m/d/y"));
-        update_post_meta($post_to_update->ID,'ETF-Pre-fund-pricing-date-data',date("m/d/y"));
+        update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',$selected_meta['Rate Date']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-fund-pricing-date-data',$selected_meta['Rate Date']);
+
+        update_post_meta($post_to_update->ID,'ETF-Pre-net-assets-data', $this->big_number_format($selected_meta['Net Assets']) );
+        
+        update_post_meta($post_to_update->ID,'ETF-Pre-shares-out-standig-data', number_format($selected_meta['Shares Outstanding']) );
+
+        update_post_meta($post_to_update->ID,'ETF-Pre-na-v-data', sprintf('%.2f', $selected_meta['NAV']));
+        update_post_meta($post_to_update->ID,'ETF-Pre-closing-price-data', sprintf('%.2f', $selected_meta['Market Price']));
+
         foreach ($nav_meta_keys as $key => $value) {
             if(isset($selected_meta[$value])){
                 update_post_meta($post_to_update->ID,$key,$selected_meta[$value]);
             }
+        }
+    }
+
+    function big_number_format($n, $precision = 2) {
+        $n = (float) $n;
+        if ($n < 1000000) {
+            return number_format($n, 2);
+        } else if ($n < 1000000000) {
+            return number_format($n / 1000000, $precision) . 'M';
+        } else {
+            return number_format($n / 1000000000, $precision) . 'B';
         }
     }
 
@@ -109,30 +124,64 @@ class PostMeta{
             return false;
         }
 
-        $market_value = array_column($this->incoming_meta, 'MarketValue');
-        array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $this->incoming_meta);
-
-        $holding_ = array();
-        for ($i=0; $i < 10; $i++) { 
-            $holding_[] = $this->incoming_meta[$i];
-        }
-
-        $new_holdings = json_encode($holding_);
-
         if($this->selected_etfs !== null && $this->files_map === null){
             $post_to_update = get_page_by_title( $this->selected_etfs , OBJECT, 'etfs' );
             if(! $post_to_update) return false;
 
+            $require_holdings = array();
+            foreach ($this->incoming_meta as $holdings) {
+                if($holdings['Account'] === $this->selected_etfs){
+                    $require_holdings[] = $holdings;
+                }
+            }
+
+            $market_value = array_column($require_holdings, 'MarketValue');
+            array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $require_holdings);
+
+            if(count($require_holdings) > 10) $require_holdings = array_slice($require_holdings, 0, 10);
+
+            $display_holdings = array();
+            foreach ($require_holdings as $hgs) {
+                $hgs['Shares'] = number_format($hgs['Shares']);
+                $hgs['MarketValue'] = $this->big_number_format($hgs['MarketValue']);
+
+                $display_holdings[] = $hgs;
+            }
+
+            $new_holdings = json_encode($display_holdings);
+
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holders-data',$new_holdings);
-
             return true;
         }else{
             $query = new WP_Query(array( 'post_type' => 'etfs', 'posts_per_page' => 999999 ));
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id_to_update = get_the_ID();
+                $post_name_to_update = get_the_title();
+
+                $require_holdings = array();
+                foreach ($this->incoming_meta as $holdings) {
+                    if($holdings['Account'] === $post_name_to_update){
+                        $require_holdings[] = $holdings;
+                    }
+                }
     
+                $market_value = array_column($require_holdings, 'MarketValue');
+                array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $require_holdings);
+                
+                if(count($require_holdings) > 10) $require_holdings = array_slice($require_holdings, 0, 10);
+
+                $display_holdings = array();
+                foreach ($require_holdings as $hgs) {
+                    $hgs['Shares'] = number_format($hgs['Shares']);
+                    $hgs['MarketValue'] = $this->big_number_format($hgs['MarketValue']);
+
+                    $display_holdings[] = $hgs;
+                }
+                
+                $new_holdings = json_encode($display_holdings);
+
                 update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
                 update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
             }
@@ -148,11 +197,14 @@ class PostMeta{
         $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
         if(! $post_to_update) return;
 
-        update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', date("m/d/y"));
+        
         update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['sec_yeild']);
-        update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
+        if(isset($meta['sec_yeild']) && $meta['sec_yeild'] != ''){
+            update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', $meta['date']); 
+        }
 
-        update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', date("m/d/y"));
+        update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', $meta['date']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-inception-data', $meta['fund_nav']['inception']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-year-data', $meta['fund_nav']['one_year']);
@@ -185,7 +237,7 @@ class PostMeta{
                 $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'], 'inception' => $mkt_arr['Since Inception Cumulative']);
                 $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'], 'inception' => $nav_arr['Since Inception Cumulative']);
                 $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'], 'inception' => $sp_arr['Since Inception Cumulative']);
-                $data_array = array('ytd_sp_return' => $sp_arr['YTD'], 'sec_yeild' => '-', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
+                $data_array = array('date' => $nav_arr['Date'], 'ytd_sp_return' => $sp_arr['YTD'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
 
                 return $data_array;
             } 

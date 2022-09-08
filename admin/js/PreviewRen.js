@@ -4,14 +4,48 @@ function format_date(date) {
     return result;
 }
 
+function format_date_jdy(date) {
+    const [year, month, day] = date.split('-');
+
+    const get_month_name = (m) => {
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+        const index = m > 12 || m < 1 ? 0 : m-1;
+        return months[index];
+    };
+
+    const month_num = parseInt(month) == NaN ? 0 : parseInt(month);
+    const month_name = get_month_name(month_num);
+
+    const result = [
+        month_name,
+        `${day},`, 
+        year
+    ].join(' ');
+
+    return result;
+}
+
 function save_manually_edited_data(){
     document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () => { 
-        console.log("save data");
 
         //set data in feilds 
         // --> fund detials
         document.getElementById('ETF-Pre-rate-date-fund-details-data').value = format_date(document.getElementById('ETF-Pre-rate-date-fund-details').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
         document.getElementById("ETF-Pre-inception-date-data").value = format_date( document.getElementById("ETF-Pre-inc-date-previewform").value.trim() ); // convert from yyyy-mm-dd to mm-dd-yyyy
+        document.getElementById("ETF-Pre-inception-date-display-data").value = format_date_jdy( document.getElementById("ETF-Pre-inc-date-previewform").value.trim() );
         document.getElementById("ETF-Pre-cusip-data").value = document.getElementById("ETF-Pre-cus-ip-previewform").value.trim();
         document.getElementById("ETF-Pre-fund-listing-data").value = document.getElementById("ETF-Pre-fund-listing-previewform").value.trim();
         document.getElementById("ETF-Pre-iopv-symbol-data").value = document.getElementById("ETF-Pre-iopv-symbol-previewform").value.trim();
@@ -57,6 +91,8 @@ function save_manually_edited_data(){
         document.getElementById('ETF-Pre-perf-sp-year-data').value = document.getElementById('ETF-Pre-sp-year').value.trim();
         document.getElementById('ETF-Pre-perf-sp-inception-data').value = document.getElementById('ETF-Pre-sp-inception').value.trim();
 
+        document.getElementById('ETF-Pre-preformance-section-desc-data').value = document.getElementById('ETF-Pre-preformance-section-desc').value.trim();
+
         if(document.getElementById('in-category-21').checked === false){
             // --> vars
             document.getElementById('ETF-Pre-starting-nav-data').value = document.getElementById('ETF-Pre-starting-nav').value.trim();
@@ -87,16 +123,32 @@ function save_manually_edited_data(){
         }
 
         // --> Distribution Detail
-        document.getElementById('ETF-Pre-ex-date-data').value = document.getElementById('ETF-Pre-ex-date').value.trim();
-        document.getElementById('ETF-Pre-rec-date-data').value = document.getElementById('ETF-Pre-rec-date').value.trim();
-        document.getElementById('ETF-Pre-pay-date-data').value = document.getElementById('ETF-Pre-pay-date').value.trim();
-        document.getElementById('ETF-Pre-dis-rate-share-data').value = document.getElementById('ETF-Pre-amount-date').value.trim();
+        // document.getElementById('ETF-Pre-ex-date-data').value = document.getElementById('ETF-Pre-ex-date').value.trim();
+        // document.getElementById('ETF-Pre-rec-date-data').value = document.getElementById('ETF-Pre-rec-date').value.trim();
+        // document.getElementById('ETF-Pre-pay-date-data').value = document.getElementById('ETF-Pre-pay-date').value.trim();
+        // document.getElementById('ETF-Pre-dis-rate-share-data').value = document.getElementById('ETF-Pre-amount-date').value.trim();
+
+        let new_dis_data = [];
+        const rows_count = document.querySelectorAll('.table-horizontal-row-grid-4-icon').length - 1;
+        if(rows_count > 0){
+            for (let index = 0; index < rows_count; index++) {
+                const new_dis = {
+                    "ex-date" : document.getElementById(`ETF-Pre-dis-${index}-1`).value.trim(),
+                    "rec-date" : document.getElementById(`ETF-Pre-dis-${index}-2`).value.trim(),
+                    "pay-date" : document.getElementById(`ETF-Pre-dis-${index}-3`).value.trim(),
+                    "amount" : document.getElementById(`ETF-Pre-dis-${index}-4`).value.trim(),
+                }
+                new_dis_data.push(new_dis);
+            }
+            document.getElementById("ETF-Pre-disturbion-detail-data").value = JSON.stringify(new_dis_data);
+        }
 
         // --> holdings
         document.getElementById("ETF-Pre-top-holding-update-date-data").value = format_date(document.getElementById('ETF-Pre-top-holding-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
-        
         let new_holdings_data = [];
-        for (let index = 0; index < 10; index++) {
+        holding_count = document.querySelectorAll('#ETF-Pre-holdings-containers .table-horizontal-row-grid').length;
+        holding_count = holding_count <= 0 ? 10 : holding_count;
+        for (let index = 0; index < holding_count; index++) {
             const new_holding = {
                 "Weightings" : document.getElementById(`ETF-Pre-holding-${index}-1`).value.trim(),
                 "SecurityName" : document.getElementById(`ETF-Pre-holding-${index}-2`).value.trim(),
