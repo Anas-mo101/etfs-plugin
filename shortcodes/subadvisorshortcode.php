@@ -171,8 +171,8 @@ if($sub_adv_id !== 'none'){
         <div class="col-1-subadvisor">
             <div class="col-1-subadvisor-widget">
                 <div class="pnopspace">
-                    <p class="cat-subadvisor fade-in-animation">SUB-ADVISOR</p>
-                    <p class="title-subadvisor fade-in-animation"><?php echo $sub_adv_title ?></p>
+                    <p class="cat-subadvisor fade-in-animation dynamic-elementor-font-style-sub-heading-2">SUB-ADVISOR</p>
+                    <p class="title-subadvisor fade-in-animation dynamic-elementor-font-style-heading-4"><?php echo $sub_adv_title ?></p>
                 </div>
                 <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
                 <a id="req-meet" href="/contact-us/">

@@ -65,6 +65,14 @@ class DisturbutionDetail{
         $current_data = get_post_meta( get_the_ID(), $this->prefix . 'disturbion-detail-data', true );
         $current_data = $current_data == '' ? '[]' : $current_data;
         $current_data_array = json_decode($current_data, true);
+
+        ?> <table class="table-ts table-10" style="border-collapse: separate; display: table; overflow-x:auto; border-spacing: 0 17px; margin: 0;">
+        <tr>
+            <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Ex-Date</th>
+            <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Record Date</th>
+            <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Payable Date</th>
+            <th style="text-align: center;" class="table-ts-title2 dynamic-elementor-font-style-body-bold">Amount</th>
+        </tr> <?php 
         
         if(is_array($current_data_array) && count($current_data_array) > 0){
             ?> <style>
@@ -89,23 +97,22 @@ class DisturbutionDetail{
                 }
             </style>
 
-            <table class="table-ts table-10" style="border-collapse: separate; display: table; overflow-x:auto; border-spacing: 0 17px; margin: 0;">
-                <tr>
-                    <th class="table-ts-title2" style="text-align: center;">Ex-Date</th>
-                    <th class="table-ts-title2" style="text-align: center;">Record Date</th>
-                    <th class="table-ts-title2" style="text-align: center;">Payable Date</th>
-                    <th style="text-align: center;" class="table-ts-title2">Amount</th>
-                </tr> <?php 
-
-            foreach ($current_data_array as $value) { 
+            <?php foreach ($current_data_array as $value) { 
                 ?> <tr>
-                    <td class="table-ts-in pb" style="text-align: center;"><?php echo $value['ex-date'] ?></td>
-                    <td class="table-ts-in pb" style="text-align: center;"><?php echo $value['rec-date'] ?></td>
-                    <td class="table-ts-in pb" style="text-align: center;"><?php echo $value['pay-date'] ?></td>
-                    <td class="table-ts-in pb" style="text-align: center;"><?php echo $value['amount'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['ex-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['rec-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['pay-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['amount'] ?></td>
                 </tr> <?php
             } 
             echo '</table>' ;
+        }else{
+            ?> <tr>
+                <td class="table-ts-in pb" style="text-align: center;"> </td>
+                <td class="table-ts-in pb" style="text-align: center;"> </td>
+                <td class="table-ts-in pb" style="text-align: center;"> </td>
+                <td class="table-ts-in pb" style="text-align: center;"> </td>
+            </tr>  </table> <?php
         }
         return ob_get_clean();
     }

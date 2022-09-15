@@ -38,6 +38,7 @@ class SFTP{
                     Holding varchar(255) NOT NULL DEFAULT '',
                     Ror varchar(255) NOT NULL DEFAULT '',
                     Dist varchar(255) NOT NULL DEFAULT '',
+                    Sec varchar(255) NOT NULL DEFAULT '',
                     Last_Cycle_Timestamp DATETIME
                 ) $charset_collate;";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -63,9 +64,18 @@ class SFTP{
                 'Holding' => '*', 
                 'Ror' => '*',
                 'Dist' => '*',
+                'Sec' => '*',
                 'Last_Cycle_Timestamp' => NULL
             ) 
         );
+    }
+
+    function sftp_db_remove_init(){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . "etfs_sftp_config_db"; 
+
+        $wpdb->delete( $wp_table_name, array( 'Id' => 'sftp_main_db') );
+
     }
 
     function get_config_db(){
@@ -102,7 +112,8 @@ class SFTP{
             'Nav' => $this->_config["Nav"], 
             'Holding' => $this->_config["Holding"], 
             'Ror' => $this->_config["Ror"], 
-            'Dist' => $this->_config["Dist"]
+            'Dist' => $this->_config["Dist"],
+            'Sec' => $this->_config["Sec"]
         ];
         $where = [ 'Id' => 'sftp_main_db' ]; 
         $wpdb->update( $wp_table_name, $data, $where ); 
@@ -261,7 +272,7 @@ class SFTP{
         }
 
         // set file names to look for
-        $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist' );
+        $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist', 'Sec' => 'sec' );
         foreach ($file_set_name as $key => $value )  {
             if(isset($this->_config["$key"]) && $this->_config["$key"] !== '*' ){
                 $file_set_name["$key"] = $this->_config[$key];
@@ -397,6 +408,10 @@ class SFTP{
 
         if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
             $this->_config["Dist"] = $args["dist"];
+        }
+
+        if(isset($args['sec']) || (trim($args['sec']) !== '') ) {
+            $this->_config["Sec"] = $args["sec"];
         }
 
         // update config db

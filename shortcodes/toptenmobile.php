@@ -58,7 +58,6 @@
         font-size: 20px;
         color: #6ec1e4;
         position: absolute;
-
     }
       
     .button-next{
@@ -85,76 +84,66 @@
 <?php $top_holdings_string_json = get_post_meta( get_the_ID(), "ETF-Pre-top-holders-data", true );
 $top_holdings_array = json_decode($top_holdings_string_json, true);
 if(empty($top_holdings_array)){ 
-    echo '</body> <div class="table-horizontal-row-null">  <p class="table-horizontal-row-text"> Information not provided for current ETF </p> </div>';
+    echo '</body> <div class="table-horizontal-row-null">  <p class="table-horizontal-row-text"> No Records </p> </div>';
 }else{
     foreach ($top_holdings_array as $key => $holding) {  ?>
-
-
         <!-- Swiper -->
-
-    <div class="swiper-slide">
-        <div class="container-table-mobile">
-            <table class="tb-mb-prfr" style="border-collapse: separate; border-spacing: 0 9px; margin: 0; display: table;">
-            <tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; ">% of Net Assets</td>
-                <td class="table-ts-in-mb pb" width="60%" style="text-align: right; padding-right: 30px;"><?php echo $holding["Weightings"]; ?></td>
-            </tr>
-            <tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; " width="40%">Name</td>
-                <td class="table-ts-in-mb pb" width="60%" style="text-align: right; padding-right: 30px;"> <?php echo $holding["SecurityName"]; ?> </td>
-            </tr>
-            <tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; ">Ticker</td>
-                <td class="table-ts-in-mb pb" style="text-align: right; padding-right: 30px;"><?php echo $holding["StockTicker"]; ?> </td>
-            </tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; ">CUSIP</td>
-                <td class="table-ts-in-mb pb" style="text-align: right; padding-right: 30px;"><?php echo $holding["CUSIP"]; ?> </td>
-            </tr>
-            <tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; ">Shares Held</td>
-                <td class="table-ts-in-mb pb" style="text-align: right; padding-right: 30px;"><?php echo $holding["Shares"]; ?></td>
-            </tr>
-            <tr>
-                <td class="table-ts-title2-mb pb" style=" min-width: 150px; padding-left: 30px; ">Market Value</td>
-                <td class="table-ts-in-mb pb" style="text-align: right; padding-right: 30px;"> <?php echo $holding["MarketValue"]; ?></td>
-            </tr>
-            </table>
+        <div class="swiper-slide">
+            <div class="container-table-mobile">
+                <table class="tb-mb-prfr" style="border-collapse: separate; border-spacing: 0 9px; margin: 0; display: table;">
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">% of Net Assets</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="60%" style="text-align: right; padding-right: 30px;"><?php echo $holding["Weightings"]; ?></td>
+                </tr>
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; " width="40%">Name</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="60%" style="text-align: right; padding-right: 30px;"> <?php echo $holding["SecurityName"]; ?> </td>
+                </tr>
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Ticker</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["StockTicker"]; ?> </td>
+                </tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">CUSIP</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["CUSIP"]; ?> </td>
+                </tr>
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Shares Held</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["Shares"]; ?></td>
+                </tr>
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Market Value</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"> <?php echo $holding["MarketValue"]; ?></td>
+                </tr>
+                </table>
+            </div>
         </div>
-    </div>
-
-
-
-
     <?php }
     echo '    
 	</div>
-    <div class="button-next">
-        <i aria-hidden="true" class="eicon-chevron-right"></i>
+        <div class="button-next">
+            <i aria-hidden="true" class="eicon-chevron-right"></i>
+        </div>
+        <div class="button-prev">
+            <i aria-hidden="true" class="eicon-chevron-left"></i>
+        </div>
+        <div class="swiper-pagination"></div>
     </div>
-    <div class="button-prev">
-        <i aria-hidden="true" class="eicon-chevron-left"></i>
-    </div>
-    <div class="swiper-pagination"></div>
     
-  </div>
-  
-  <!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js" ></script>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" ></script>
 
-<!-- Initialize Swiper -->
-<script>
-  var swiper = new Swiper(".mySwiper", {
-    pagination: {
-      el: ".swiper-pagination",
-      type: "fraction",
-    },
-    navigation: {
-      nextEl: ".button-next",
-      prevEl: ".button-prev",
-    },
-  });
-</script>
-
-
+    <!-- Initialize Swiper -->
+    <script>
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+            type: "fraction",
+        },
+        navigation: {
+            nextEl: ".button-next",
+            prevEl: ".button-prev",
+        },
+    });
+    </script>
   </body>' ;
 }

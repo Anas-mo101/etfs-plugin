@@ -63,6 +63,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_shortcode('render-toptenmobile', array($this, 'render_toptenmobile'));
             add_shortcode('render-nav-graph', array($this, 'render_graph')); 
             add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb')); 
+            add_shortcode('render-post-category', array($this, 'get_post_category_cuz_elementor_cant')); 
             add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
@@ -99,7 +100,9 @@ if ( !class_exists('ETFPlugin') ) {
         function deactivate(){
             if ( wp_next_scheduled ( 'get_sftp_data' )){
                 wp_clear_scheduled_hook('get_sftp_data');
-            } 
+            }
+            $sftp = \ETFsSFTP\SFTP::getInstance();
+            $sftp->sftp_db_remove_init();
             flush_rewrite_rules();
         }
 
@@ -549,6 +552,16 @@ if ( !class_exists('ETFPlugin') ) {
             ob_start();
             global $post;
             echo $post->post_content; 
+            return ob_get_clean();
+        }
+
+        function get_post_category_cuz_elementor_cant() {
+            ob_start();
+            global $post;
+            $category_detail = get_the_category($post->ID);
+            if($category_detail && isset($category_detail[0])){
+                echo $category_detail[0]->cat_name;
+            }
             return ob_get_clean();
         }
 

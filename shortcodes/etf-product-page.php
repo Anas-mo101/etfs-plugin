@@ -2,19 +2,19 @@
 <div  id ="table-pd" class="table-responsive">
     <table class="table-ts" style="border-collapse: separate; border-spacing: 0 17px; margin: 0;  overflow-x: auto;">
         <tr>
-            <th style="text-align: center;"class="table-ts-title2-product">Ticker</th>
-            <th class="table-ts-title2-product">Name</th>
-            <th class="table-ts-title2-product">Series</th>
-            <th class="table-ts-title2-product">Fund Price</th>
-            <th class="table-ts-title2-product">Period Returns</th>
-            <th class="table-ts-title2-product">Index</th>
-            <th class="table-ts-title2-product">Index Period Returns</th>
-            <th class="table-ts-title2-product">Est. Upside Market Participation Rate</th>
-            <th class="table-ts-title2-product">Remaining Buffer</th>
-            <th class="table-ts-title2-product">ETF Downside to Buffer</th>
-            <th class="table-ts-title2-product">S&P Downside to Floor of Buffer</th>
-            <th class="table-ts-title2-product">Remaining Outcome Period</th>
-            <th style="text-align: center;" class="table-ts-title2-product">Prospectus</th>
+            <th style="text-align: center; border:none;"class="dynamic-elementor-font-style-body-bold">Ticker</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Name</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Series</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Fund Price</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Period Returns</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Index</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Index Period Returns</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Est. Upside Market Participation Rate</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">Remaining Buffer</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">ETF Downside to Buffer</th>
+            <th style="border:none;" class="dynamic-elementor-font-style-body-bold">S&P Downside to Floor of Buffer</th>
+            <th  style="border:none;" class="dynamic-elementor-font-style-body-bold">Remaining Outcome Period</th>
+            <th style="text-align: center; border: none;" class="dynamic-elementor-font-style-body-bold">Prospectus</th>
         </tr>
         
         <?php

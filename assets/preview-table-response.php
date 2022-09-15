@@ -14,7 +14,6 @@
              <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="<?php echo $this->prefix ?>popup-table-inner-container">
  
                 <div class="template-tables-preview" id="<?php echo $this->prefix ?>fund-data-pricing">
-
                     <h1 style="font-weight: 600;"> Fund Details </h1>
                     <p>  Data as of 
                         <span id="<?php echo $this->prefix ?>rate-date-fund-details-span">

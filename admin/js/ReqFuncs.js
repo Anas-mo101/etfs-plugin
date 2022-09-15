@@ -53,16 +53,16 @@ jQuery( document ).ready( function( $ ) {
                     const element = rows_data[index];
                     const row = 
                     `<div id="${etfName + '-dis-' + index}" style="padding: 10px 0;" class="table-horizontal-row-grid table-horizontal-row-grid-4-icon"> 
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>ex-date" value="${element['ex-date']}" />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>rec-date" value="${element['rec-date']}" />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>pay-date" value="${element['pay-date']}" />
-                        <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>amount-date" value="${element['amount']}" />
+                        <input type="text" class="fund-details-input-feilds" id="ETF-Pre-dis-${index}-1" value="${element['ex-date']}" />
+                        <input type="text" class="fund-details-input-feilds" id="ETF-Pre-dis-${index}-2" value="${element['rec-date']}" />
+                        <input type="text" class="fund-details-input-feilds" id="ETF-Pre-dis-${index}-3" value="${element['pay-date']}" />
+                        <input type="text" class="fund-details-input-feilds" id="ETF-Pre-dis-${index}-4" value="${element['amount']}" />
                         <button class="del-dis-detail-row" data-count="${index}" type="button" style="border: none; background: inherit; cursor: pointer;">
                             <svg style="margin: auto 0;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill clear-set-file" viewBox="0 0 16 16">
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
                             </svg>
                         </button>
-                    </div>`
+                    </div>`;
                     rows.innerHTML = rows.innerHTML + row;
                 }
                 $('#dis-detail-row-container').append(rows);
@@ -73,7 +73,6 @@ jQuery( document ).ready( function( $ ) {
     }
 
     $('#dis-detail-row-container').on('click', '.del-dis-detail-row', function(e) {
-        console.log('e');
         $( '#dis-loading-show' ).css('display','block');
         _row_id = this.getAttribute('data-count');
         data = { action: 'del_disturbion_row', etfName: document.getElementById('title').value.trim(), index: _row_id }
@@ -83,7 +82,6 @@ jQuery( document ).ready( function( $ ) {
             data,
             cache: false,
             success: function( response ) {
-                console.log(response)
                 if(response.success){
                     print_dis_row(response.data);
                 }

@@ -30,8 +30,35 @@ class PostMeta{
                 return $this->process_ror();
             case 'Dist':
                 return $this->process_dist();
+            case 'Sec':
+                return $this->process_sec();
             default: return 'PostMeta: file not supported';
         }
+    }
+
+    //=============================== Sec ==========================================
+
+    private function process_sec(){
+        if(!$this->incoming_meta || count($this->incoming_meta) === 0) return false;
+
+        if($this->selected_etfs === null && $this->files_map !== null){
+            $query = new WP_Query(array( 'post_type' => 'etfs', 'posts_per_page' => 999999 ));
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post_id_to_update = get_the_ID();
+                $post_name_to_update = get_the_title();
+
+                foreach ($this->incoming_meta as $meta) {
+                    if($meta['Fund Ticker'] === $post_name_to_update){
+                        update_post_meta($post_id_to_update,'ETF-Pre-sec-yeild-data', $meta['30 Day SEC Yield - Unsubsidized']);
+                        update_post_meta($post_id_to_update,'ETF-Pre-rate-date-fund-details-data', $meta['Date']); 
+                    }
+                }
+            }
+            wp_reset_query();
+            return true;
+        }
+        return false;
     }
 
     // =============================   NAV  =========================================
@@ -198,10 +225,7 @@ class PostMeta{
         if(! $post_to_update) return;
 
         
-        update_post_meta($post_to_update->ID,'ETF-Pre-sec-yeild-data', $meta['sec_yeild']);
-        if(isset($meta['sec_yeild']) && $meta['sec_yeild'] != ''){
-            update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-fund-details-data', $meta['date']); 
-        }
+
 
         update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', $meta['date']);

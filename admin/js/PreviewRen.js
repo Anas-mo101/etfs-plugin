@@ -140,8 +140,9 @@ function save_manually_edited_data(){
                 }
                 new_dis_data.push(new_dis);
             }
-            document.getElementById("ETF-Pre-disturbion-detail-data").value = JSON.stringify(new_dis_data);
         }
+        document.getElementById("ETF-Pre-disturbion-detail-data").value = JSON.stringify(new_dis_data);
+
 
         // --> holdings
         document.getElementById("ETF-Pre-top-holding-update-date-data").value = format_date(document.getElementById('ETF-Pre-top-holding-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy

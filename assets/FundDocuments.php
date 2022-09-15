@@ -187,8 +187,6 @@ class FundDocuments{
                 .button-dw-fund-doc a{
                     height: 56px;
                     min-height: unset!important;
-                    font-size: 15px!important;
-                    font-weight: 600!important;
                     align-items: center;
                     display: inline-grid;
                     padding: 0 30px 0 30px!important;
@@ -202,7 +200,6 @@ class FundDocuments{
                 .button-dw-fund-doc svg{
                     width: 1em!important;
                     height: auto;
-                    font-size: 17px;
                 }
             }
 			
@@ -217,14 +214,8 @@ class FundDocuments{
                 min-height: 80px;
                 background-color: #ffffff;
                 border-radius: 0;
-                color: #12223D;
                 text-align: left;
-                color: #12223D;
-                font-family: "Avenir Next", Sans-serif;
-                font-size: 17px;
-                font-weight: bold;
-                line-height: 50px;
-                    align-items: center;
+                align-items: center;
                 display: inline-grid;
                 padding: 0 40px 0 75px;
             }
@@ -253,7 +244,7 @@ class FundDocuments{
                                 <rect id="Rectangle-199-Copy" width="26" height="3" rx="1.5" transform="translate(4.099 27)" fill="#63d5d3" opacity="0.3"></rect>
                             </svg>			
                         </span>
-                        <span class="elementor-button-text"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
+                        <span class="elementor-button-text dynamic-elementor-font-style-body-bold"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
                     </span>
                 </a>
 		    </div>
