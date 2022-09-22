@@ -306,6 +306,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "perf-market-five-year-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "perf-market-inception-data",
         "title"         => "",
         "description"   => "",
@@ -323,6 +331,14 @@ $custom_fields = array(
     ),
     array(
         "name"          => "perf-nav-six-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "perf-nav-five-year-data",
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",
@@ -363,6 +379,14 @@ $custom_fields = array(
     ),
     array(
         "name"          => "perf-sp-year-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "perf-sp-five-year-data",
         "title"         => "",
         "description"   => "",
         "type"          => "hidden",

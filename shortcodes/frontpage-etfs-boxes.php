@@ -22,43 +22,41 @@ function set_box_($id,$type,$desc){
         $sub_id = get_post_meta( get_page_by_title( 'JANZ', OBJECT, 'etfs' )->ID, 'ETF-Pre-sub-advisor-name', true );
         $sub_name = get_the_title( $sub_id );
         $post_full_name = 'STRUCTURED OUTCOME SERIES';
-    }
-    
-    ?> <div class="trueshare-item-box">
-            <div class="trueshare-box-titles">
-                <div class="trueshare-box-title-one dynamic-elementor-font-style-sub-heading-3">
-                    <?php echo $type; ?>
-                </div>
-                <div class="trueshare-box-title-two dynamic-elementor-font-style-header-5">
-                    <?php echo $post_title_; ?>
-                </div>
-                <div class="trueshare-box-title-three dynamic-elementor-font-style-sub-heading-3">
-                    <?php echo $post_full_name; ?>
-                </div>
+    } ?> 
+        
+    <div class="trueshare-item-box">
+        <div class="trueshare-box-titles">
+            <div class="trueshare-box-title-one dynamic-elementor-font-style-sub-heading-3">
+                <?php echo $type; ?>
             </div>
-            <div class="trueshare-box-body dynamic-elementor-font-style-body">
-                <p>
-                    <?php echo $desc; ?>
-                </p>
+            <div class="trueshare-box-title-two dynamic-elementor-font-style-heading-4">
+                <?php echo $post_title_; ?>
             </div>
-            <div>
-                <p class="trueshare-box-subadv dynamic-elementor-font-style-sub-heading-3"> SUBADVISOR: </p>
-                <p class="trueshare-box-subadvname dynamic-elementor-font-style-sub-heading-3"> 
-                    <?php echo $sub_name; ?>
-                </p>
+            <div class="trueshare-box-title-three dynamic-elementor-font-style-sub-heading-3">
+                <?php echo $post_full_name; ?>
             </div>
-            <div class="trueshare-learn-more dynamic-elementor-font-style-button-text" onclick="location.href='<?php echo $post_link_; ?>'">
-                <p> LEARN MORE </p>
-            </div>
-        </div> <?php
+        </div>
+        <div style="margin-bottom: 20px; height: 50%;">
+            <p class="dynamic-elementor-font-style-body"> <?php echo $desc; ?> </p>
+        </div>
+        <div>
+            <p class="trueshare-box-subadv dynamic-elementor-font-style-sub-heading-3"> SUBADVISOR: </p>
+            <p class="trueshare-box-subadvname dynamic-elementor-font-style-sub-heading-3"> 
+                <?php echo $sub_name; ?>
+            </p>
+        </div>
+        <div class="trueshare-learn-more dynamic-elementor-font-style-button-text" onclick="location.href='<?php echo $post_link_; ?>'">
+            <p> LEARN MORE </p>
+        </div>
+    </div> <?php
 }
 
 ?>
 <style>
 
 .trueshare-item-box{background-color: white;padding: 44px 55px 42px 50px;margin: 20px;width: 655px;height: auto;box-shadow: 0px 3px 30px #00000012;}
-.trueshare-box-title-one{margin-bottom: -7px;color: #949494;}
-.trueshare-box-title-two{margin-bottom: -7px;color: #0c233f;}
+.trueshare-box-title-one{margin-bottom: -5px;color: #949494;}
+.trueshare-box-title-two{margin-bottom: 0px;color: #0c233f;}
 .trueshare-box-title-three, .trueshare-box-subadvname{color: #0c233f;}
 .trueshare-box-body{font-size: 17px;line-height: 35px;color: #0c233f;height: 50%}
 .trueshare-box-subadv{margin-bottom: 2px;color: #9c9c9c;}

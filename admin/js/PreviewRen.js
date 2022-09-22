@@ -81,14 +81,17 @@ function save_manually_edited_data(){
         document.getElementById('ETF-Pre-perf-market-three-data').value = document.getElementById('ETF-Pre-market-price-three').value.trim();
         document.getElementById('ETF-Pre-perf-market-six-data').value = document.getElementById('ETF-Pre-market-price-six').value.trim();
         document.getElementById('ETF-Pre-perf-market-year-data').value = document.getElementById('ETF-Pre-market-price-year').value.trim();
+        document.getElementById('ETF-Pre-perf-market-five-year-data').value = document.getElementById('ETF-Pre-market-price-five-year').value.trim();
         document.getElementById('ETF-Pre-perf-market-inception-data').value = document.getElementById('ETF-Pre-market-price-inception').value.trim();
         document.getElementById('ETF-Pre-perf-nav-three-data').value = document.getElementById('ETF-Pre-nav-three').value.trim();
         document.getElementById('ETF-Pre-perf-nav-six-data').value = document.getElementById('ETF-Pre-nav-six').value.trim();
         document.getElementById('ETF-Pre-perf-nav-year-data').value = document.getElementById('ETF-Pre-nav-year').value.trim();
+        document.getElementById('ETF-Pre-perf-nav-five-year-data').value = document.getElementById('ETF-Pre-nav-five-year').value.trim();
         document.getElementById('ETF-Pre-perf-nav-inception-data').value = document.getElementById('ETF-Pre-nav-inception').value.trim();
         document.getElementById('ETF-Pre-perf-sp-three-data').value = document.getElementById('ETF-Pre-sp-three').value.trim();
         document.getElementById('ETF-Pre-perf-sp-six-data').value = document.getElementById('ETF-Pre-sp-six').value.trim();
         document.getElementById('ETF-Pre-perf-sp-year-data').value = document.getElementById('ETF-Pre-sp-year').value.trim();
+        document.getElementById('ETF-Pre-perf-sp-five-year-data').value = document.getElementById('ETF-Pre-sp-five-year').value.trim();
         document.getElementById('ETF-Pre-perf-sp-inception-data').value = document.getElementById('ETF-Pre-sp-inception').value.trim();
 
         document.getElementById('ETF-Pre-preformance-section-desc-data').value = document.getElementById('ETF-Pre-preformance-section-desc').value.trim();
@@ -114,7 +117,7 @@ function save_manually_edited_data(){
             document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
 
             // --> Current Outcome Period Values
-            document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
+            // document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
             // document.getElementById("ETF-Pre-current-etf-return-data").value = document.getElementById("ETF-Pre-current-etf-return").value.trim();
             // document.getElementById("ETF-Pre-current-spx-return-data").value = document.getElementById("ETF-Pre-current-spx-return").value.trim();
             // document.getElementById("ETF-Pre-current-remaining-buffer-data").value = document.getElementById("ETF-Pre-current-remaining-buffer").value.trim();

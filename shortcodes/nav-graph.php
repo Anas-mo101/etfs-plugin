@@ -101,6 +101,7 @@
                         format: '{value:%b %d, %Y}',
                         minPadding: 0,
                         maxPadding: 0,
+                        rotation: -45,
                         style: {
                             fontSize: '17px',
                             fontFamily: 'Avenir Next, sans-serif',

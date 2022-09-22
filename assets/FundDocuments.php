@@ -183,72 +183,43 @@ class FundDocuments{
         if(!is_object($post)) return;
         $buttons = self::get_all(); ?>
         <style>
+            .main-func-doc-container{ display: grid; grid-template-columns: 45% 45%; justify-content: space-between; }
+            .button-dw-fund-doc svg{  width: 30px; }
+            .button-dw-fund-doc  .elementor-button-icon {  display: flex;  align-items: center; justify-content: center; }
             @media only screen and (max-width: 1024px) {
-                .button-dw-fund-doc a{
-                    height: 56px;
-                    min-height: unset!important;
-                    align-items: center;
-                    display: inline-grid;
-                    padding: 0 30px 0 30px!important;
-                }
-
-                .button-dw-fund-doc{
-                    height: 56px;
-					margin-top: 20px;
-                }
-
-                .button-dw-fund-doc svg{
-                    width: 1em!important;
-                    height: auto;
+                .button-dw-fund-doc a{ height: 56px; min-height: unset!important; align-items: center; display: inline-grid; padding: 0 30px 0 30px!important;}
+                .button-dw-fund-doc{ height: 56px; margin-top: 20px; }
+                .button-dw-fund-doc svg{ width: 1em!important;  height: auto; }
+                .main-func-doc-container{
+                    grid-template-columns: 100%;
                 }
             }
-			
-			@media only screen and (max-width: 600px) {
-				   .button-dw-fund-doc{
-					margin-top: 9px;
-                }
-			}
-
-            .button-dw-fund-doc a{
-                width: 100%;
-                min-height: 80px;
-                background-color: #ffffff;
-                border-radius: 0;
-                text-align: left;
-                align-items: center;
-                display: inline-grid;
-                padding: 0 40px 0 75px;
-            }
-
-            .button-dw-fund-doc svg{
-                width: 30px;
-            }
-
-            .button-dw-fund-doc  .elementor-button-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+			@media only screen and (max-width: 600px) { .button-dw-fund-doc{ margin-top: 9px; } }
+            .button-dw-fund-doc a{  width: 100%; min-height: 55px; background-color: #ffffff; border-radius: 0; text-align: left; align-items: center; display: inline-grid;  padding: 0 40px 0 75px;}
         </style>
-        <?php foreach ( $buttons as $button ) { 
-            if( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) === '') continue; ?>
-            
-            <div class="button-dw-fund-doc">
-                <a href="<?php echo esc_url( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) ); ?>" download="Fact Sheet" class="elementor-button-link elementor-button elementor-size-sm" role="button">
-                    <span class="elementor-button-content-wrapper">
-                        <span class="elementor-button-icon elementor-align-icon-right">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="Download_Arrow" width="34" height="34" viewBox="0 0 34 34">
-                                <path id="Shape" d="M0,0H34V34H0Z" fill="none" fill-rule="evenodd"></path>
-                                <rect id="Rectangle" width="2" height="20" rx="1" transform="translate(16.099 4)" fill="#63d5d3" opacity="0.3"></rect>
-                                <path id="Path-94" d="M12.418-33.585a1.417,1.417,0,0,0-2,0,1.417,1.417,0,0,0,0,2l8.5,8.5a1.417,1.417,0,0,0,1.959.043l8.5-7.792a1.417,1.417,0,0,0,.087-2,1.417,1.417,0,0,0-2-.087l-7.5,6.875Z" transform="translate(-2.917 46.75)" fill="#63d5d3"></path>
-                                <rect id="Rectangle-199-Copy" width="26" height="3" rx="1.5" transform="translate(4.099 27)" fill="#63d5d3" opacity="0.3"></rect>
-                            </svg>			
+
+        <div class="main-func-doc-container">
+            <?php foreach ( $buttons as $button ) { 
+                if( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) === '') continue; ?>
+                
+                <div class="button-dw-fund-doc">
+                    <a href="<?php echo esc_url( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) ); ?>" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+                        <span class="elementor-button-content-wrapper">
+                            <span class="elementor-button-icon elementor-align-icon-right">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Download_Arrow" width="34" height="34" viewBox="0 0 34 34">
+                                    <path id="Shape" d="M0,0H34V34H0Z" fill="none" fill-rule="evenodd"></path>
+                                    <rect id="Rectangle" width="2" height="20" rx="1" transform="translate(16.099 4)" fill="#63d5d3" opacity="0.3"></rect>
+                                    <path id="Path-94" d="M12.418-33.585a1.417,1.417,0,0,0-2,0,1.417,1.417,0,0,0,0,2l8.5,8.5a1.417,1.417,0,0,0,1.959.043l8.5-7.792a1.417,1.417,0,0,0,.087-2,1.417,1.417,0,0,0-2-.087l-7.5,6.875Z" transform="translate(-2.917 46.75)" fill="#63d5d3"></path>
+                                    <rect id="Rectangle-199-Copy" width="26" height="3" rx="1.5" transform="translate(4.099 27)" fill="#63d5d3" opacity="0.3"></rect>
+                                </svg>			
+                            </span>
+                            <span class="elementor-button-text dynamic-elementor-font-style-body-bold"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
                         </span>
-                        <span class="elementor-button-text dynamic-elementor-font-style-body-bold"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
-                    </span>
-                </a>
-		    </div>
-        <?php }
+                    </a>
+                </div>
+            <?php } ?> 
+        </div> 
+        <?php 
         return ob_get_clean();
     }
 }

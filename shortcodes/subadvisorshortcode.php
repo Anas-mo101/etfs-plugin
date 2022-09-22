@@ -16,19 +16,17 @@ if($sub_adv_id !== 'none'){
     @media only screen and (max-width: 600px) {
         
         .cat-subadvisor{
-            font-size: 12px!important;
             padding-top: 55px!important;
             margin: 0;
         }
 
         .title-subadvisor{
-            font-size: 44px!important;
             padding-bottom: 15px!important;
             margin: 0!important;
         }
     
-        .sub-feature-title,   .sub-feature-desc{
-            font-size: 14px!important;
+        .sub-feature-title, .sub-feature-desc{
+            font-size: 14px!important; 
             line-height: 25px!important;
         }
         .spacer-img{
@@ -39,23 +37,16 @@ if($sub_adv_id !== 'none'){
             display:none;
         }
     }
+
     @media only screen and (max-width: 1024px){
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
-            font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
-            font-weight: 500;
-            line-height: 27px;
             letter-spacing: 4px;
             padding-top: 55px!important;
         }
         .title-subadvisor{
             color: #12223D;
-            font-family: "Avenir Next", Sans-serif;
-            font-size: 35px;
-            font-weight: 600;
-            line-height: 56px;
             margin: 0 0 37px 0;
         }
         .row-subadvisor{
@@ -80,7 +71,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             line-height: 35px;
             margin-bottom: 10px;
@@ -90,17 +81,13 @@ if($sub_adv_id !== 'none'){
         .sub-feature-desc{
             color: #11223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 400;
             line-height: 35px;
             margin-bottom: 35px;
         }
-                
-        #req-meet{
-            display: none;
-                visibility: 0;
             
-        }
+
         .spacer-img{
             display: none;
         }
@@ -109,20 +96,21 @@ if($sub_adv_id !== 'none'){
         .cat-subadvisor{
             text-align: left;
             color: #63d5d3;
-            font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
-            font-weight: 500;
-            line-height: 0;
             letter-spacing: 4px;
             margin-bottom: 18px;
+        }
+
+        .center-image {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
         
         .title-subadvisor{
             color: #12223D;
-            font-family: "Avenir Next", Sans-serif;
-            font-size: 35px;
-            font-weight: 600;
-            line-height: 56px;
             margin: 0;
         }
         
@@ -148,7 +136,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-title{
             color: #0c233f;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             line-height: 35px;
             margin-bottom: 10px;
@@ -158,7 +146,7 @@ if($sub_adv_id !== 'none'){
         .sub-feature-desc{
             color: #11223D;
             font-family: "Avenir Next", Sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 400;
             line-height: 35px;
             margin-bottom: 35px;
@@ -172,23 +160,23 @@ if($sub_adv_id !== 'none'){
             <div class="col-1-subadvisor-widget">
                 <div class="pnopspace">
                     <p class="cat-subadvisor fade-in-animation dynamic-elementor-font-style-sub-heading-2">SUB-ADVISOR</p>
-                    <p class="title-subadvisor fade-in-animation dynamic-elementor-font-style-heading-4"><?php echo $sub_adv_title ?></p>
+                    <p class="title-subadvisor fade-in-animation dynamic-elementor-font-style-heading-5"><?php echo $sub_adv_title ?></p>
                 </div>
-                <p class="sub-feature"><?php echo $sub_adv_content ?></p>   
+                <p class="sub-feature dynamic-elementor-font-style-body"> <?php echo $sub_adv_content ?> </p>   
                 <a id="req-meet" href="/contact-us/">
-                    <div class="fade-in-up-animation sub-adv" id="" style="justify-content: normal; justify-items: baseline; display: flex;">
-                        <p style="color: #63d5d3; padding-right: 26px;font-family: 'Avenir Next' , sans-serif;margin: auto 0;font-size: 17px;letter-spacing: 4px;font-weight: 500; line-height: 27px;">REQUEST A MEETING</p>
+                    <div class="fade-in-up-animation sub-adv" id="" style="justify-content: center; justify-items: baseline; display: flex;">
+                        <p class="dynamic-elementor-font-style-button-text" style="color: #63d5d3; padding-right: 26px; margin: auto;">REQUEST A MEETING</p>
                         <div style="cursor: pointer">    
-                            <div class="bi bi-arrow-right" style="color:#63d5d3 ;margin-bottom: 12px;font-size: 25px"></div>
+                            <div class="bi bi-arrow-right" style="color:#63d5d3;margin-bottom: 9px;font-size: 25px"></div>
                         </div>
                     </div>
                 </a>
         </div>
     </div>
-    <div class="col-2-subadvisor">
-        <div class="spacer-img" style="padding-top: 100px;" >
+    <div style="position: relative;" class="col-2-subadvisor">
+        <div class="center-image">
+            <img class="fade-in-animation" style="vertical-align: middle; display: inline-block; width: 100%;" src="<?php echo $sub_adv_thumbnail ?>">
         </div>
-        <img class="fade-in-animation" style="vertical-align: middle; display: inline-block; width: 100%;" src="<?php echo $sub_adv_thumbnail ?>">
     </div>
   </div>
 </section>

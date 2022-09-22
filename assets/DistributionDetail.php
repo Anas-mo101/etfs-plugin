@@ -99,19 +99,19 @@ class DisturbutionDetail{
 
             <?php foreach ($current_data_array as $value) { 
                 ?> <tr>
-                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['ex-date'] ?></td>
-                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['rec-date'] ?></td>
-                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['pay-date'] ?></td>
-                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?php echo $value['amount'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['ex-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['rec-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['pay-date'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['amount'] ?></td>
                 </tr> <?php
             } 
             echo '</table>' ;
         }else{
             ?> <tr>
-                <td class="table-ts-in pb" style="text-align: center;"> </td>
-                <td class="table-ts-in pb" style="text-align: center;"> </td>
-                <td class="table-ts-in pb" style="text-align: center;"> </td>
-                <td class="table-ts-in pb" style="text-align: center;"> </td>
+                <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
+                <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
+                <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
+                <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
             </tr>  </table> <?php
         }
         return ob_get_clean();

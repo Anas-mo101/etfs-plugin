@@ -91,7 +91,7 @@ class PostMeta{
             $previous_graph_data_arr[] = $new_graph_nav;
             $updated_graph_data = json_encode($previous_graph_data_arr);
             update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-data',$updated_graph_data);
-            update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/Y"));
         }
 
         update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',$selected_meta['Rate Date']);
@@ -177,7 +177,7 @@ class PostMeta{
 
             $new_holdings = json_encode($display_holdings);
 
-            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y"));
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holders-data',$new_holdings);
             return true;
         }else{
@@ -209,7 +209,7 @@ class PostMeta{
                 
                 $new_holdings = json_encode($display_holdings);
 
-                update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/y"));
+                update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/Y"));
                 update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
             }
             wp_reset_query();
@@ -224,24 +224,24 @@ class PostMeta{
         $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
         if(! $post_to_update) return;
 
-        
-
-
         update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', $meta['date']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-inception-data', $meta['fund_nav']['inception']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-five-year-data', $meta['fund_nav']['five_year']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-year-data', $meta['fund_nav']['one_year']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-six-data', $meta['fund_nav']['six_months']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-three-data', $meta['fund_nav']['three_months']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-inception-data', $meta['market_price']['inception']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-year-data', $meta['market_price']['one_year']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-five-year-data', $meta['market_price']['five_year']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-six-data', $meta['market_price']['six_months']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-market-three-data', $meta['market_price']['three_months']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-inception-data', $meta['sp']['inception']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-year-data', $meta['sp']['one_year']);
+        update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-five-year-data', $meta['sp']['five_year']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-six-data', $meta['sp']['six_months']);
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-sp-three-data', $meta['sp']['three_months']);
     }
@@ -258,9 +258,9 @@ class PostMeta{
                 $mkt_arr = $this->incoming_meta[$key+1];
                 $sp_arr = $this->incoming_meta[$key+2];
 
-                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'], 'inception' => $mkt_arr['Since Inception Cumulative']);
-                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'], 'inception' => $nav_arr['Since Inception Cumulative']);
-                $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'], 'inception' => $sp_arr['Since Inception Cumulative']);
+                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'],'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr['Since Inception Cumulative']);
+                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'],'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr['Since Inception Cumulative']);
+                $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'],'five_year' => $sp_arr['5 Year'], 'inception' => $sp_arr['Since Inception Cumulative']);
                 $data_array = array('date' => $nav_arr['Date'], 'ytd_sp_return' => $sp_arr['YTD'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
 
                 return $data_array;

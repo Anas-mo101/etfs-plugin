@@ -22,12 +22,12 @@ if(empty($top_holdings_array)){
 }else{
     foreach ($top_holdings_array as $key => $holding) {  ?>
         <tr>
-            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left; padding-left: 30px;"> <?php echo $holding["Weightings"]; ?> </td>
-            <td class="table-ts-in pb name-co dynamic-elementor-font-style-body-bold"> <?php echo $holding["SecurityName"]; ?> </td>
-            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;"> <?php echo $holding["StockTicker"]; ?> </td>
-            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;"> <?php echo $holding["CUSIP"]; ?> </td>
-            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;"> <?php echo $holding["Shares"]; ?> </td>
-            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;"> <?php echo $holding["MarketValue"]; ?> </td>
+            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left; padding: 5px 30px;"> <?php echo $holding["Weightings"]; ?> </td>
+            <td class="table-ts-in pb name-co dynamic-elementor-font-style-body-bold" style="padding: 5px 15px;"> <?php echo $holding["SecurityName"]; ?> </td>
+            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;padding: 5px 15px;"> <?php echo $holding["StockTicker"]; ?> </td>
+            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;padding: 5px 15px;"> <?php echo $holding["CUSIP"]; ?> </td>
+            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;padding: 5px 15px;"> <?php echo $holding["Shares"]; ?> </td>
+            <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: left;padding: 5px 15px;"> <?php echo $holding["MarketValue"]; ?> </td>
         </tr>
     <?php }
     echo '</table>' ;

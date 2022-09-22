@@ -44,7 +44,7 @@
         left: unset;
         width: unset;
         top:3%;
-        right: 15%;
+        right: 21%;
         font-size: 15px;
         font-weight: 600;
         font-family: 'Avenir Next';
@@ -53,7 +53,7 @@
       
     .button-prev{
         top: 2%;
-        right: 29%!important;
+        right: 35%!important;
         left: unset!important;
         font-size: 20px;
         color: #6ec1e4;
@@ -62,7 +62,7 @@
       
     .button-next{
         top: 2%;
-        right: 8%!important;
+        right: 13%!important;
         left: unset!important;
         font-size: 20px;
         color: #6ec1e4;
@@ -92,33 +92,33 @@ if(empty($top_holdings_array)){
             <div class="container-table-mobile">
                 <table class="tb-mb-prfr" style="border-collapse: separate; border-spacing: 0 9px; margin: 0; display: table;">
                 <tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">% of Net Assets</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="60%" style="text-align: right; padding-right: 30px;"><?php echo $holding["Weightings"]; ?></td>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px;" width="50%">% of Net Assets</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"><?php echo $holding["Weightings"]; ?></td>
                 </tr>
                 <tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; " width="40%">Name</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="60%" style="text-align: right; padding-right: 30px;"> <?php echo $holding["SecurityName"]; ?> </td>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; " width="50%">Name</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"> <?php echo $holding["SecurityName"]; ?> </td>
                 </tr>
                 <tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Ticker</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["StockTicker"]; ?> </td>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px;" width="50%">Ticker</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"><?php echo $holding["StockTicker"]; ?> </td>
                 </tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">CUSIP</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["CUSIP"]; ?> </td>
-                </tr>
-                <tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Shares Held</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"><?php echo $holding["Shares"]; ?></td>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px;" width="50%">CUSIP</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"><?php echo $holding["CUSIP"]; ?> </td>
                 </tr>
                 <tr>
-                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px; ">Market Value</td>
-                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" style="text-align: right; padding-right: 30px;"> <?php echo $holding["MarketValue"]; ?></td>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px;" width="50%">Shares Held</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"><?php echo $holding["Shares"]; ?></td>
+                </tr>
+                <tr>
+                    <td class="table-ts-title2-mb pb dynamic-elementor-font-style-body-bold" style=" min-width: 150px; padding-left: 30px;" width="50%">Market Value</td>
+                    <td class="table-ts-in-mb pb dynamic-elementor-font-style-body" width="50%" style="padding-right: 30px;"> <?php echo $holding["MarketValue"]; ?></td>
                 </tr>
                 </table>
             </div>
         </div>
-    <?php }
-    echo '    
+    <?php } ?>
+
 	</div>
         <div class="button-next">
             <i aria-hidden="true" class="eicon-chevron-right"></i>
@@ -145,5 +145,5 @@ if(empty($top_holdings_array)){
         },
     });
     </script>
-  </body>' ;
+  </body> <?php
 }
