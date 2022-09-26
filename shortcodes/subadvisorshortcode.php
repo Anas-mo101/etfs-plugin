@@ -144,12 +144,8 @@ if($sub_adv_id !== 'none'){
         }
         
         .sub-feature-desc{
-            color: #11223D;
-            font-family: "Avenir Next", Sans-serif;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 35px;
-            margin-bottom: 35px;
+            color: #11223D; font-family: "Avenir Next", Sans-serif; font-size: 16px;
+            font-weight: 400; line-height: 35px;  margin-bottom: 35px;
         }
     }
 </style>
@@ -164,8 +160,8 @@ if($sub_adv_id !== 'none'){
                 </div>
                 <p class="sub-feature dynamic-elementor-font-style-body"> <?php echo $sub_adv_content ?> </p>   
                 <a id="req-meet" href="/contact-us/">
-                    <div class="fade-in-up-animation sub-adv" id="" style="justify-content: center; justify-items: baseline; display: flex;">
-                        <p class="dynamic-elementor-font-style-button-text" style="color: #63d5d3; padding-right: 26px; margin: auto;">REQUEST A MEETING</p>
+                    <div class="fade-in-up-animation sub-adv" id="" style="justify-content: center; justify-items: baseline; display: flex; gap: 20px;">
+                        <p class="dynamic-elementor-font-style-button-text" style="color: #63d5d3; padding-right: 26px; margin: auto 0px;">REQUEST A MEETING</p>
                         <div style="cursor: pointer">    
                             <div class="bi bi-arrow-right" style="color:#63d5d3;margin-bottom: 9px;font-size: 25px"></div>
                         </div>

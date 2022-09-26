@@ -39,18 +39,6 @@
         object-fit: cover;
     }
       
-    .swiper-pagination{
-        bottom: unset;
-        left: unset;
-        width: unset;
-        top:3%;
-        right: 21%;
-        font-size: 15px;
-        font-weight: 600;
-        font-family: 'Avenir Next';
-        color: #000;
-    }
-      
     .button-prev{
         top: 2%;
         right: 35%!important;
@@ -59,10 +47,17 @@
         color: #6ec1e4;
         position: absolute;
     }
+
+    .swiper-pagination {
+        top: 2% !important;
+        right: 22% !important;
+        width: auto !important;
+        left: unset;
+    }
       
     .button-next{
         top: 2%;
-        right: 13%!important;
+        right: 15%!important;
         left: unset!important;
         font-size: 20px;
         color: #6ec1e4;
