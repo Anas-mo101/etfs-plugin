@@ -65,6 +65,7 @@ if ( !class_exists('ETFPlugin') ) {
             add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb')); 
             add_shortcode('render-post-category', array($this, 'get_post_category_cuz_elementor_cant')); 
             add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
+            add_shortcode('render-archive-category-elementor', array($this, 'get_post_category_in_archive_elementor'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
@@ -557,11 +558,27 @@ if ( !class_exists('ETFPlugin') ) {
 
         function get_post_category_cuz_elementor_cant() {
             ob_start();
-            global $post;
-            $category_detail = get_the_category($post->ID);
-            if($category_detail && isset($category_detail[0])){
-                echo $category_detail[0]->cat_name;
+            if ( 'post' === get_post_type() ) {
+                global $post;
+                $category_detail = get_the_category($post->ID ?? false);
+                if(isset($category_detail[0])){
+                    echo $category_detail[0]->cat_name;
+                }
             }
+            return ob_get_clean();
+        }
+
+        function get_post_category_in_archive_elementor() {
+            ob_start();
+            global $post;
+            $category_detail = get_the_category($post->ID ?? false);
+            $cate = is_archive() ? (isset($category_detail[0])  ? $category_detail[0]->cat_name : 'Uncategorized') : 'All';
+
+            ?> <style>
+                span.elementor-post-date::before {
+                    content: "<?php echo htmlspecialchars_decode( $cate ) ?> - " !important;
+                }
+            </style> <?php
             return ob_get_clean();
         }
 
