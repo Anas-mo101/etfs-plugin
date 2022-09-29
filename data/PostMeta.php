@@ -10,6 +10,7 @@ class PostMeta{
     var $selected_etfs = null;
 
     function __construct($incoming,$file,$files_map = null){
+        date_default_timezone_set("America/New_York");
         $this->incoming_meta = $incoming;
         $this->file_name = $file;
         $this->files_map = $files_map;

@@ -11,6 +11,8 @@ class Calculations{
     function __construct(){ }
 
     function init($id){
+        date_default_timezone_set("America/New_York");
+        
         $this->id = $id;
         if(get_post_meta( $this->id, "ETF-Pre-starting-nav-data", true ) !== ''){
             $this->starting_nav = floatval(get_post_meta( $this->id, "ETF-Pre-starting-nav-data", true ));
