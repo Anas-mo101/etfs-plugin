@@ -6,20 +6,19 @@
         $fp_options_layout_raw = get_option('front-page-box-layout');
         $fp_options_layout_ = json_decode($fp_options_layout_raw, true);
 
+        $fp_structured_title = get_option('front-box-structured-title');
+        $fp_structured_subtitle = get_option('front-box-structured-subtitle');
+
         $listed_etfs = array();
-        $category_query_args = array(
-            'post_type' => 'etfs',
-            'posts_per_page' => 999999 
-        );
-        $unst_posts = new WP_Query( $category_query_args );
+        $unst_posts = new WP_Query( array( 'post_type' => 'etfs', 'posts_per_page' => 999999 ) );
         if ( $unst_posts->have_posts() ) {
             $_temp_sort = array(
                 array(
                     'id' => '0',
                     'order' => '*',
                     'display' => 'false',
-                    'title' => 'Structured ETFs',
-                    'desc' => 'Janz to Decz'
+                    'title' => $fp_structured_title ? $fp_structured_title : '',
+                    'desc' => $fp_structured_subtitle ? $fp_structured_subtitle : ''
                 )
             );
 
@@ -32,7 +31,7 @@
                         continue;
                     }
                 }
-                
+
                 $_temp =  array(
                     'id' => get_the_ID(),
                     'order' => '*',
@@ -80,7 +79,7 @@
                     <div id="<?php echo $element['id']; ?>" class="drop_data drop_info" >
                         <div class="drop_data">
                             <div>
-                                <h4 class="drop_name feilds-label-style"> <a style="text-decoration: none; color: black;" target="_blank" href="<?php echo esc_url( admin_url( 'post.php?post=' . $element['id'] . '&action=edit' ) ) ?>"> <?php echo $element['title']; ?> </a> </h4>
+                                <h4 class="drop_name feilds-label-style"> <a style="text-decoration: none; color: black;" target="_blank" <?php if($element['id'] != '0') echo  'href="' . esc_url(admin_url('post.php?post='. $element['id'] .'&action=edit' )) .'"'; ?> > <?php echo $element['title']; ?> </a> </h4>
                                 <p style="margin: 0;" class="drop_profession"> <?php echo $element['desc']; ?> </p>
                             </div>
                         </div>
@@ -98,12 +97,24 @@
                         </div>
                     </div>
                     <div id="<?php echo $element['id']; ?>-fund-details" class="dropdown-fund-details" style="display: none">
+                        <?php  if($element['id'] == '0'){ ?>
+                            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-evenly; margin-top: 20px;">
+                                <p style="margin: auto;"><b>Structured Title:</b></p>
+                                <input style="width: 65%;" id="ETFs-Pre-structured-title" type="text" value="<?php echo $element['title']; ?>" >
+                            </div>
+                        <?php } ?>
+                        <?php  if($element['id'] == '0'){ ?>
+                            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-evenly; margin-top: 20px;">
+                                <p style="margin: auto;"><b>Structured Subtitle:</b></p>
+                                <input style="width: 65%;" id="ETFs-Pre-structured-subtitle" type="text" value="<?php echo $element['desc']; ?>" >
+                            </div>
+                        <?php } ?>
                         <div style="display: flex; gap: 10px; align-items: center; justify-content: space-evenly; margin-top: 20px;">
                             <p style="margin: auto;"><b>ETFs Type:</b></p>
                             <input style="width: 65%;" id="<?php echo $element['id']; ?>-fund-type" type="text" value="<?php echo $element['type']; ?>" >
                         </div>
                         <div style="display: flex; gap: 10px; align-items: center; justify-content: space-evenly; margin-top: 20px;">
-                            <p style="margin: auto;"><b>ETFs Decs:</b></p>
+                            <p style="margin: auto;"><b>ETFs Description:</b></p>
                             <textarea style="width: 65%;" id="<?php echo $element['id']; ?>-fund-desc" row="3"> <?php echo $element['details']; ?> </textarea>
                         </div>
                     </div>

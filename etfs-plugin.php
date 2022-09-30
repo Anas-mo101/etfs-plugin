@@ -118,11 +118,25 @@ if ( !class_exists('ETFPlugin') ) {
 
         function fp_layout(){
             $layout_setup_string = json_encode($_POST['etfs']);
+            $structured_title = sanitize_text_field( $_POST['structured_title'] );
+            $structured_subtitle = sanitize_text_field( $_POST['structured_subtitle'] );
 
             if(get_option('front-page-box-layout')){
                 update_option('front-page-box-layout', $layout_setup_string);
             }else{
                 add_option('front-page-box-layout', $layout_setup_string);
+            }
+
+            if(get_option('front-box-structured-title')){
+                update_option('front-box-structured-title', $structured_title);
+            }else{
+                add_option('front-box-structured-title', $structured_title);
+            }
+
+            if(get_option('front-box-structured-subtitle')){
+                update_option('front-box-structured-subtitle', $structured_subtitle);
+            }else{
+                add_option('front-box-structured-subtitle', $structured_subtitle);
             }
 
             $res = array('update' => 'update success');

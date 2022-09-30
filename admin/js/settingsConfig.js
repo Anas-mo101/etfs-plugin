@@ -112,22 +112,23 @@ jQuery( document ).ready( function( $ ) {
         let etfs_arr = [];
         counter = 1;
         const card_order = $(".drop_info");
-        for (var obj of card_order) {
+        for (var obj of card_order) { 
             const card = {
                 'id': obj.id,
                 'order': counter,
                 'display': $(`#vis-${obj.id}`).is(":checked"),
-                'type': $(`#${obj.id}-fund-type`).val(),
-                'details': $(`#${obj.id}-fund-desc`).val(),
+                'type': $.trim( $(`#${obj.id}-fund-type`).val() ),
+                'details': $.trim( $(`#${obj.id}-fund-desc`).val() ),
             };
             counter++;
             etfs_arr.push(card);
         };
 
-
         const data = {
             action: 'fplayout',
-            etfs: etfs_arr
+            etfs: etfs_arr,
+            structured_title: $.trim( $('#ETFs-Pre-structured-title').val() ),
+            structured_subtitle: $.trim( $('#ETFs-Pre-structured-subtitle').val() ),
         };
 
         $.ajax({

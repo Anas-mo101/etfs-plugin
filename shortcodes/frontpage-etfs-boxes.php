@@ -16,12 +16,14 @@ function set_box_($id,$type,$desc){
         $sub_name = get_the_title( $sub_id );
         $post_full_name = get_post_meta( $id, 'ETF-Pre-etf-full-name', true ) ? get_post_meta( $id, 'ETF-Pre-etf-full-name', true ) . ' ETF' : '';
     }else{
-        $post_title_ = 'Structured ETFs';
+        $fp_structured_title = get_option('front-box-structured-title');
+        $fp_structured_subtitle = get_option('front-box-structured-subtitle');
+
+        $post_title_ = $fp_structured_title ? $fp_structured_title : '';
         $post_link_ = './products';
-        $post_content_ = 'TrueShares Structured Outcome ETFs are designed for investors targeting uncapped growth from largecapitalization equities (tracks the S&P 500 Price Index) while simultaneously seeking to mitigate a specified amount of downside exposure.';
         $sub_id = get_post_meta( get_page_by_title( 'JANZ', OBJECT, 'etfs' )->ID, 'ETF-Pre-sub-advisor-name', true );
         $sub_name = get_the_title( $sub_id );
-        $post_full_name = 'STRUCTURED OUTCOME SERIES';
+        $post_full_name = $fp_structured_subtitle ? $fp_structured_subtitle : '';
     } ?> 
         
     <div class="trueshare-item-box">
