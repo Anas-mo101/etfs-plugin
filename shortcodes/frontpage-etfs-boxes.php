@@ -16,8 +16,8 @@ function set_box_($id,$type,$desc){
         $sub_name = get_the_title( $sub_id );
         $post_full_name = get_post_meta( $id, 'ETF-Pre-etf-full-name', true ) ? get_post_meta( $id, 'ETF-Pre-etf-full-name', true ) . ' ETF' : '';
     }else{
-        $fp_structured_title = get_option('front-box-structured-title');
-        $fp_structured_subtitle = get_option('front-box-structured-subtitle');
+        $fp_structured_title = get_option('frontbox-structured-title');
+        $fp_structured_subtitle = get_option('frontbox-structured-subtitle');
 
         $post_title_ = $fp_structured_title ? $fp_structured_title : '';
         $post_link_ = './products';

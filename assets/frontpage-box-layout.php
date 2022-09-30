@@ -6,8 +6,8 @@
         $fp_options_layout_raw = get_option('front-page-box-layout');
         $fp_options_layout_ = json_decode($fp_options_layout_raw, true);
 
-        $fp_structured_title = get_option('front-box-structured-title');
-        $fp_structured_subtitle = get_option('front-box-structured-subtitle');
+        $fp_structured_title = get_option('frontbox-structured-title');
+        $fp_structured_subtitle = get_option('frontbox-structured-subtitle');
 
         $listed_etfs = array();
         $unst_posts = new WP_Query( array( 'post_type' => 'etfs', 'posts_per_page' => 999999 ) );
