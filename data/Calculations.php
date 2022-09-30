@@ -36,7 +36,7 @@ class Calculations{
         $this->get_downside_buffer();
         $this->get_remaining_outcome_period(true);
 
-        update_post_meta($id,'ETF-Pre-current-outcome-period-date-data',date("m/d/Y"));
+        update_post_meta($id,'ETF-Pre-current-outcome-period-date-data',date("m/d/Y", strtotime("-1 day")));
     }
 
     function calc_all(){

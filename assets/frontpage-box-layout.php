@@ -31,7 +31,8 @@
                     if ( ! isset( $cate->slug ) || $cate->slug !== 'unstructured-etfs') {
                         continue;
                     }
-                } 
+                }
+                
                 $_temp =  array(
                     'id' => get_the_ID(),
                     'order' => '*',

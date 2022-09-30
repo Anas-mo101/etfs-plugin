@@ -92,7 +92,7 @@ class PostMeta{
             $previous_graph_data_arr[] = $new_graph_nav;
             $updated_graph_data = json_encode($previous_graph_data_arr);
             update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-data',$updated_graph_data);
-            update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/Y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-graph-json-date-data',date("m/d/Y", strtotime("-1 day")));
         }
 
         update_post_meta($post_to_update->ID,'ETF-Pre-rate-date-data',$selected_meta['Rate Date']);
@@ -178,7 +178,7 @@ class PostMeta{
 
             $new_holdings = json_encode($display_holdings);
 
-            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y"));
+            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holders-data',$new_holdings);
             return true;
         }else{
@@ -210,7 +210,7 @@ class PostMeta{
                 
                 $new_holdings = json_encode($display_holdings);
 
-                update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/Y"));
+                update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
                 update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
             }
             wp_reset_query();
