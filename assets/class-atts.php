@@ -617,6 +617,14 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "period-end-date-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "product-index-data",
         "title"         => "",
         "description"   => "",

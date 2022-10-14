@@ -141,20 +141,26 @@ class Calculations{
         $ans = $this->sp_year_start * $temp_;
         return $ans;
     }
-
-
     
     function get_remaining_outcome_period($flag,$title = null){
+        if (get_post_meta( $this->id, "ETF-Pre-period-end-date-data", true ) == '') return;
+
+        $period_start_date = explode("-", get_post_meta( $this->id, "ETF-Pre-period-end-date-data", true ));
+
+        if(!isset($period_start_date[2])) return;
+
+        $period_start_day = $period_start_date[2];
+
         $long_name = $title === null ? (new Pdf2Data())->get_etfs_full_pre(get_the_title($this->id)) : (new Pdf2Data())->get_etfs_full_pre($title);
         $now = time();
         $current_year = date("Y");
-        $future = strtotime("1 " . $long_name . " " . $current_year);
+        $future = strtotime($period_start_day . " " . $long_name . " " . $current_year);
         $timeleft = $future - $now;
         $daysleft = round((($timeleft/24)/60)/60);
         
         if($daysleft < 0){
             $current_year = $current_year + 1;
-            $future = strtotime("1 " . $long_name . " " . $current_year);
+            $future = strtotime($period_start_day . " " . $long_name . " " . $current_year);
             $timeleft = $future - $now;
             $daysleft = round((($timeleft/24)/60)/60);
         }

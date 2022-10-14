@@ -104,6 +104,7 @@ function save_manually_edited_data(){
             document.getElementById('ETF-Pre-total-buffer-data').value = document.getElementById('ETF-Pre-total-buffer').value.trim();
             document.getElementById('ETF-Pre-sp-start-data').value = document.getElementById('ETF-Pre-sp-start').value.trim();
             document.getElementById('ETF-Pre-sp-ref-data').value = document.getElementById('ETF-Pre-sp-ref').value.trim();
+            document.getElementById('ETF-Pre-period-end-date-data').value = document.getElementById('ETF-Pre-period-end-date').value.trim();
 
             document.getElementById('ETF-Pre-product-index-data').value = document.getElementById('ETF-Pre-product-index').value.trim();
             document.getElementById('ETF-Pre-product-participation-rate-data').value = document.getElementById('ETF-Pre-product-participation-rate').value.trim();
