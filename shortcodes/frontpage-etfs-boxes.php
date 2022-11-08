@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $fp_options_layout_raw = get_option('front-page-box-layout');
 $fp_options_layout_ = json_decode($fp_options_layout_raw, true);
@@ -38,15 +38,17 @@ function set_box_($id,$type,$desc){
                 <?php echo $post_full_name; ?>
             </div>
         </div>
-        <div style="margin-bottom: 20px; height: 50%;">
+        <div style="margin-bottom: 20px; height: 45%;">
             <p class="dynamic-elementor-font-style-body"> <?php echo $desc; ?> </p>
         </div>
-        <div>
-            <p class="trueshare-box-subadv dynamic-elementor-font-style-sub-heading-3"> SUBADVISOR: </p>
-            <p class="trueshare-box-subadvname dynamic-elementor-font-style-sub-heading-3"> 
-                <?php echo $sub_name; ?>
-            </p>
-        </div>
+        <?php if($sub_id !== 'none'){ ?>
+            <div>
+                <p class="trueshare-box-subadv dynamic-elementor-font-style-sub-heading-3"> SUBADVISOR: </p>
+                <p class="trueshare-box-subadvname dynamic-elementor-font-style-sub-heading-3"> 
+                    <?php echo $sub_name; ?>
+                </p>
+            </div>
+        <?php } ?>
         <div class="trueshare-learn-more dynamic-elementor-font-style-button-text" onclick="location.href='<?php echo $post_link_; ?>'">
             <p> LEARN MORE </p>
         </div>

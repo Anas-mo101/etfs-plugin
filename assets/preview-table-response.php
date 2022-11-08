@@ -1,4 +1,4 @@
-<?php ?>
+<?php ?> 
 <div class="<?php echo $this->prefix ?>general-popup-underlay" id="<?php echo $this->prefix ?>popup-underlay">
     <div id="<?php echo $this->prefix ?>popup-container">
         <div id="<?php echo $this->prefix ?>table-popup">
@@ -129,7 +129,7 @@
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> Period End Date </h3>
-                            <input type="date" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>period-end-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "period-end-date-data", true ))); ?>" />
+                            <input novalidate type="date" min="<?php echo date("Y-m-d") ?>" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>period-end-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "period-end-date-data", true ))); ?>" />
                         </div>
                     </div>
 

@@ -2,7 +2,7 @@
 $sub_adv_id = get_post_meta( get_the_ID(), "ETF-Pre-sub-advisor-name", true );
 $sub_adv = get_post( $sub_adv_id );
 $sub_adv_title; $sub_adv_content; $sub_adv_thumbnail;
-$show_sub_adv_if_true = false;
+$show_sub_adv_if_true = false; 
 
 if($sub_adv_id !== 'none'){
     $sub_adv_title = $sub_adv->post_title; 

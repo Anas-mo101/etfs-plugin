@@ -66,17 +66,21 @@ if ( !class_exists('ETFPlugin') ) {
             add_shortcode('render-post-category', array($this, 'get_post_category_cuz_elementor_cant')); 
             add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
             add_shortcode('render-archive-category-elementor', array($this, 'get_post_category_in_archive_elementor'));
+            add_shortcode('render-product-table-date', array($this, 'render_product_page_as_of_date'));
+            add_shortcode('render-divz-charts-values', array($this, 'divs_charts_values'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
             add_action( 'wp_ajax_scansftpdir', array($this, 'get_sftp_dir'));
             add_action( 'wp_ajax_etfupdatefile', array($this, 'set_sftp_file'));
             add_action( 'wp_ajax_fplayout', array($this, 'fp_layout'));
-            add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
+            add_action( 'wp_ajax_dizcharts', array($this, 'divz_charts_update'));
+            add_action( 'wp_ajax_getdizcharts', array($this, 'get_divz_charts'));
 
-            add_filter( 'script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
-            add_action( 'admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
-            add_action( 'wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
+            add_action('wp_head', array($this,'hide_unstructional_etfs_section'));
+            add_filter('script_loader_tag', array($this,'mind_defer_scripts') , 10, 3 );
+            add_action('admin_enqueue_scripts', array($this, 'etfs_admin_edit_scripts') );
+            add_action('wp_enqueue_scripts', array($this, 'etfs_template_scripts') );
 
             add_filter('mime_types', array($this, 'etfs_mime_types'));
 
@@ -276,6 +280,68 @@ if ( !class_exists('ETFPlugin') ) {
             $sftp->auto_cycle();
         }
 
+        function divz_charts_update(){
+            $divz_no_stocks = sanitize_text_field( $_POST['divz_no_stocks'] );
+            $sp_no_stocks = sanitize_text_field( $_POST['sp_no_stocks'] );
+
+            $divz_ps = sanitize_text_field( $_POST['divz_ps'] );
+            $sp_ps = sanitize_text_field( $_POST['sp_ps'] );
+
+            $divz_pe = sanitize_text_field( $_POST['divz_pe'] );
+            $sp_pe = sanitize_text_field( $_POST['sp_pe'] );
+
+            $divz_pb = sanitize_text_field( $_POST['divz_pb'] );
+            $sp_pb = sanitize_text_field( $_POST['sp_pb'] );
+
+            $divz_avg = sanitize_text_field( $_POST['divz_avg'] );
+            $sp_avg = sanitize_text_field( $_POST['sp_avg'] );
+
+            $divz_values_josn = array(
+                'no_stocks' => array(
+                    'divz' => $divz_no_stocks,
+                    'sp' => $sp_no_stocks
+                ),
+                'ps' => array(
+                    'divz' => $divz_ps,
+                    'sp' => $sp_ps
+                ),
+                'pe' => array(
+                    'divz' => $divz_pe,
+                    'sp' => $sp_pe
+                ),
+                'pb' => array(
+                    'divz' => $divz_pb,
+                    'sp' => $sp_pb
+                ),
+                'avg' => array(
+                    'divz' => $divz_avg,
+                    'sp' => $sp_avg
+                ),
+            );
+
+            $divz_values = json_encode($divz_values_josn);
+
+            if(get_option('divz-chart-values')){
+                update_option('divz-chart-values', $divz_values);
+            }else{
+                add_option('divz-chart-values', $divz_values);
+            }
+
+            wp_send_json(
+                array('update' => 'success')
+            );
+        }
+
+        function get_divz_charts(){
+
+            $divz_values_opt = get_option('divz-chart-values');
+            $divz_values = json_decode($divz_values_opt, true);
+
+            wp_send_json(
+                array('update' => 'success', 'data' => $divz_values)
+            );
+        }
+
         /**
          * registers etf post type
          */
@@ -301,7 +367,7 @@ if ( !class_exists('ETFPlugin') ) {
               'show_ui' => true,
               'show_in_menu' => true,
               'query_var' => true,
-              'rewrite' => array('slug'=>'etfs'),
+              'rewrite' => array('slug'=>'etfs', 'with_front' => false),
               'capability_type' => 'post',
               'hierarchical' => false,
               'taxonomies'  => array( 'category' ),
@@ -537,6 +603,13 @@ if ( !class_exists('ETFPlugin') ) {
             include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/etf-product-page.php');
             return ob_get_clean();
         }
+
+        function render_product_page_as_of_date() {
+            ob_start();
+            $date = get_post_meta( get_page_by_title( 'JANZ', OBJECT, 'etfs' )->ID, 'ETF-Pre-rate-date-data', true );
+            echo $date;
+            return ob_get_clean();
+        }
         
         // call shortcode [render-top-holders-table] to render product table
         function render_top_holders() {
@@ -563,6 +636,12 @@ if ( !class_exists('ETFPlugin') ) {
             return ob_get_clean();
         }
 
+        function divs_charts_values() {
+            ob_start();
+            include( WP_PLUGIN_DIR . '/etfs-plugin/shortcodes/divz-charts.php');
+            return ob_get_clean();
+        }
+
         function render_content_cuz_elementor_dumb() {
             ob_start();
             global $post;
@@ -574,10 +653,12 @@ if ( !class_exists('ETFPlugin') ) {
             ob_start();
             if ( 'post' === get_post_type() ) {
                 global $post;
+                $cat_names = array();
                 $category_detail = get_the_category($post->ID ?? false);
-                if(isset($category_detail[0])){
-                    echo $category_detail[0]->cat_name;
+                foreach($category_detail as $cd){
+                    $cat_names[] = $cd->cat_name;
                 }
+                echo implode(", ", $cat_names);
             }
             return ob_get_clean();
         }

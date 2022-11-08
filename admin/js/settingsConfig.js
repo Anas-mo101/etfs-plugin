@@ -5,10 +5,23 @@ jQuery( document ).ready( function( $ ) {
     $('.cancel-button').on('click', cancel_onclick);
     $('.edit-button').on('click', edit_onclick);
     cancel_fp_edits();
+    cancel_divs_edits();
     cancel_onclick(false);
     cancel_file();
 
     $('.edit-file-button').on('click', () => { edit_file_button(); });
+
+    $('.diz-edit-button').on('click', () => { 
+        $('.diz-toggle-button').prop('disabled', false);
+        $('.diz-layout-fund-edit').prop('disabled', false);
+        $('.diz-save-button, .diz-cancel-button').show();
+        $('.div-chart-input').prop('disabled', false);
+        $('.diz-edit-button').hide();  
+    });
+
+    $('.diz-cancel-button').on('click', () => { 
+        cancel_divs_edits();
+    });
 
     $('.fp-edit-button').on('click', () => { 
         $('#drop-items').sortable({
@@ -36,6 +49,14 @@ jQuery( document ).ready( function( $ ) {
         $('.fp-layout-fund-edit').prop('disabled', true);
         $('.fp-save-button, .fp-cancel-button').hide();
         $('.fp-edit-button').show();  
+    }
+
+    function cancel_divs_edits(){
+        $("#ETFs-Pre-loadinganimation-3").css('display', 'none');
+        $('.diz-toggle-button').prop('disabled', true);
+        $('.div-chart-input').prop('disabled', true);
+        $('.diz-save-button, .diz-cancel-button').hide();
+        $('.diz-edit-button').show();  
     }
 
     function edit_file_button(){
@@ -103,6 +124,43 @@ jQuery( document ).ready( function( $ ) {
         toggle_and_not_saved = false;
     }
     // ajax requests
+
+    $('.diz-save-button').on('click', () => {
+        $("#ETF-Pre-creds-state-3").hide();
+        $("#ETFs-Pre-loadinganimation-3").css('display', 'inline-block');
+        $('.diz-toggle-button').prop('disabled', false);
+
+        const data = {
+            action: 'dizcharts',
+            divz_no_stocks: $.trim( $('#etfs-divz-no-stocks').val() ) == '' ? 0 : $.trim( $('#etfs-divz-no-stocks').val() ),
+            sp_no_stocks: $.trim( $('#etfs-sp-no-stocks').val() ) == '' ? 0 : $.trim( $('#etfs-sp-no-stocks').val() ),
+            divz_ps: $.trim( $('#etfs-divz-ps').val() )  == '' ? 0 : $.trim( $('#etfs-divz-ps').val() ),
+            sp_ps: $.trim( $('#etfs-sp-ps').val() )  == '' ? 0 : $.trim( $('#etfs-sp-ps').val() ),
+            divz_pe: $.trim( $('#etfs-divz-pe').val() )  == '' ? 0 : $.trim( $('#etfs-divz-pe').val() ),
+            sp_pe: $.trim( $('#etfs-sp-pe').val() )  == '' ? 0 : $.trim( $('#etfs-sp-pe').val() ),
+            divz_pb: $.trim( $('#etfs-divz-pb').val() )  == '' ? 0 : $.trim( $('#etfs-divz-pb').val() ),
+            sp_pb: $.trim( $('#etfs-sp-pb').val() )  == '' ? 0 : $.trim( $('#etfs-sp-pb').val() ),
+            divz_avg: $.trim( $('#etfs-divz-avg').val() )  == '' ? 0 : $.trim( $('#etfs-divz-avg').val() ),
+            sp_avg: $.trim( $('#etfs-sp-avg').val() )  == '' ? 0 : $.trim( $('#etfs-sp-avg').val() ),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data,
+            cache: false,
+            success: function( response ) {
+                console.log(response);
+                cancel_divs_edits();
+            }
+        }).fail(function(error) {
+            console.log(`response failed: ${error}`);
+            cancel_divs_edits();
+            $("#ETFs-Pre-loadinganimation-3").css('display', 'none');
+            $("#ETF-Pre-creds-state-3").show();
+            $("#ETF-Pre-creds-state-3").html("server failed");
+        });
+    });
 
     $('.fp-save-button').on('click', () => {
         $("#ETF-Pre-creds-state-2").hide();

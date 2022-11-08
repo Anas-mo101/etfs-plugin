@@ -176,6 +176,9 @@ class PostMeta{
                 $display_holdings[] = $hgs;
             }
 
+            // create xlsx file using $display_holdings
+            $this->write_xlsx_file($display_holdings,$post_to_update->ID);
+
             $new_holdings = json_encode($display_holdings);
 
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
@@ -207,6 +210,8 @@ class PostMeta{
 
                     $display_holdings[] = $hgs;
                 }
+
+                $this->write_xlsx_file($display_holdings,$post_id_to_update,$post_name_to_update);
                 
                 $new_holdings = json_encode($display_holdings);
 
@@ -217,6 +222,67 @@ class PostMeta{
             return true;
         }
         return false;
+    }
+
+    private function write_xlsx_file($in,$post_id, $etf_name = null){
+
+        $xlsx_holding = array();
+        $banner_text = array('Truemark | '. ($etf_name ?? $this->selected_etfs) .' | ETF Holdings');
+
+        for($i = 0; $i < count($in); $i++){
+            $xlsx_holding[] = array(
+                $in[$i]['Weightings'],
+                $in[$i]['SecurityName'],
+                $in[$i]['StockTicker'],
+                $in[$i]['CUSIP'],
+                $in[$i]['Shares'],
+                $in[$i]['MarketValue']
+            );
+        }
+
+        require_once('xlsxwriter.class.php');
+        $writer = new XLSXWriter();
+
+        $writer->writeSheetHeader(
+            'Sheet1',
+            array(
+                '% Of Net Assets' => 'string',
+                'Name' => 'string',
+                'Ticker' => 'string',
+                'CUSIP' => 'string',
+                'Share Held' => 'string',
+                'Market Value' => 'string',
+            ),
+            $styles = array(
+                'font-style'=>'bold',
+                'font'=>'Calibri',
+                'font-size'=> 12,
+                'widths'=>[30, 40, 30, 30, 20, 20]
+            )
+        );
+
+        $writer->writeSheet($xlsx_holding, 'Sheet1');
+        $upload_dir = wp_upload_dir();
+
+        if ( ! empty( $upload_dir['basedir'] ) ) {
+
+            $file_name = ($etf_name ?? $this->selected_etfs) . '_USBanksHoldings.xlsx';
+            $file_path = $upload_dir['basedir'] . '/' . $file_name;
+            $file_url = $upload_dir['baseurl'] . '/' . $file_name;
+
+            if ( ! file_exists( $file_path ) ) {
+                $writer->writeToFile($file_path);
+            }else{
+                if (!unlink($file_path)) {
+                    error_log("$file_name cannot be deleted due to an error");
+                }else{
+                    error_log($file_path);
+                    $writer->writeToFile($file_path);
+                }
+            }
+
+            update_post_meta($post_id,'ETF-Pre-top-holders-button-download-data',$file_url);
+        }
     }
 
     // ============================== ROR ======================================= // 
@@ -259,9 +325,9 @@ class PostMeta{
                 $mkt_arr = $this->incoming_meta[$key+1];
                 $sp_arr = $this->incoming_meta[$key+2];
 
-                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'],'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr['Since Inception Cumulative']);
-                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'],'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr['Since Inception Cumulative']);
-                $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'],'five_year' => $sp_arr['5 Year'], 'inception' => $sp_arr['Since Inception Cumulative']);
+                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'],'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr['Since Inception Annualized']);
+                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'],'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr['Since Inception Annualized']);
+                $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'],'five_year' => $sp_arr['5 Year'], 'inception' => $sp_arr['Since Inception Annualized']);
                 $data_array = array('date' => $nav_arr['Date'], 'ytd_sp_return' => $sp_arr['YTD'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
 
                 return $data_array;

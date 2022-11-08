@@ -35,6 +35,7 @@ class Calculations{
         $this->get_remaining_buffer();
         $this->get_downside_buffer();
         $this->get_remaining_outcome_period(true);
+        $this->get_floor_of_buffer();
 
         update_post_meta($id,'ETF-Pre-current-outcome-period-date-data',date("m/d/Y", strtotime("-1 day")));
     }
@@ -63,7 +64,7 @@ class Calculations{
 	
 	function get_spx_period_return($flag){ // SPX_PERIOD_RETURN = (CURRENT_SP_LEVEL/S_P_REFERENCE_VALUE) -1
         if ($this->sp_ref_value === null) return;
-        $temp_ = $this->get_current_sp(false);
+        $temp_ = $this->get_current_sp();
         $_temp_ =  $temp_ / $this->sp_ref_value;
         $ans = $_temp_ - 1;
         if($flag){
@@ -130,7 +131,7 @@ class Calculations{
         }
     }
 
-    function get_current_sp($flag){ // CURRENT_SP_LEVEL = S_P_YEAR_START_VALUE x (1+ YTD_SP_RETURN)
+    function get_current_sp(){ // CURRENT_SP_LEVEL = S_P_YEAR_START_VALUE x (1+ YTD_SP_RETURN)
         if ($this->sp_year_start === null 
             || get_post_meta( $this->id, "ETF-Pre-ytd-sp-return-data", true ) == '') return;
             
@@ -141,26 +142,55 @@ class Calculations{
         $ans = $this->sp_year_start * $temp_;
         return $ans;
     }
+
+    //$S&P Downside to Floor of Buffer = ($S_P_Reference_Value * (1+$Total_Buffer) - $CURRENT_SP_LEVEL) / $CURRENT_SP_LEVEL
+    function get_floor_of_buffer(){
+        if ($this->sp_ref_value === null  || $this->total_buffer === null ) return;
+
+        $current_sp = $this->get_current_sp();
+
+        $temp_ = $this->sp_ref_value * (1 + $this->total_buffer);
+        $temp = $temp_ - $current_sp;
+        $ans = $temp / $current_sp;
+        if ($ans < 0) {
+            $ans = $ans * 100;
+            $ans = round($ans, 2);  
+            $ans = $ans . '%';
+        }else{
+            $ans = 'N/A';
+        }
+        
+        update_post_meta($this->id,'ETF-Pre-floor-of-buffer-data', $ans);  
+    }
     
     function get_remaining_outcome_period($flag,$title = null){
         if (get_post_meta( $this->id, "ETF-Pre-period-end-date-data", true ) == '') return;
 
         $period_start_date = explode("-", get_post_meta( $this->id, "ETF-Pre-period-end-date-data", true ));
 
-        if(!isset($period_start_date[2])) return;
+        if(!isset($period_start_date[2]) || !isset($period_start_date[1]) || !isset($period_start_date[0])) return;
 
         $period_start_day = $period_start_date[2];
+        $period_start_month = (int) $period_start_date[1];
+        $period_start_year = $period_start_date[0];
 
-        $long_name = $title === null ? (new Pdf2Data())->get_etfs_full_pre(get_the_title($this->id)) : (new Pdf2Data())->get_etfs_full_pre($title);
+        $period_start_month =  $period_start_month === 0 ? 1 : $period_start_month;
+        $monthName = date('F', mktime(0, 0, 0, $period_start_month, 10));
+
         $now = time();
         $current_year = date("Y");
-        $future = strtotime($period_start_day . " " . $long_name . " " . $current_year);
+        $future = strtotime($period_start_day . " " . $monthName . " " . $period_start_year);
         $timeleft = $future - $now;
         $daysleft = round((($timeleft/24)/60)/60);
         
-        if($daysleft < 0){
+        if($daysleft <= 0){
+            $long_name = $title === null ? (new Pdf2Data())->get_etfs_full_pre(get_the_title($this->id)) : (new Pdf2Data())->get_etfs_full_pre($title);
+            $period_start_year = (int)$period_start_year + 1;
+            $updatedDate = $period_start_year . "-" . $long_name . "-1";
+            update_post_meta($this->id,'ETF-Pre-period-end-date-data', $updatedDate);
+
             $current_year = $current_year + 1;
-            $future = strtotime($period_start_day . " " . $long_name . " " . $current_year);
+            $future = strtotime("1 " . $long_name . " " . $current_year);
             $timeleft = $future - $now;
             $daysleft = round((($timeleft/24)/60)/60);
         }
