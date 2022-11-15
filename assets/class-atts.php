@@ -11,8 +11,8 @@ $custom_fields = array(
     ),
     array(
         "name"          => "fund-footer-desc-data",
-        "title"         => "Footer Description",
-        "description"   => "Fund footer description",
+        "title"         => "Footer Disclaimer Text",
+        "description"   => "",
         "type"          => "textarea",
         "scope"         => array( "etfs" ),
         "capability"    => "edit_posts"

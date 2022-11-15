@@ -166,8 +166,6 @@ class PostMeta{
             $market_value = array_column($require_holdings, 'MarketValue');
             array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $require_holdings);
 
-            if(count($require_holdings) > 10) $require_holdings = array_slice($require_holdings, 0, 10);
-
             $display_holdings = array();
             foreach ($require_holdings as $hgs) {
                 $hgs['Shares'] = number_format($hgs['Shares']);
@@ -179,9 +177,16 @@ class PostMeta{
             // create xlsx file using $display_holdings
             $this->write_xlsx_file($display_holdings,$post_to_update->ID);
 
+            if(count($display_holdings) > 10) $display_holdings = array_slice($display_holdings, 0, 10);
+
             $new_holdings = json_encode($display_holdings);
 
-            update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
+            // update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
+            if(isset($display_holdings[0]['Date']) && !empty($display_holdings[0]['Date'])){
+                $date = $display_holdings[0]['Date'];
+                update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',$date);
+            }
+
             update_post_meta($post_to_update->ID,'ETF-Pre-top-holders-data',$new_holdings);
             return true;
         }else{
@@ -200,8 +205,6 @@ class PostMeta{
     
                 $market_value = array_column($require_holdings, 'MarketValue');
                 array_multisort($market_value, SORT_DESC, SORT_NUMERIC, $require_holdings);
-                
-                if(count($require_holdings) > 10) $require_holdings = array_slice($require_holdings, 0, 10);
 
                 $display_holdings = array();
                 foreach ($require_holdings as $hgs) {
@@ -213,9 +216,16 @@ class PostMeta{
 
                 $this->write_xlsx_file($display_holdings,$post_id_to_update,$post_name_to_update);
                 
+                if(count($display_holdings) > 10) $display_holdings = array_slice($display_holdings, 0, 10);
+                
                 $new_holdings = json_encode($display_holdings);
 
-                update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
+                // update_post_meta($post_to_update->ID,'ETF-Pre-top-holding-update-date-data',date("m/d/Y", strtotime("-1 day")));
+                if(isset($display_holdings[0]['Date']) && !empty($display_holdings[0]['Date'])){
+                    $date = $display_holdings[0]['Date'];
+                    update_post_meta($post_id_to_update,'ETF-Pre-top-holding-update-date-data',$date);
+                }
+
                 update_post_meta($post_id_to_update,'ETF-Pre-top-holders-data',$new_holdings);
             }
             wp_reset_query();

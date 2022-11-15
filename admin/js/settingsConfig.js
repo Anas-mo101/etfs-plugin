@@ -312,7 +312,6 @@ jQuery( document ).ready( function( $ ) {
         let nav = document.getElementById('ETFs-Pre-nav-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-nav-name').innerText;
         let holding = document.getElementById('ETFs-Pre-holding-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-holding-name').innerText;
         let ror = document.getElementById('ETFs-Pre-ror-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-ror-name').innerText;
-        let dist = document.getElementById('ETFs-Pre-dist-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-dist-name').innerText;
         let sec = document.getElementById('ETFs-Pre-sec-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-sec-name').innerText;
 
         var data = { 
@@ -320,7 +319,6 @@ jQuery( document ).ready( function( $ ) {
             nav: nav,
             holding: holding,
             ror: ror,
-            dist: dist,
             sec: sec
         };
 

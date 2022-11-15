@@ -66,8 +66,9 @@ if ( !class_exists('ETFPlugin') ) {
             add_shortcode('render-post-category', array($this, 'get_post_category_cuz_elementor_cant')); 
             add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
             add_shortcode('render-archive-category-elementor', array($this, 'get_post_category_in_archive_elementor'));
-            add_shortcode('render-product-table-date', array($this, 'render_product_page_as_of_date'));
+            add_shortcode('render-product-table-date', array($this, 'render_product_page_as_of_date')); 
             add_shortcode('render-divz-charts-values', array($this, 'divs_charts_values'));
+            add_shortcode('render-etf-fund-form', array($this, 'set_wpcf7_forms'));
 
             add_action( 'wp_ajax_gsd', array($this, 'fetch_etf_data'));
             add_action( 'wp_ajax_etfconfig', array($this, 'set_sftp_config'));
@@ -86,6 +87,7 @@ if ( !class_exists('ETFPlugin') ) {
 
             new \ETFsFundDocs\FundDocuments();
             new \ETFsDisDetail\DisturbutionDetail();
+            new \EtfsMailCollector\MailCollector();
             \ETFsNoticeHandler\Notice_Handler::init();
         }
 
@@ -674,6 +676,17 @@ if ( !class_exists('ETFPlugin') ) {
                     content: "<?php echo htmlspecialchars_decode( $cate ) ?> - " !important;
                 }
             </style> <?php
+            return ob_get_clean();
+        }
+
+        function set_wpcf7_forms() {
+            ob_start();
+            global $post;
+            $title = $post->post_title;
+            $form = get_page_by_title( $title . ' Fund', OBJECT, 'wpcf7_contact_form' );
+            if($form){
+                echo do_shortcode('[contact-form-7 id="'.$form->ID.'" title="'.$title.' Fund"]');
+            }
             return ob_get_clean();
         }
 

@@ -240,7 +240,7 @@
                 </div>
 
                 <div style="display: contents;" class="template-tables-preview">
-                  <h1 style="font-weight: 600; margin-bottom: 20px;"> Performance Description </h1>
+                  <h1 style="font-weight: 600; margin-bottom: 20px;"> Performance Disclaimer Text </h1>
                   
                   <textarea style="padding: 10px; font-size: 16px;" id="<?php echo $this->prefix ?>preformance-section-desc" rows="10"> <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "preformance-section-desc-data", true )) ?> </textarea>
                 </div>
