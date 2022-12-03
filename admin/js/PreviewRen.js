@@ -117,6 +117,7 @@ function save_manually_edited_data(){
             document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-product-participation-rate").value.trim();
             document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
 
+
             // --> Current Outcome Period Values
             // document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
             // document.getElementById("ETF-Pre-current-etf-return-data").value = document.getElementById("ETF-Pre-current-etf-return").value.trim();
@@ -124,7 +125,16 @@ function save_manually_edited_data(){
             // document.getElementById("ETF-Pre-current-remaining-buffer-data").value = document.getElementById("ETF-Pre-current-remaining-buffer").value.trim();
             // document.getElementById("ETF-Pre-current-downside-buffer-data").value = document.getElementById("ETF-Pre-current-downside-buffer").value.trim();
             // document.getElementById("ETF-Pre-current-remaining-outcome-data").value = document.getElementById("ETF-Pre-current-remaining-outcome").value.trim();
+            
+            document.getElementById("ETF-Pre-preformance-benchmark-label-data").value = document.getElementById("ETF-Pre-preformance-benchmark-selection").innerText.trim();
+        }else{
+            document.getElementById("ETF-Pre-preformance-benchmark-selection-data").value = document.getElementById("ETF-Pre-preformance-benchmark-selection").value;
+
+            const benchmark = document.getElementById("ETF-Pre-preformance-benchmark-selection").value;
+            const benchmark_label = benchmark.split(" - ")[0];
+            document.getElementById("ETF-Pre-preformance-benchmark-label-data").value = benchmark_label;
         }
+
 
         // --> Distribution Detail
         // document.getElementById('ETF-Pre-ex-date-data').value = document.getElementById('ETF-Pre-ex-date').value.trim();

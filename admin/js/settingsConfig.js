@@ -313,13 +313,15 @@ jQuery( document ).ready( function( $ ) {
         let holding = document.getElementById('ETFs-Pre-holding-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-holding-name').innerText;
         let ror = document.getElementById('ETFs-Pre-ror-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-ror-name').innerText;
         let sec = document.getElementById('ETFs-Pre-sec-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-sec-name').innerText;
+        let ind = document.getElementById('ETFs-Pre-ind-name').innerText === '' ? '*' : document.getElementById('ETFs-Pre-ind-name').innerText;
 
         var data = { 
             action: 'etfupdatefile',
             nav: nav,
             holding: holding,
             ror: ror,
-            sec: sec
+            sec: sec,
+            ind: ind
         };
 
         $.ajax({

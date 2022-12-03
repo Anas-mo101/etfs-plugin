@@ -10,11 +10,11 @@ class MailCollector{
         add_action('init', array($this, 'init_MailCollector') );
 
         // create a new mail collector post type add mail display page
-        if (defined('WPCF7_PLUGIN_DIR')) {
-            require_once WPCF7_PLUGIN_DIR . '/includes/contact-form.php';
-            // override hook action to collect mail
-            add_action('rest_api_init', array($this,'override_wpcf7_endpint'), 10, 0);
-        }
+        // if (defined('WPCF7_PLUGIN_DIR')) {
+        //     require_once WPCF7_PLUGIN_DIR . '/includes/contact-form.php';
+        //     // override hook action to collect mail
+        //     add_action('rest_api_init', array($this,'override_wpcf7_endpint'), 10, 0);
+        // }
     }
 
     public function init_MailCollector(){
@@ -79,6 +79,16 @@ class MailCollector{
             
             <?php
         } 
+    }
+
+    function validate_email($email){
+        foreach($email as $key => $value){
+            if(strpos(key($value), 'email') !== false){
+                $val_email = $value[key($value)];
+                return filter_var($val_email, FILTER_VALIDATE_EMAIL);
+            }
+        }
+        return true;
     }
 
     function store_collected_mail($WPCF7_ID,$mail){
@@ -166,6 +176,15 @@ class MailCollector{
         $body = $request->get_body_params();    // get form data
 
         $user_input_in = $this->get_form_key($form,$body);
+
+        if($this->validate_email($user_input_in) == false){
+            $response = array(
+                'status' => 'failed',
+                'message' => 'Invalid Email'
+            );
+    
+            return rest_ensure_response( $response );
+        }
 
         // save mail to database
         $this->store_collected_mail($form_id,$user_input_in);

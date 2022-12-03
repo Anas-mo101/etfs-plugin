@@ -665,6 +665,22 @@ $custom_fields = array(
         "capability"    => "edit_posts"
     ),
     array(
+        "name"          => "preformance-benchmark-selection-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
+        "name"          => "preformance-benchmark-label-data",
+        "title"         => "",
+        "description"   => "",
+        "type"          => "hidden",
+        "scope"         => array( "etfs" ),
+        "capability"    => "edit_posts"
+    ),
+    array(
         "name"          => "sub-advisor-name",
         "title"         => "Sub-advisor Name",
         "description"   => "",

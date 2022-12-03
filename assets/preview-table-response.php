@@ -129,7 +129,7 @@
                         </div>
                         <div class="table-horizontal-row"> 
                             <h3> Period End Date </h3>
-                            <input novalidate type="date" min="<?php echo date("Y-m-d") ?>" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>period-end-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "period-end-date-data", true ))); ?>" />
+                            <input novalidate type="date" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>period-end-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "period-end-date-data", true ))); ?>" />
                         </div>
                     </div>
 
@@ -229,7 +229,18 @@
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-inception-data", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
-                            <p style="margin: 20px 0;"> S&P 500 </p>
+                            <?php if(in_category( 'Unstructured ETFs' )){ 
+                                    $variable = get_option('etfs-pre-available-benchmarks');
+                                    $variable = json_decode($variable, true);
+                                ?>
+                                <select style="width: 100%;" id="<?php echo $this->prefix ?>preformance-benchmark-selection">
+                                    <?php foreach ($variable as $value) { ?>
+                                        <option value="<?php echo $value ?>" <?php if(get_post_meta( get_the_ID(), $this->prefix . "preformance-benchmark-selection-data", true ) == $value){ echo 'selected'; } ?> > <?php echo $value ?> </option>
+                                    <?php } ?>
+                                </select>
+                            <?php }else{ ?>
+                                <p id="<?php echo $this->prefix ?>preformance-benchmark-selection" style="margin: 20px 0;"> S&P 500 </p>
+                            <?php }?>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-three-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-six-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-year-data", true )) ?> " />

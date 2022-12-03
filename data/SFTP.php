@@ -37,7 +37,7 @@ class SFTP{
                     Nav varchar(255) NOT NULL DEFAULT '',
                     Holding varchar(255) NOT NULL DEFAULT '',
                     Ror varchar(255) NOT NULL DEFAULT '',
-                    Dist varchar(255) NOT NULL DEFAULT '',
+                    Ind varchar(255) NOT NULL DEFAULT '',
                     Sec varchar(255) NOT NULL DEFAULT '',
                     Last_Cycle_Timestamp DATETIME
                 ) $charset_collate;";
@@ -63,7 +63,7 @@ class SFTP{
                 'Nav' => '*', 
                 'Holding' => '*', 
                 'Ror' => '*',
-                'Dist' => '*',
+                'Ind' => '*',
                 'Sec' => '*',
                 'Last_Cycle_Timestamp' => NULL
             ) 
@@ -112,7 +112,7 @@ class SFTP{
             'Nav' => $this->_config["Nav"], 
             'Holding' => $this->_config["Holding"], 
             'Ror' => $this->_config["Ror"], 
-            'Dist' => $this->_config["Dist"],
+            'Ind' => $this->_config["Ind"],
             'Sec' => $this->_config["Sec"]
         ];
         $where = [ 'Id' => 'sftp_main_db' ]; 
@@ -176,8 +176,9 @@ class SFTP{
         // update config db
         $this->update_config_db();
 
-        // in case $this->_config["Automate"] turns from false to true 
-        // start the sftp cycle when turned on then follow timing/schedule
+        // in case $this->_config["Automate"] turns from false to true.
+        // start the sftp cycle when turned on then follow timing/schedule.
+        
         if($this->_config["Automate"] === "t" && $pre_auto !== $this->_config["Automate"]){
             $_cycle_res = $this->auto_cycle();
         }elseif($this->_config["Automate"] === "f" && $pre_auto !== $this->_config["Automate"]){
@@ -272,7 +273,7 @@ class SFTP{
         }
 
         // set file names to look for
-        $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Dist' => 'dist', 'Sec' => 'sec' );
+        $file_set_name = array('Nav' => 'nav', 'Holding' => 'holding','Ror' => 'ror', 'Ind' => 'ind', 'Sec' => 'sec' );
         foreach ($file_set_name as $key => $value )  {
             if(isset($this->_config["$key"]) && $this->_config["$key"] !== '*' ){
                 $file_set_name["$key"] = $this->_config[$key];
@@ -335,28 +336,6 @@ class SFTP{
                         $save_meta_status[] = array($name => $res); 
                     }
                     //update meta using file name
-                }elseif($path_info['extension'] === "xlsm" || $path_info['extension'] === "xlsx"){
-                    // instead of using names to update each ETFs indiviaully
-                    // use all etfs data avaiable to update etfs accordingly
-                    $data = array();
-                    $process = array_search($name,$file_set_name,true);
-                    switch ($process) {
-                        case 'dist':
-                            // do dist memo processing
-                            $XLSMParser = new \ETFsXSLMParser\XSLMParser($url_dist_memo);
-                            $data = $XLSMParser->process_all_data();
-                            break;
-                        default: break; // unwanted file names
-                    }
-
-                    if(count($data) == 0){
-                        $save_meta_status[] = array($name => 'failed to fetch data');
-                    }else{
-                        // update db with new data
-                        $post_meta = new \PostMeta($data,$name,$file_set_name);
-                        $res = $post_meta->process_incoming();
-                        $save_meta_status[] = array($name => $res); 
-                    }
                 }else{
                     $save_meta_status[] = array($name => 'not supported');
                 }
@@ -391,7 +370,7 @@ class SFTP{
         return $files_name;
     }
 
-    function set_files_name($args){ 
+    function set_files_name($args){
 
         // validate $args
         if(isset($args['nav']) || (trim($args['nav']) !== '') ) {
@@ -406,12 +385,16 @@ class SFTP{
             $this->_config["Ror"] = $args["ror"];
         }
 
-        if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
-            $this->_config["Dist"] = $args["dist"];
-        }
+        // if(isset($args['dist']) || (trim($args['dist']) !== '') ) {
+        //     $this->_config["Dist"] = $args["dist"];
+        // }
 
         if(isset($args['sec']) || (trim($args['sec']) !== '') ) {
             $this->_config["Sec"] = $args["sec"];
+        }
+
+        if(isset($args['ind']) || (trim($args['ind']) !== '') ) {
+            $this->_config["Ind"] = $args["ind"];
         }
 
         // update config db

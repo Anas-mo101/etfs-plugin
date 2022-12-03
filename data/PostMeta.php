@@ -29,8 +29,8 @@ class PostMeta{
                 return $this->process_daily_nav();
             case 'Ror':
                 return $this->process_ror();
-            case 'Dist':
-                return $this->process_dist();
+            case 'Ind':
+                return $this->process_ind();
             case 'Sec':
                 return $this->process_sec();
             default: return 'PostMeta: file not supported';
@@ -301,7 +301,7 @@ class PostMeta{
         $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
         if(! $post_to_update) return;
 
-        update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
+        // update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $meta['ytd_sp_return']);
         update_post_meta($post_to_update->ID,'ETF-Pre-pref-date-data', $meta['date']);
 
         update_post_meta($post_to_update->ID,'ETF-Pre-perf-nav-inception-data', $meta['fund_nav']['inception']);
@@ -324,6 +324,7 @@ class PostMeta{
     }
 
     private function find_ror_record($ref){
+        $post_to_update = get_page_by_title( $ref, OBJECT, 'etfs' );
 
         $pattern = '/'.$ref.'/U'; // use fund name as reference to search data array
         foreach ($this->incoming_meta as $key => $value) { // loop through input array data
@@ -331,14 +332,79 @@ class PostMeta{
             preg_match($pattern, $value['Fund Ticker'], $matches); // look for match
 
             if($matches || count($matches) > 0){
-                $nav_arr = $this->incoming_meta[$key];
-                $mkt_arr = $this->incoming_meta[$key+1];
-                $sp_arr = $this->incoming_meta[$key+2];
 
-                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'],'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr['Since Inception Annualized']);
-                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'],'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr['Since Inception Annualized']);
-                $data_array_sp = array('three_months' => $sp_arr['3 Month'], 'six_months' => $sp_arr['6 Month'], 'one_year' => $sp_arr['1 Year'],'five_year' => $sp_arr['5 Year'], 'inception' => $sp_arr['Since Inception Annualized']);
-                $data_array = array('date' => $nav_arr['Date'], 'ytd_sp_return' => $sp_arr['YTD'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
+                $nav_arr = array();
+                $mkt_arr = array();
+                $sp_arr = array();
+
+                $first = false;
+                $second = false;
+
+                if(str_contains($this->incoming_meta[$key]['Fund Ticker'], 'NAV') ){
+                    $nav_arr = $this->incoming_meta[$key];
+                    $first = true;
+                }elseif(str_contains($this->incoming_meta[$key+1]['Fund Ticker'], 'NAV')){
+                    $nav_arr = $this->incoming_meta[$key+1];
+                    $second = true;
+                }else{
+                    $nav_arr = $this->incoming_meta[$key+2];
+                }
+
+                if(str_contains($this->incoming_meta[$key]['Fund Ticker'], 'MKT') ){
+                    $mkt_arr = $this->incoming_meta[$key];
+                    $first = true;
+                }elseif(str_contains($this->incoming_meta[$key+1]['Fund Ticker'], 'MKT')){
+                    $mkt_arr = $this->incoming_meta[$key+1];
+                    $second = true;
+                }else{
+                    $mkt_arr = $this->incoming_meta[$key+2];
+                }
+
+
+                $post_categories = wp_get_post_categories( $post_to_update->ID );
+                $cats = array();
+                $is_not_structured = false;
+                foreach($post_categories as $c){
+                    $cat = get_category( $c );
+                    if($cat->name == 'Unstructured ETFs'){
+                        $is_not_structured = true;
+                    }
+                }
+
+                $incepention_date = get_post_meta($post_to_update->ID,'ETF-Pre-inception-date-data',true) ? get_post_meta($post_to_update->ID,'ETF-Pre-inception-date-data',true) : date('Y-m-d');
+                $date_inc = strtotime($incepention_date) > strtotime('-1 year') ? 'Since Inception Cumulative' : 'Since Inception Annualized';
+
+                $data_array_sp = array();
+                if($is_not_structured){
+                    $data_array_sp = $this->get_ror_benchmark_record($post_to_update->ID, $date_inc);
+                }else{
+                    $sp_arr = array();
+
+                    if($first == false){
+                        $sp_arr = $this->incoming_meta[$key];
+                    }elseif($second == false){
+                        $sp_arr = $this->incoming_meta[$key+1];
+                    }else{
+                        $sp_arr = $this->incoming_meta[$key+2];
+                    }
+
+                    $data_array_sp = array(
+                        'three_months' => $sp_arr['3 Month'], 
+                        'six_months' => $sp_arr['6 Month'], 
+                        'one_year' => $sp_arr['1 Year'],
+                        'five_year' => $sp_arr['5 Year'],
+                        'inception' => $sp_arr[$date_inc]
+                    );
+                }
+
+                if(empty($nav_arr) || empty($mkt_arr)){
+                    return false;
+                }
+
+                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'],'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr[$date_inc]);
+                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'],'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr[$date_inc]);
+
+                $data_array = array('date' => $nav_arr['Date'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
 
                 return $data_array;
             } 
@@ -347,10 +413,85 @@ class PostMeta{
     }
 
 
+    private function get_ror_benchmark_record($id, $date_inc){
+        $benchmark = get_post_meta($id,'ETF-Pre-preformance-benchmark-selection-data',true);
+
+        if( $benchmark == '' || $benchmark == false ){
+
+            return array(
+                'three_months' => '-', 
+                'six_months' => '-', 
+                'one_year' => '-',
+                'five_year' => '-', 
+                'inception' => '-'
+            );
+        }
+
+        $benchmark_value = explode(' - ', $benchmark);
+
+        foreach ($this->incoming_meta as $record => $values) {
+            if($values['Fund Name'] === $benchmark_value[0]){
+                return array(
+                    'three_months' => $values['3 Month'],
+                    'six_months' => $values['6 Month'],
+                    'one_year' => $values['1 Year'],
+                    'five_year' => $values['5 Year'],
+                    'inception' => $values[$date_inc]
+                );
+            }
+        }
+
+        return array(
+            'three_months' => '-', 
+            'six_months' => '-', 
+            'one_year' => '-',
+            'five_year' => '-',     
+            'inception' => '-'
+        );
+    }
+
+    private function save_available_benchmarks($data){
+        $benchmarks = array(); 
+
+        for ($i = 0; $i < count($data); $i++) { 
+            if(!str_contains($data[$i]['Fund Name'], 'ETF')){
+
+                $loop = true;
+                $j = 1;
+
+                while ($loop == true) {
+                    if(!isset($data[$i - $j])) $loop = false;
+
+                    if(str_contains($data[$i - $j]['Fund Name'], 'ETF')){
+                        $benchmarks[] = $data[$i]['Fund Name'] . ' - ' . $data[$i - $j]['Fund Name'];
+                        $loop = false;
+                    }
+                    $j++;
+                }
+            }
+        }
+
+        $benchmarks = array_filter($benchmarks, function($value) { 
+            return !str_contains($value, 'Structured Outcome'); 
+        });
+
+        $benchmarks = array_values($benchmarks);
+
+        $benchmarks_json = json_encode($benchmarks);
+
+        if(get_option('etfs-pre-available-benchmarks')){
+            update_option('etfs-pre-available-benchmarks', $benchmarks_json);
+        }else{
+            add_option('etfs-pre-available-benchmarks', $benchmarks_json);
+        }
+    }
+
     private function process_ror(){
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return false;
         }
+
+        $this->save_available_benchmarks($this->incoming_meta);
 
         if($this->selected_etfs !== null && $this->files_map === null){
             $data = $this->find_ror_record($this->selected_etfs);
@@ -376,26 +517,36 @@ class PostMeta{
 
     // ===========================  Dist  ===========================================
 
-    private function save_dist_single($meta,$etf_name){
-        $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
-        if(! $post_to_update) return;
-        update_post_meta($post_to_update->ID,'ETF-Pre-ex-date-data', $meta['ex_date']);
-        update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
-        update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);
-        update_post_meta($post_to_update->ID,'ETF-Pre-dis-rate-share-data', $meta['dis_rate_share']);
-    }
+    // private function save_dist_single($meta,$etf_name){
+    //     $post_to_update = get_page_by_title( $etf_name, OBJECT, 'etfs' );
+    //     if(! $post_to_update) return;
+    //     update_post_meta($post_to_update->ID,'ETF-Pre-ex-date-data', $meta['ex_date']);
+    //     update_post_meta($post_to_update->ID,'ETF-Pre-rec-date-data', $meta['rec_date']);
+    //     update_post_meta($post_to_update->ID,'ETF-Pre-pay-date-data', $meta['pay_date']);
+    //     update_post_meta($post_to_update->ID,'ETF-Pre-dis-rate-share-data', $meta['dis_rate_share']);
+    // }
 
-    private function process_dist(){
+    private function process_ind(){
         if(!$this->incoming_meta || count($this->incoming_meta) === 0){
             return false;
         }
 
+        if(!isset($this->incoming_meta[0]['YTD Return'])){
+            return false;
+        }
+
+        $data = $this->incoming_meta[0]['YTD Return'];
+
         if($this->selected_etfs !== null && $this->files_map === null){
-            $this->save_dist_single($this->incoming_meta,$this->selected_etfs);
+            $post_to_update = get_page_by_title( $this->selected_etfs, OBJECT, 'etfs' );
+            update_post_meta($post_to_update->ID,'ETF-Pre-ytd-sp-return-data', $data);
             return true;
         }else{
-            foreach ($this->incoming_meta as $etf_name => $meta) {
-                $this->save_dist_single($meta,$etf_name);
+            $query = new WP_Query(array( 'post_type' => 'etfs' , 'posts_per_page' => 9999999 ));
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post_id = get_the_ID();
+                update_post_meta($post_id,'ETF-Pre-ytd-sp-return-data', $data);
             }
             return true;
         }
