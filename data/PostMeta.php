@@ -416,8 +416,9 @@ class PostMeta{
     private function get_ror_benchmark_record($id, $date_inc){
         $benchmark = get_post_meta($id,'ETF-Pre-preformance-benchmark-selection-data',true);
 
-        if( $benchmark == '' || $benchmark == false ){
+        $benchmark_value = explode(' - ', $benchmark);
 
+        if( !isset($benchmark_value[1]) || !isset($benchmark_value[0]) ){
             return array(
                 'three_months' => '-', 
                 'six_months' => '-', 
@@ -427,26 +428,30 @@ class PostMeta{
             );
         }
 
-        $benchmark_value = explode(' - ', $benchmark);
-
+        $found_key = false;
         foreach ($this->incoming_meta as $record => $values) {
-            if($values['Fund Name'] === $benchmark_value[0]){
-                return array(
-                    'three_months' => $values['3 Month'],
-                    'six_months' => $values['6 Month'],
-                    'one_year' => $values['1 Year'],
-                    'five_year' => $values['5 Year'],
-                    'inception' => $values[$date_inc]
-                );
+            if($values['Fund Name'] === $benchmark_value[1]){
+                $found_key = $record;
+                break;
+            }   
+        }
+
+        $i = $found_key;
+        $required_sp_record = null;
+        while ($i < count($this->incoming_meta) && $found_key != false) {
+            if($this->incoming_meta[$i]['Fund Ticker'] == $benchmark_value[0]){
+                $required_sp_record = $this->incoming_meta[$i];
+                break;
             }
+            $i++;
         }
 
         return array(
-            'three_months' => '-', 
-            'six_months' => '-', 
-            'one_year' => '-',
-            'five_year' => '-',     
-            'inception' => '-'
+            'three_months' => $required_sp_record['3 Month'] ?? '-',
+            'six_months' => $required_sp_record['6 Month'] ?? '-', 
+            'one_year' => $required_sp_record['1 Year'] ?? '-',
+            'five_year' => $required_sp_record['5 Year'] ?? '-',
+            'inception' => $required_sp_record[$date_inc] ?? '-'
         );
     }
 
