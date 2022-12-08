@@ -418,41 +418,31 @@ class PostMeta{
 
         $benchmark_value = explode(' - ', $benchmark);
 
-        if( !isset($benchmark_value[1]) || !isset($benchmark_value[0]) ){
-            return array(
-                'three_months' => '-', 
-                'six_months' => '-', 
-                'one_year' => '-',
-                'five_year' => '-', 
-                'inception' => '-'
-            );
-        }
+        $benchmark_length = count($benchmark_value);
 
-        $found_key = false;
+        $null_arr = array( 'three_months' => '-',  'six_months' => '-', 'one_year' => '-', 'five_year' => '-', 'inception' => '-' );
+
+        if( !is_array($benchmark_value) || $benchmark_length > 2 || $benchmark_length <= 0 ) return $null_arr;
+
         foreach ($this->incoming_meta as $record => $values) {
             if($values['Fund Name'] === $benchmark_value[1]){
-                $found_key = $record;
-                break;
+                $i = $record;
+                while ($i < count($this->incoming_meta)) {
+                    if($this->incoming_meta[$i]['Fund Name'] === $benchmark_value[0]){
+                        return array(
+                            'three_months' => $this->incoming_meta[$i]['3 Month'] ?? '-',
+                            'six_months' => $this->incoming_meta[$i]['6 Month'] ?? '-', 
+                            'one_year' => $this->incoming_meta[$i]['1 Year'] ?? '-',
+                            'five_year' => $this->incoming_meta[$i]['5 Year'] ?? '-',
+                            'inception' => $this->incoming_meta[$i][$date_inc] ?? '-'
+                        );
+                    }
+                    $i++;
+                }
             }   
         }
 
-        $i = $found_key;
-        $required_sp_record = null;
-        while ($i < count($this->incoming_meta) && $found_key != false) {
-            if($this->incoming_meta[$i]['Fund Ticker'] == $benchmark_value[0]){
-                $required_sp_record = $this->incoming_meta[$i];
-                break;
-            }
-            $i++;
-        }
-
-        return array(
-            'three_months' => $required_sp_record['3 Month'] ?? '-',
-            'six_months' => $required_sp_record['6 Month'] ?? '-', 
-            'one_year' => $required_sp_record['1 Year'] ?? '-',
-            'five_year' => $required_sp_record['5 Year'] ?? '-',
-            'inception' => $required_sp_record[$date_inc] ?? '-'
-        );
+        return $null_arr;
     }
 
     private function save_available_benchmarks($data){
