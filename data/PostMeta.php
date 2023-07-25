@@ -371,8 +371,16 @@ class PostMeta{
                     }
                 }
 
+                // Use date from sheet instead of manually entered inception date
+                $date_from_preformance_record = $this->incoming_meta[$key]['Date'];
                 $incepention_date = get_post_meta($post_to_update->ID,'ETF-Pre-inception-date-data',true) ? get_post_meta($post_to_update->ID,'ETF-Pre-inception-date-data',true) : date('Y-m-d');
-                $date_inc = strtotime($incepention_date) > strtotime('-1 year') ? 'Since Inception Cumulative' : 'Since Inception Annualized';
+
+                $target = date_create($date_from_preformance_record);
+                $origin = date_create($incepention_date);
+                $interval = date_diff($origin, $target);
+                $diff = $interval->format('%y');
+
+                $date_inc = (int) $diff >= 1 ? 'Since Inception Annualized' : 'Since Inception Cumulative';
 
                 $data_array_sp = array();
                 if($is_not_structured){

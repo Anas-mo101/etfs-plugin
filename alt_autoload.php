@@ -46,6 +46,7 @@ require_once 'data/MailCollector.php';
 require_once 'data/Notices.php';
 require_once 'data/xlsm_parser/XSLMParser.php';
 require_once 'data/xlsm_parser/SimpleXLSX.php';
+require_once 'data/ETF_RestController.php';
 
 
 foreach ($libs as $lib) {

@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           0.9.7
+ * Version:           0.9.10
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
@@ -89,6 +89,8 @@ if ( !class_exists('ETFPlugin') ) {
             new \ETFsDisDetail\DisturbutionDetail();
             new \EtfsMailCollector\MailCollector();
             \ETFsNoticeHandler\Notice_Handler::init();
+
+            new ETFRestController();
         }
 
         function etfs_mime_types($mime){
@@ -246,17 +248,23 @@ if ( !class_exists('ETFPlugin') ) {
 			wp_send_json($_res);
         }
 
+        function TMtime(){
+            $datetime = new DateTime('midnight', new DateTimeZone(get_option('timezone_string'))); 
+            $datetime->setTimezone(new DateTimeZone('UTC')); 
+            return $datetime->getTimestamp();
+        }
+
         function set_sftp_config(){
             $sftp = \ETFsSFTP\SFTP::getInstance();
             $res = $sftp->set_config($_POST);
 
             if($res['cycle'] === 'First SFTP Cycle Is Successful'){
                 if (! wp_next_scheduled ( 'get_sftp_data' )){
-                    $cron_res = wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
+                    $cron_res = wp_schedule_event( $this->TMtime(), $_POST['freq'], 'get_sftp_data' );
                     error_log($cron_res);
                 }else{
                     wp_clear_scheduled_hook( 'get_sftp_data' );
-                    $cron_res = wp_schedule_event( time(), $_POST['freq'], 'get_sftp_data' );
+                    $cron_res = wp_schedule_event( $this->TMtime(), $_POST['freq'], 'get_sftp_data' );
                     error_log($cron_res);
                 }
             }

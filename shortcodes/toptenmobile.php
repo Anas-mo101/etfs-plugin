@@ -128,7 +128,7 @@ if(empty($top_holdings_array)){
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js" ></script>
 
     <!-- Initialize Swiper -->
-    <script>
+    <script defer>
     var swiper = new Swiper(".mySwiper", {
         pagination: {
             el: ".swiper-pagination",

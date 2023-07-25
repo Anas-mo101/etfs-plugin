@@ -200,10 +200,8 @@ class SFTP{
     function connect($auto = false){
         $this->get_config();
 
-        if($auto === true){
-            if($this->_config["Automate"] === 'f'){
-                return "SFTP is Off";
-            }
+        if($auto === true && $this->_config["Automate"] === 'f'){
+            return "SFTP is Off";
         }
         
         // libssh2 php extention -> https://www.libssh2.org/download/
