@@ -295,6 +295,102 @@ class PostMeta{
         }
     }
 
+    static function write_product_xlsx_file(){
+        $etfs_structured = array('JANZ', 'FEBZ', 'MARZ', 'APRZ', 'MAYZ', 'JUNZ', 'JULZ', 'AUGZ', 'SEPZ', 'OCTZ', 'NOVZ', 'DECZ');
+
+        $xlsx_data = array();
+        
+        foreach ($etfs_structured as $etf) {
+            $post_to_diplay = get_page_by_title( $etf, OBJECT, 'etfs' );
+            $long_name = (new Pdf2Data())->get_etfs_full_pre($etf);
+            $daysleft = (int) get_post_meta($post_to_diplay->ID, 'ETF-Pre-current-remaining-outcome-data', true); 
+
+            $ticker = $etf;
+            $name = $etf;
+            $series	= $long_name;
+            $fund_price	= get_post_meta($post_to_diplay->ID,'ETF-Pre-na-v-data', true);
+            $period_return	= get_post_meta($post_to_diplay->ID,'ETF-Pre-current-period-return-data', true);
+            $index	= get_post_meta($post_to_diplay->ID,'ETF-Pre-product-index-data', true);
+            $index_period_reuturn = get_post_meta($post_to_diplay->ID,'ETF-Pre-current-spx-return-data', true);
+            $upside_market	= get_post_meta($post_to_diplay->ID,'ETF-Pre-product-participation-rate-data', true);
+            $remaining_buffer	= get_post_meta($post_to_diplay->ID,'ETF-Pre-current-remaining-buffer-data', true);
+            $downside_buffer	= get_post_meta($post_to_diplay->ID,'ETF-Pre-current-downside-buffer-data', true);
+            $downside_floor	= get_post_meta($post_to_diplay->ID,'ETF-Pre-floor-of-buffer-data', true);
+            $remaining_outcome	= ($daysleft > 1) ? $daysleft . ' days' : $daysleft . ' day';
+
+            $xlsx_data[] = array(
+                $ticker,
+                $name,
+                $series,
+                $fund_price,
+                $period_return,
+                $index,
+                $index_period_reuturn,
+                $upside_market,
+                $remaining_buffer,
+                $downside_buffer,
+                $downside_floor,
+                $remaining_outcome,
+            );
+        }
+
+        require_once('xlsxwriter.class.php');
+        $writer = new XLSXWriter();
+
+        $writer->writeSheetHeader(
+            'Sheet1',
+            array(
+                'Ticker' => 'string',
+                'Name' => 'string',
+                'Series' => 'string',
+                'Fund Price' => 'string',
+                'Period Returns' => 'string',
+                'Index' => 'string',
+                'Index Period Returns' => 'string',
+                'Est. Upside Market Participation Rate' => 'string',
+                'Remaining Buffer' => 'string',
+                'ETF Downside to Buffer' => 'string',
+                'S&P Downside to Floor of Buffer' => 'string',
+                'Remaining Outcome Period' => 'string',
+            ),
+            $styles = array(
+                'font-style'=>'bold',
+                'font'=>'Calibri',
+                'font-size'=> 12,
+                'widths'=>[30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+            )
+        );
+
+        $writer->writeSheet($xlsx_data, 'Sheet1');
+        $upload_dir = wp_upload_dir();
+
+        if ( ! empty( $upload_dir['basedir'] ) ) {
+
+            $file_name = 'Structured_Outcome_ETFs.xlsx';
+            $file_path = $upload_dir['basedir'] . '/' . $file_name;
+            $file_url = $upload_dir['baseurl'] . '/' . $file_name;
+
+            if ( ! file_exists( $file_path ) ) {
+                $writer->writeToFile($file_path);
+            }else{
+                if (!unlink($file_path)) {
+                    error_log("$file_name cannot be deleted due to an error");
+                }else{
+                    error_log($file_path);
+                    $writer->writeToFile($file_path);
+                }
+            }
+            
+            $option_key = "structured_outcome_etfs_product_table";
+
+            if(get_option($option_key)){
+                update_option($option_key, $file_url);
+            }else{
+                add_option($option_key, $file_url);
+            }
+        }
+    }
+
     // ============================== ROR ======================================= // 
 
     private function save_ror_single($etf_name,$meta){

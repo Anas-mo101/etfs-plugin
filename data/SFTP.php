@@ -342,6 +342,8 @@ class SFTP{
 
         (new \Calculations())->calc_all();
 
+        \PostMeta::write_product_xlsx_file();
+
         // disconnect to sftp server
         $this->disconnect();
         $this->cycle_timestamp();
