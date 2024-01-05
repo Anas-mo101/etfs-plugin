@@ -581,10 +581,11 @@ if ( !class_exists('ETFPlugin') ) {
         * Save the new Custom Fields values
         */
         function save_custom_fields( $post_id, $post ) {
-            if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) ) return;
-            if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) ) return;
-            if ( !current_user_can( 'edit_post', $post_id ) ) return;
-            if ( ! in_array( $post->post_type, $this->postTypes ) ) return;
+            // error fix v
+            // if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) ) return;
+            // if ( !isset( $_POST[ 'my-custom-fields-pdf_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields-pdf_wpnonce' ], 'my-custom-fields-pdf' ) ) return;
+            // if ( !current_user_can( 'edit_post', $post_id ) ) return;
+            // if ( ! in_array( $post->post_type, $this->postTypes ) ) return;
 
             foreach ( $this->customFields as $customField ) {
                 if ( current_user_can( $customField['capability'], $post_id ) ) {

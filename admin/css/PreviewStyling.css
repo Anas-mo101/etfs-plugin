@@ -176,7 +176,6 @@ tbody {
     padding: 0 15px;
     display: grid;
     grid-template-columns: 160px 160px 160px 160px 160px 160px; 
-    /* width: 100%; */
     margin: 10px 0;
     justify-items: center;
 }
@@ -187,7 +186,7 @@ tbody {
 }
 
 .table-horizontal-row-grid-4-icon{
-    grid-template-columns: 170px 170px 170px 170px 50px;
+    grid-template-columns: 170px 170px 170px 170px 220px 50px;
     width: auto;
     align-items: center;
 }

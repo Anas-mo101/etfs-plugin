@@ -151,11 +151,13 @@ function save_manually_edited_data(){
                     "rec-date" : document.getElementById(`ETF-Pre-dis-${index}-2`).value.trim(),
                     "pay-date" : document.getElementById(`ETF-Pre-dis-${index}-3`).value.trim(),
                     "amount" : document.getElementById(`ETF-Pre-dis-${index}-4`).value.trim(),
+                    "varcol" : document.getElementById(`ETF-Pre-dis-${index}-5`).value.trim(),
                 }
                 new_dis_data.push(new_dis);
             }
         }
         document.getElementById("ETF-Pre-disturbion-detail-data").value = JSON.stringify(new_dis_data);
+        document.getElementById("ETF-Pre-disturbion-detail-varcol-data").value = document.getElementById("ETF-Pre-disturbion-detail-varcol").value;
 
 
         // --> holdings
