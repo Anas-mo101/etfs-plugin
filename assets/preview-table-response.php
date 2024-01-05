@@ -271,17 +271,7 @@
                         <h3>Record Date</h3>
                         <h3>Payable Date</h3> 
                         <h3>Amount</h3>
-                        <h3>
-                            <label for="<?php echo $this->prefix ?>disturbion-detail-varcol">
-                                Column Name
-                                <select id="<?php echo $this->prefix ?>disturbion-detail-varcol" >
-                                    <option value> None </option>
-                                    <option value="oi" <?php if(get_post_meta( get_the_ID(), $this->prefix . "disturbion-detail-varcol-data", true ) == "oi") echo "selected"; ?> > Ordinary Income </option>
-                                    <option value="stcg" <?php if(get_post_meta( get_the_ID(), $this->prefix . "disturbion-detail-varcol-data", true ) == "stcg") echo "selected"; ?> > Short-Term Capital Gains </option>
-                                    <option value="ltcg" <?php if(get_post_meta( get_the_ID(), $this->prefix . "disturbion-detail-varcol-data", true ) == "ltcg") echo "selected"; ?> > Long-Term Capital Gains </option>
-                                </select>
-                            </label>
-                        </h3>
+                        <h3>Rate Type</h3>
                         <h3></h3>
                     </div>
                     <div id="dis-detail-row-container"> <?php 
@@ -294,7 +284,14 @@
                                 <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-2" value="<?php echo $current_data_array[$i]['rec-date'] ?>" />
                                 <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-3" value="<?php echo $current_data_array[$i]['pay-date'] ?>" />
                                 <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-4" value="<?php echo $current_data_array[$i]['amount'] ?>" />
-                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>dis-<?php echo $i; ?>-5" value="<?php echo $current_data_array[$i]['varcol'] ?? "" ?>" />
+
+                                <select id="<?php echo $this->prefix ?>disturbion-detail-varcol-<?php echo $i; ?>-5" >
+                                    <option value> None </option>
+                                    <option value="oi" <?php if($current_data_array[$i]['varcol'] == "oi") echo "selected"; ?> > Ordinary Income </option>
+                                    <option value="stcg" <?php if($current_data_array[$i]['varcol'] == "stcg") echo "selected"; ?> > Short-Term Capital Gains </option>
+                                    <option value="ltcg" <?php if($current_data_array[$i]['varcol'] == "ltcg") echo "selected"; ?> > Long-Term Capital Gains </option>
+                                </select>
+
                                 <button class="del-dis-detail-row" data-count="<?php echo $i; ?>" type="button" style="border: none; background: inherit; cursor: pointer;">
                                     <svg style="margin: auto 0;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill clear-set-file" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>

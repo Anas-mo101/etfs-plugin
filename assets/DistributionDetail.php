@@ -71,20 +71,16 @@ class DisturbutionDetail{
             "oi" => "Ordinary Income",
             "stcg" => "Short-Term Capital Gains",
             "ltcg" => "Long-Term Capital Gains",
-            "" => "",
+            "" => "-",
         ]
 
         ?> <table class="table-ts table-10" style="border-collapse: separate; display: table; overflow-x:auto; border-spacing: 0 17px; margin: 0;">
         <tr>
-            <?php 
-                if($varcol && $varcol != ""){
-                    ?> <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;"><?= $varcols[$varcol] ?></th> <?php
-                }
-            ?>
             <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Ex-Date</th>
             <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Record Date</th>
             <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Payable Date</th>
-            <th style="text-align: center;" class="table-ts-title2 dynamic-elementor-font-style-body-bold">Amount</th>
+            <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;">Amount</th>
+            <th class="table-ts-title2 dynamic-elementor-font-style-body-bold" style="text-align: center;"> Rate Type </th>
         </tr> <?php 
         
         if(is_array($current_data_array) && count($current_data_array) > 0){
@@ -112,25 +108,17 @@ class DisturbutionDetail{
 
             <?php foreach ($current_data_array as $value) { 
                 ?> <tr>
-                    <?php 
-                        if($varcol && $varcol != ""){
-                            ?> <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"><?= $value['varcol'] ?? "-" ?></td> <?php
-                        }
-                    ?>
                     <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['ex-date'] ?></td>
                     <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['rec-date'] ?></td>
                     <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['pay-date'] ?></td>
                     <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;"><?php echo $value['amount'] ?></td>
+                    <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;"> <?= $varcols[$value['varcol'] ?? ""] ?> </td>
                 </tr> <?php
             } 
             echo '</table>' ;
         }else{
             ?> <tr>
-                <?php 
-                        if($varcol && $varcol != ""){
-                            ?> <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td> <?php
-                        }
-                    ?>
+                <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
                 <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
                 <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
                 <td class="table-ts-in pb" style="text-align: center;padding: 5px 15px;"> - </td>
