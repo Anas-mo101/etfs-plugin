@@ -59,9 +59,9 @@ jQuery( document ).ready( function( $ ) {
                         <input type="text" class="fund-details-input-feilds" id="ETF-Pre-dis-${index}-4" value="${element['amount']}" />
                         <select id="ETF-Pre-disturbion-detail-varcol-${index}-5" >
                             <option value> None </option>
-                            <option value="oi"> Ordinary Income </option>
-                            <option value="stcg"> Short-Term Capital Gains </option>
-                            <option value="ltcg"> Long-Term Capital Gains </option>
+                            <option ${element['varcol'] === "oi" ? "selected" : ""} value="oi"> Ordinary Income </option>
+                            <option ${element['varcol'] === "stcg" ? "selected" : ""} value="stcg"> Short-Term Capital Gains </option>
+                            <option ${element['varcol'] === "ltcg" ? "selected" : ""} value="ltcg"> Long-Term Capital Gains </option>
                         </select>
                         <button class="del-dis-detail-row" data-count="${index}" type="button" style="border: none; background: inherit; cursor: pointer;">
                             <svg style="margin: auto 0;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill clear-set-file" viewBox="0 0 16 16">

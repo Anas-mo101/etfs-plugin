@@ -20,7 +20,7 @@ class DisturbutionDetail{
 
         $current_data_array = json_decode($current_data, true);
 
-        $current_data_array[] = array( 'ex-date' => '', 'rec-date' => '', 'pay-date' => '', 'amount' => '' );
+        $current_data_array[] = array( 'ex-date' => '', 'rec-date' => '', 'pay-date' => '', 'amount' => '', 'varcol' => '');
         $count_data = count($current_data_array);
 
         error_log($count_data);
