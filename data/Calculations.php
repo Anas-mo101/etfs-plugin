@@ -6,6 +6,7 @@ class Calculations{
     var $total_buffer = null;
     var $sp_year_start = null;
     var $sp_ref_value = null;
+    var $dist_value = null;
     var $id;
 
     function __construct(){ }
@@ -30,6 +31,10 @@ class Calculations{
             $this->sp_ref_value = floatval(get_post_meta( $this->id, "ETF-Pre-sp-ref-data", true ));
         }
 
+        if(get_post_meta( $this->id, "ETF-Pre-distribution-ref-data", true ) !== ''){
+            $this->dist_value = floatval(get_post_meta( $this->id, "ETF-Pre-distribution-ref-data", true ));
+        }
+
         $this->get_period_return(true);
         $this->get_spx_period_return(true);
         $this->get_remaining_buffer();
@@ -47,11 +52,12 @@ class Calculations{
         }
     }
 
-    function get_period_return($flag){ // PERIOD_RETURN => ($ETF_CURRENT_NAV/$ETF_STARTING_NAV)-1
-        if ($this->starting_nav === null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+    function get_period_return($flag){ // PERIOD_RETURN => ( DISTURBUTION + ( $ETF_CURRENT_NAV / $ETF_STARTING_NAV ) ) - 1
+        if ($this->starting_nav === null || $this->dist_value == null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
 
-        $ans = ($current_nav/$this->starting_nav);
+        $ans = $this->dist_value + ($current_nav / $this->starting_nav);
         $ans = $ans - 1;
         if($flag){
             $ans = $ans * 100;

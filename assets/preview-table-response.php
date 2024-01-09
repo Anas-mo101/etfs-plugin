@@ -131,6 +131,10 @@
                             <h3> Period End Date </h3>
                             <input novalidate type="date" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>period-end-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "period-end-date-data", true ))); ?>" />
                         </div>
+                        <div class="table-horizontal-row"> 
+                            <h3> Distribution </h3>
+                            <input type="number" step=".01" class="fund-details-input-feilds" style="width: 120px;" id="<?php echo $this->prefix ?>distribution-ref" value="<?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "distribution-ref-data", true )) ?>" />
+                        </div>
                     </div>
 
                     <div class="template-tables-preview" style="width: 50%;" id="<?php echo $this->prefix ?>fund-data-pricing">
