@@ -291,9 +291,9 @@
 
                                 <select id="<?php echo $this->prefix ?>disturbion-detail-varcol-<?php echo $i; ?>-5" >
                                     <option value> None </option>
-                                    <option value="oi" <?php if($current_data_array[$i]['varcol'] == "oi") echo "selected"; ?> > Ordinary Income </option>
-                                    <option value="stcg" <?php if($current_data_array[$i]['varcol'] == "stcg") echo "selected"; ?> > Short-Term Capital Gains </option>
-                                    <option value="ltcg" <?php if($current_data_array[$i]['varcol'] == "ltcg") echo "selected"; ?> > Long-Term Capital Gains </option>
+                                    <option value="oi" <?php if(array_key_exists("varcol",$current_data_array[$i]) && $current_data_array[$i]['varcol'] == "oi") echo "selected"; ?> > Ordinary Income </option>
+                                    <option value="stcg" <?php if(array_key_exists("varcol",$current_data_array[$i]) && $current_data_array[$i]['varcol'] == "stcg") echo "selected"; ?> > Short-Term Capital Gains </option>
+                                    <option value="ltcg" <?php if(array_key_exists("varcol",$current_data_array[$i]) && $current_data_array[$i]['varcol'] == "ltcg") echo "selected"; ?> > Long-Term Capital Gains </option>
                                 </select>
 
                                 <button class="del-dis-detail-row" data-count="<?php echo $i; ?>" type="button" style="border: none; background: inherit; cursor: pointer;">

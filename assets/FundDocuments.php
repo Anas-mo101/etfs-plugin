@@ -7,7 +7,7 @@ class FundDocuments{
 
     function __construct(){
         $this->init_fund_fields();
-        add_action( 'admin_menu', array($this, 'set_fund_box' ) );
+        add_action( 'add_meta_boxes', array($this, 'set_fund_box' ) );
 
         add_shortcode('render-fund-docs-buttons', array($this, 'render_fund_buttons'));
 
@@ -68,12 +68,12 @@ class FundDocuments{
         wp_send_json(array('update' => 'success'));
     }
 
-    function create_custom_efts_fund_fields(){ 
-        global $post;
+    function create_custom_efts_fund_fields( $post ){ 
         $feilds = self::get_all(); ?>
         <div class="form-wrap-1">
             <?php wp_nonce_field( 'my-custom-fields-pdf', 'my-custom-fields-pdf_wpnonce', false, true );
-                foreach ($feilds as $feild) { ?>
+                foreach ($feilds as $feild) { 
+                    ?>
                     <div class="form-field form">
                         <label for="<?php echo $this->prefix . $feild['Field_Name'] ?>"> <b> <?php echo $feild['Field_Name'] ?> </b> </label>
                         <div style="display: flex; justify-content: space-between; gap: 15px;">
@@ -113,10 +113,9 @@ class FundDocuments{
     }
 
     // Display the new Custom Fields (Fund Documents)
-    function display_custom_fields_pdf() {
-        global $post;  
+    function display_custom_fields_pdf( $post ) {
         if ( $post->post_type == "etfs" ){
-            $this->create_custom_efts_fund_fields(); ?>
+            $this->create_custom_efts_fund_fields( $post ); ?>
             <div class="<?php echo $this->prefix ?>general-popup-underlay" id="<?php echo $this->prefix ?>popup-underlay-new-fund-field">
                 <div style="width: 35%; height: 35%;min-width: 300px;" id="<?php echo $this->prefix ?>popup-container">
                     <div id="<?php echo $this->prefix ?>table-popup">
@@ -166,7 +165,7 @@ class FundDocuments{
     }
 
     // Create custom field (Fund Documents)
-    function set_fund_box(){
+    function set_fund_box( $post_type ){
         if ( function_exists( 'add_meta_box' ) ) {
             add_meta_box( 'my-custom-fields-pdf', 
             '<span> Fund Documents </span>',
