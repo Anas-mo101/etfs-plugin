@@ -52,12 +52,12 @@ class Calculations{
         }
     }
 
-    function get_period_return($flag){ // PERIOD_RETURN => ( DISTURBUTION + ( $ETF_CURRENT_NAV / $ETF_STARTING_NAV ) ) - 1
-        if ($this->starting_nav === null || $this->dist_value == null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) == '') return;
+    function get_period_return($flag){ // PERIOD_RETURN => ( ( DISTURBUTION + $ETF_CURRENT_NAV ) / $ETF_STARTING_NAV ) - 1
+        if ($this->starting_nav === null || $this->dist_value === null || get_post_meta( $this->id, "ETF-Pre-na-v-data", true ) === '') return;
 
         $current_nav = floatval(get_post_meta( $this->id, "ETF-Pre-na-v-data", true ));
 
-        $ans = $this->dist_value + ($current_nav / $this->starting_nav);
+        $ans = ( $this->dist_value + $current_nav ) / $this->starting_nav;
         $ans = $ans - 1;
         if($flag){
             $ans = $ans * 100;
