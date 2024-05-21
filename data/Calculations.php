@@ -6,7 +6,7 @@ class Calculations{
     var $total_buffer = null;
     var $sp_year_start = null;
     var $sp_ref_value = null;
-    var $dist_value = null;
+    var $dist_value = 0;
     var $id;
 
     function __construct(){ }
