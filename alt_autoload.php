@@ -1,55 +1,33 @@
 <?php
+require_once 'utils/fields.php'; 
+require_once 'utils/general.php'; 
+require_once 'utils/fields.php'; 
+require_once 'utils/keys.php'; 
 
-/**
- * Loads all files found in a given folder.
- * Calls itself recursively for all sub folders.
- *
- * @param string $dir
- */
-function requireFilesOfFolder($dir){
-    foreach (new DirectoryIterator($dir) as $fileInfo) {
-        if (!$fileInfo->isDot()) {
-            if ($fileInfo->isDir()) {
-                requireFilesOfFolder($fileInfo->getPathname());
-            } else {
-                require_once $fileInfo->getPathname();
-            }
-        }
-    }
-}
+require_once 'interfaces/PostMetaInterface.php';
 
-$rootFolder = __DIR__.'/libs/Smalot/PdfParser';
+require_once 'services/PostMetas/HoldingPostMeta.php';
+require_once 'services/PostMetas/IndPostMeta.php';
+require_once 'services/PostMetas/NavPostMeta.php';
+require_once 'services/PostMetas/RorPostMeta.php';
+require_once 'services/PostMetas/SecPostMeta.php';
 
-$libs = array(
-    __DIR__.'/libs/Smalot/PdfParser',
-);
+require_once 'services/PostMeta.php'; 
+require_once 'services/PostMetaUtils.php'; 
 
-// Manually require files, which can't be loaded automatically that easily.
-require_once $rootFolder.'/Element.php';
-require_once $rootFolder.'/PDFObject.php';
-require_once $rootFolder.'/Font.php';
-require_once $rootFolder.'/Page.php';
-require_once $rootFolder.'/Element/ElementString.php';
-require_once $rootFolder.'/Encoding/AbstractEncoding.php';
+require_once 'services/SFTP.php';
+require_once 'services/Connections.php';
+require_once 'services/CsvProvider.php';
+require_once 'services/Calculations.php';
+require_once 'services/FundDocuments.php';
+require_once 'services/DistributionDetail.php';
+require_once 'services/ETFShortCodes.php';
+require_once 'services/CustomFeilds.php';
 
-require_once 'assets/class-atts.php';
-require_once 'assets/FundDocuments.php';
-require_once 'assets/DistributionDetail.php';
-require_once 'assets/fields-display.php'; 
-require_once 'data/GoogleSheetProvider.php';
-require_once 'data/Pdf2Data.php';
-require_once 'data/SFTP.php';
-require_once 'data/CsvProvider.php';
-require_once 'data/PostMeta.php';
-require_once 'data/Calculations.php';
-require_once 'data/MailCollector.php';
-require_once 'data/Notices.php';
-require_once 'data/xlsm_parser/XSLMParser.php';
-require_once 'data/xlsm_parser/SimpleXLSX.php';
-require_once 'data/ETF_RestController.php';
+require_once 'libs/XSLMParser.php';
+require_once 'libs/SimpleXLSX.php';
+require_once 'libs/xlsxwriter.class.php';
 
+require_once 'controllers/ETFController.php';
 
-foreach ($libs as $lib) {
-    requireFilesOfFolder($lib);
-}
 
