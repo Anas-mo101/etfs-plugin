@@ -46,7 +46,7 @@ class ETFShortCodes
     function render_subadvisor()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/subadvisor.php');
+        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/subadvisors.php');
         return ob_get_clean();
     }
 
