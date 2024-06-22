@@ -228,16 +228,17 @@ class ETFRestController extends WP_REST_Controller
         try {
             $connections_services = new \ConnectionServices();
             $connections = $connections_services->list_connections();
+            $sftp = \ETFsSFTP\SFTP::getInstance();
 
             for ($i = 0; $i < count($connections); $i++) {
                 try {
                     $connection = $connections[$i];
-                    $connections->auto_cycle((int) $connection["id"], true);
+
+                    $sftp->auto_cycle((int) $connection["id"], true);
                 } catch (\Throwable $th) {
-                    error_log("connection id " . $connection["id"] . " failed");
+                    error_log("connection id " . $connection["id"] . " failed: " . $th->getMessage());
                 }
             }
-
             return rest_ensure_response(array("status" => "success"));
         } catch (\Throwable $th) {
             return new \WP_REST_Response(null, 400);
