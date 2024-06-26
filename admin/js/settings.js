@@ -198,7 +198,7 @@ const scan_dir_button = (e) => {
                 });
             }
 
-            const feildIds = ["ETFs-Pre-nav-name-", "ETFs-Pre-holdings-name-", "ETFs-Pre-sec-name-", "ETFs-Pre-ror-name-", "ETFs-Pre-index-name-"];
+            const feildIds = ["ETFs-Pre-nav-name-", "ETFs-Pre-holding-name-", "ETFs-Pre-sec-name-", "ETFs-Pre-ror-name-", "ETFs-Pre-index-name-"];
             feildIds.forEach(id => {
                 document.getElementById(`${id}${connectionId}`).disabled = true;
             });
@@ -401,7 +401,7 @@ function cancel_divs_edits() {
 }
 
 function edit_file_button() {
-    document.querySelectorAll("#ETFs-Pre-nav-name, #ETFs-Pre-holdings-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").forEach(el => el.disabled = false);
+    document.querySelectorAll("#ETFs-Pre-nav-name, #ETFs-Pre-holding-name, #ETFs-Pre-dist-memo-name, #ETFs-Pre-monthly-name").forEach(el => el.disabled = false);
     document.querySelectorAll(".edit-file-button").forEach(btn => btn.style.display = 'none');
     document.querySelectorAll(".scan-dir-button, .update-files-button, .cancel-file-button, .clear-set-file").forEach(btn => btn.style.display = 'inline-block');
 }
