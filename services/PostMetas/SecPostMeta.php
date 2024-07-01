@@ -1,6 +1,6 @@
 <?php
 
-class SecPostMeta {
+class SecPostMeta implements PostMetaInterface {
 
     public function process_incoming(PostMetaUtils $utils): bool {
         if (!$utils->meta || count($utils->meta) === 0) return false;

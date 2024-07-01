@@ -4,7 +4,7 @@
     $connections = $connections_services->list_connections();
 
     ?>
-    <div style="display: flex; justify-content: space-between; margin: 10px 0">
+    <div style="display: flex; justify-content: space-between; margin: 10px 20px 10px 0px">
         <h1 style="margin: auto 0;"> ETF Settings </h1>
         <button class="button button-primary button-large" id="ETF-Pre-add-connection-button"> Add Connection </button>
     </div>
