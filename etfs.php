@@ -218,9 +218,9 @@ class ETFPlugin
         if ( wp_next_scheduled ( 'get_sftp_data' )){
             wp_clear_scheduled_hook('get_sftp_data');
         }
-        $connections_services = new \ConnectionServices();
-        $connections_services->sftp_remove_remove_all();
-        $connections_services->sftp_db_drop();
+        // $connections_services = new \ConnectionServices();
+        // $connections_services->sftp_remove_remove_all();
+        // $connections_services->sftp_db_drop();
         flush_rewrite_rules();
     }
 }

@@ -10,7 +10,7 @@ class RorPostMeta implements PostMetaInterface {
             return false;
         }
 
-        $this->save_available_benchmarks($utils->meta);
+        $this->save_available_benchmarks($utils->meta, $utils->connectionId);
 
         if ( $utils->selected_etfs !== null && $utils->files_map === null) {
             $data = $this->find_ror_record($utils->selected_etfs, $utils->meta);
@@ -212,18 +212,24 @@ class RorPostMeta implements PostMetaInterface {
         return $null_arr;
     }
 
-    private function save_available_benchmarks($data)
+    private function save_available_benchmarks($data, $connection_id)
     {
         $benchmarks = array();
 
         for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]['Fund Name'] == ""){ 
+                continue;
+            }
+
             if (!str_contains($data[$i]['Fund Name'], 'ETF')) {
 
                 $loop = true;
                 $j = 1;
 
                 while ($loop == true) {
-                    if (!isset($data[$i - $j])) $loop = false;
+                    if (!isset($data[$i - $j])){ 
+                        $loop = false;
+                    }
 
                     if (str_contains($data[$i - $j]['Fund Name'], 'ETF')) {
                         $benchmarks[] = $data[$i]['Fund Name'] . ' - ' . $data[$i - $j]['Fund Name'];
@@ -239,14 +245,12 @@ class RorPostMeta implements PostMetaInterface {
         });
 
         $benchmarks = array_values($benchmarks);
-
         $benchmarks_json = json_encode($benchmarks);
 
-        if (get_option('etfs-pre-available-benchmarks')) {
-            update_option('etfs-pre-available-benchmarks', $benchmarks_json);
+        if (get_option('etfs-pre-available-benchmarks-'. $connection_id)) {
+            update_option('etfs-pre-available-benchmarks-' . $connection_id, $benchmarks_json);
         } else {
-            add_option('etfs-pre-available-benchmarks', $benchmarks_json);
+            add_option('etfs-pre-available-benchmarks-' . $connection_id, $benchmarks_json);
         }
     }
-
 }

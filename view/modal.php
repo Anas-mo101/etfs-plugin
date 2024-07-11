@@ -233,8 +233,10 @@
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-inception-data", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
-                            <?php if(in_category( 'Unstructured ETFs' )){ 
-                                    $variable = get_option('etfs-pre-available-benchmarks');
+                                <?php if(in_category( 'Unstructured ETFs' )){
+                                    $connection_id = get_post_meta( get_the_ID(), $this->prefix . "connection-id", true );
+
+                                    $variable = get_option('etfs-pre-available-benchmarks-' . $connection_id);
                                     $variable = json_decode($variable, true);
                                 ?>
                                 <select style="width: 100%;" id="<?php echo $this->prefix ?>preformance-benchmark-selection">

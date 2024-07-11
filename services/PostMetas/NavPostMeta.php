@@ -67,8 +67,10 @@ class NavPostMeta implements PostMetaInterface
                 update_post_meta($post_to_update->ID, 'ETF-Pre-graph-json-date-data', date("m/d/Y", strtotime("-1 day")));
             }
 
-            update_post_meta($post_to_update->ID, 'ETF-Pre-rate-date-data', $data['Rate Date']);
-            update_post_meta($post_to_update->ID, 'ETF-Pre-fund-pricing-date-data', $data['Rate Date']);
+            $formatedDate = str_replace("-", "/", $data['Rate Date']);
+
+            update_post_meta($post_to_update->ID, 'ETF-Pre-rate-date-data', $formatedDate);
+            update_post_meta($post_to_update->ID, 'ETF-Pre-fund-pricing-date-data', $formatedDate);
 
             update_post_meta($post_to_update->ID, 'ETF-Pre-net-assets-data', big_number_format($data['Net Assets']));
 
