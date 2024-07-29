@@ -241,3 +241,29 @@ function write_xlsx_file($in, $post_id, $selected_etfs, $etf_name = null)
         update_post_meta($post_id, 'ETF-Pre-top-holders-button-download-data', $file_url);
     }
 }
+
+
+function dateFormatingMDYYYY($dateString){
+    // Array of possible date formats
+    $formats = ['m/d/Y', 'm-d-Y', 'Y/m/d', 'Y-m-d', 'n/j/Y', 'n-j-Y', 'Y/n/j', 'Y-n-j'];
+    
+    $date = false;
+    foreach ($formats as $format) {
+        // Try to create a DateTime object using the current format
+        $date = DateTime::createFromFormat($format, $dateString);
+        // Check if the date is parsed correctly by comparing the formatted output with the original input
+        // This comparison handles leading zeros as well
+        if ($date && $date->format($format) === $dateString) {
+            break;
+        }
+    }
+    
+    if ($date) {
+        // Format the date to M/D/YYYY, without leading zeros for month and day
+        $formattedDate = $date->format('n/j/Y');
+        // Output the formatted date
+        return $formattedDate;
+    }
+
+    return $dateString;
+}
