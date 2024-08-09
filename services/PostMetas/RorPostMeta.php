@@ -6,7 +6,7 @@ class RorPostMeta implements PostMetaInterface {
 
     public function process_incoming(PostMetaUtils $utils): bool
     {
-        if (!$utils->meta || count($utils->meta) === 0) {
+        if (!$utils->meta || count($utils->meta) == 0) {
             return false;
         }
 
@@ -154,23 +154,42 @@ class RorPostMeta implements PostMetaInterface {
                         $sp_arr = $meta[$key + 2];
                     }
 
-                    $data_array_sp = array(
-                        'three_months' => $sp_arr['3 Month'],
-                        'six_months' => $sp_arr['6 Month'],
-                        'one_year' => $sp_arr['1 Year'],
-                        'five_year' => $sp_arr['5 Year'],
-                        'inception' => $sp_arr[$date_inc]
-                    );
+                    $data_array_sp = [
+                        'three_months' => $sp_arr['3 Month'] == 0 ? "0.0" : $sp_arr['3 Month'],
+                        'six_months' => $sp_arr['6 Month'] == 0 ? "0.0" : $sp_arr['6 Month'],
+                        'one_year' => $sp_arr['1 Year'] == 0 ? "0.0" : $sp_arr['1 Year'],
+                        'five_year' => $sp_arr['5 Year'] == 0 ? "0.0" : $sp_arr['5 Year'],
+                        'inception' => $sp_arr[$date_inc] == 0 ? "0.0" : $sp_arr[$date_inc],
+                    ];
                 }
 
                 if (empty($nav_arr) || empty($mkt_arr)) {
                     return false;
                 }
 
-                $data_array_nav = array('three_months' => $nav_arr['3 Month'], 'six_months' => $nav_arr['6 Month'], 'one_year' => $nav_arr['1 Year'], 'five_year' => $nav_arr['5 Year'], 'inception' => $nav_arr[$date_inc]);
-                $data_array_market = array('three_months' => $mkt_arr['3 Month'], 'six_months' => $mkt_arr['6 Month'], 'one_year' => $mkt_arr['1 Year'], 'five_year' => $mkt_arr['5 Year'], 'inception' => $mkt_arr[$date_inc]);
+                $data_array_nav = [
+                    'three_months' => $nav_arr['3 Month'] == 0 ? "0.0" : $nav_arr['3 Month'],
+                    'six_months' => $nav_arr['6 Month'] == 0 ? "0.0" : $nav_arr['6 Month'],
+                    'one_year' => $nav_arr['1 Year'] == 0 ? "0.0" : $nav_arr['1 Year'],
+                    'five_year' => $nav_arr['5 Year'] == 0 ? "0.0" : $nav_arr['5 Year'],
+                    'inception' => $nav_arr[$date_inc] == 0 ? "0.0" : $nav_arr[$date_inc],
+                ];
 
-                $data_array = array('date' => $nav_arr['Date'], 'sec_yeild' => '', 'market_price' =>  $data_array_market, 'fund_nav' => $data_array_nav, 'sp' => $data_array_sp);
+                $data_array_market = [
+                    'three_months' => $mkt_arr['3 Month'] == 0 ? "0.0" : $mkt_arr['3 Month'],
+                    'six_months' => $mkt_arr['6 Month'] == 0 ? "0.0" : $mkt_arr['6 Month'],
+                    'one_year' => $mkt_arr['1 Year'] == 0 ? "0.0" : $mkt_arr['1 Year'],
+                    'five_year' => $mkt_arr['5 Year'] == 0 ? "0.0" : $mkt_arr['5 Year'],
+                    'inception' => $mkt_arr[$date_inc] == 0 ? "0.0" : $mkt_arr[$date_inc]
+                ];
+
+                $data_array = [
+                    'date' => $nav_arr['Date'],
+                    'sec_yeild' => '',
+                    'market_price' =>  $data_array_market,
+                    'fund_nav' => $data_array_nav,
+                    'sp' => $data_array_sp
+                ];
 
                 return $data_array;
             }
@@ -187,7 +206,7 @@ class RorPostMeta implements PostMetaInterface {
 
         $benchmark_length = count($benchmark_value);
 
-        $null_arr = array('three_months' => '-',  'six_months' => '-', 'one_year' => '-', 'five_year' => '-', 'inception' => '-');
+        $null_arr = array('three_months' => "0.0",  'six_months' => "0.0", 'one_year' => "0.0", 'five_year' => "0.0", 'inception' => "0.0");
 
         if (!is_array($benchmark_value) || $benchmark_length > 2 || $benchmark_length <= 0) return $null_arr;
 
@@ -196,13 +215,13 @@ class RorPostMeta implements PostMetaInterface {
                 $i = $record;
                 while ($i < count($meta)) {
                     if ($meta[$i]['Fund Name'] === $benchmark_value[0]) {
-                        return array(
-                            'three_months' => $meta[$i]['3 Month'] ?? '-',
-                            'six_months' => $meta[$i]['6 Month'] ?? '-',
-                            'one_year' => $meta[$i]['1 Year'] ?? '-',
-                            'five_year' => $meta[$i]['5 Year'] ?? '-',
-                            'inception' => $meta[$i][$date_inc] ?? '-'
-                        );
+                        return [
+                            'three_months' => $meta[$i]['3 Month'] == 0 ? "0.0" : $meta[$i]['3 Month'],
+                            'six_months' => $meta[$i]['6 Month']  == 0 ? "0.0" : $meta[$i]['6 Month'],
+                            'one_year' => $meta[$i]['1 Year']  == 0 ? "0.0" : $meta[$i]['1 Year'],
+                            'five_year' => $meta[$i]['5 Year']  == 0 ? "0.0" : $meta[$i]['5 Year'],
+                            'inception' => $meta[$i][$date_inc]  == 0 ? "0.0" : $meta[$i][$date_inc]
+                        ];
                     }
                     $i++;
                 }
