@@ -200,6 +200,7 @@ class FundDocuments{
                 <div class="button-dw-fund-doc">
                     <a target="_blank" href="<?php echo esc_url( get_post_meta( $post->ID, $this->prefix . $button[ 'Field_ID' ], true ) ); ?>" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                         <span class="elementor-button-content-wrapper" style="justify-content: space-between;">
+                            <span class="elementor-button-text dynamic-elementor-font-style-body-bold"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
                             <span class="elementor-button-icon elementor-align-icon-right">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Download_Arrow" width="34" height="34" viewBox="0 0 34 34">
                                     <path id="Shape" d="M0,0H34V34H0Z" fill="none" fill-rule="evenodd"></path>
@@ -208,7 +209,6 @@ class FundDocuments{
                                     <rect id="Rectangle-199-Copy" width="26" height="3" rx="1.5" transform="translate(4.099 27)" fill="#63d5d3" opacity="0.3"></rect>
                                 </svg>			
                             </span>
-                            <span class="elementor-button-text dynamic-elementor-font-style-body-bold"> <?php echo htmlspecialchars( $button[ 'Field_Name' ] ); ?> </span>
                         </span>
                     </a>
                 </div>
