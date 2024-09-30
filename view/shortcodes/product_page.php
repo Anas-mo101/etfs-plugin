@@ -54,7 +54,7 @@ if( $download_url = get_option($option_key)){
     ?>
 
     <style>
-        <?php require_once plugin_dir_path( dirname(dirname(__FILE__)) ) . 'admin/css/product.css'; ?>
+        <?php require_once plugin_dir_path( dirname(dirname(__FILE__)) ) . 'admin/css/button.css'; ?>
     </style>
     
     <div id="download_button_DIV_1">

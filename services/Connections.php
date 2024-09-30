@@ -71,7 +71,7 @@ class ConnectionServices {
         $wpdb->delete($wp_table_name, array('id' => $id));
     }
 
-    function sftp_remove_remove_all()
+    function sftp_remove_all()
     {
         $connections = $this->list_connections();
         for ($i = 0; $i < count($connections); $i++) {
