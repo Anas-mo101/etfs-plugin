@@ -111,7 +111,7 @@ class DisturbutionDetail{
             <div id="load-more-details" style="margin: 20px 0;">
                 <a id="download_button_A_2">
                     <span id="download_button_SPAN_3">
-                        <span id="download_button_SPAN_10"> Load More </span>
+                        <span id="download_button_SPAN_10"> Load All </span>
                     </span>
                 </a>
             </div>
@@ -120,15 +120,15 @@ class DisturbutionDetail{
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const data = <?php echo json_encode($current_data_array); ?>;
-                const rowsPerPage = 5;
+                let showAllToggled = false;
                 let currentPage = 1;
 
-                function renderTable(page = 1) {
+                function renderTable(page = 1, rowsPerPage = 5) {
                     const start = (page - 1) * rowsPerPage;
                     const end = start + rowsPerPage;
                     const paginatedData = data.slice(start, end);
-
                     const tableBody = document.getElementById('disturbionTableBody');
+                    tableBody.innerHTML = "";
 
                     if (paginatedData.length === 0) {
                         tableBody.innerHTML = `<tr>
@@ -143,7 +143,7 @@ class DisturbutionDetail{
 
                     paginatedData.forEach(function(value) {
                         const varcol = value['varcol'] ?? '';
-                        tableBody.innerHTML += ` <tr>
+                        tableBody.innerHTML += `<tr>
                             <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;">${value['ex-date']}</td>
                             <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;">${value['rec-date']}</td>
                             <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;padding: 5px 15px;">${value['pay-date']}</td>
@@ -155,20 +155,21 @@ class DisturbutionDetail{
 
                 function renderPagination() {
                     const loadmore = document.getElementById('load-more-details');
+                    const loadmoreText = document.getElementById('download_button_SPAN_10');
 
                     if (!loadmore) {
                         return
                     }
 
-                    const pageCount = Math.ceil(data.length / rowsPerPage);
                     loadmore.addEventListener('click', function() {
-                        if(pageCount >= currentPage + 1){
-                            currentPage = currentPage + 1;
-                            renderTable(currentPage);
-
-                            if(pageCount < currentPage + 1){
-                                loadmore.style.display = "none";
-                            }
+                        if (showAllToggled) {
+                            showAllToggled = false;
+                            renderTable(1)
+                            loadmoreText.innerHTML = "Show All";
+                        } else {
+                            showAllToggled = true;
+                            renderTable(1, <?= count($current_data_array); ?>)
+                            loadmoreText.innerHTML = "Show Less";
                         }
                     });
                 }
