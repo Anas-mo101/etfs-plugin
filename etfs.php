@@ -112,6 +112,17 @@ class ETFPlugin
                 include 'view/settings.php';
             }
         );
+
+        add_submenu_page(
+            'edit.php?post_type=etfs', //$parent_slug
+            'Products Table',  //$page_title
+            'Products Table',        //$menu_title
+            'manage_options',           //$capability
+            'products_table', //$menu_slug
+            function () { // anonymous callback function
+                include 'view/products_table.php';
+            }
+        );
     }
 
     function seed_etfs()
@@ -172,9 +183,13 @@ class ETFPlugin
             wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
             wp_enqueue_script('sortableJS', 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js');
 
-            wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
-
             wp_enqueue_script('setting-scripts', $dir . 'admin/js/settings.js');
+            wp_enqueue_style('setting-styling', $dir . 'admin/css/settings.css');
+        } elseif ($hook == 'etfs_page_products_table') {
+            wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+            wp_enqueue_script('sortableJS', 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js');
+
+            wp_enqueue_script('setting-scripts', $dir . 'admin/js/products.js');
             wp_enqueue_style('setting-styling', $dir . 'admin/css/settings.css');
         }
     }
@@ -210,6 +225,10 @@ class ETFPlugin
         $this->etfs_post_type();
         $connections_services = new \ConnectionServices();
         $connections_services->sftp_db_init();
+
+        $dynamic_tables = new \DynamicProductsTable();
+        $dynamic_tables->init();
+
         flush_rewrite_rules();
     }
 

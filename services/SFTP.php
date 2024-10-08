@@ -157,8 +157,6 @@ class SFTP
             ];
         }
 
-        error_log(print_r($files_required_and_available_remotely, true));
-
         // save file on our server
         $dir = "ssh2.sftp://$sftp";
         $files_unprocessed_and_available_localy = array();
@@ -197,10 +195,13 @@ class SFTP
                 if (!$data || count($data) == 0) {
                     $save_meta_status[] = array($name => 'failed to fetch data');
                 } else {
-                    // update db with new data
                     $post_meta = new \PostMeta($data, $name, $id, $file_set_name);
                     $res = $post_meta->process_incoming();
-                    $save_meta_status[] = array($name => $res);
+
+                    $dynamic = new \DynamicProductsTable();
+                    $dynamic->update_tables_by_file_name($id, $name, json_encode($data));
+
+                    $save_meta_status[] = [$name => $res];
                 }
             } else {
                 $save_meta_status[] = array($name => 'not supported');
@@ -218,26 +219,26 @@ class SFTP
         return $save_meta_status;
     }
 
-    function get_dir_conntent(int $id)
+    function get_dir_conntent(int $id, string $extension = null)
     {
-        $files_name = array();
-
         // connect to sftp server
         $sftp = $this->connect($id);
-
         if ($sftp === false || gettype($sftp) === "string") {
             return $sftp;
         }
 
         // scan file sftp dir & find required files
         $files_path = $this->scan_filesystem('/', $sftp);
-
-        error_log(print_r($files_path, true));
-
+        $files_name = array();
         foreach ($files_path as $key => $file_path) {
             $pattern = '/[^\/]+$/U';
             preg_match($pattern, $file_path, $matches);
-            $files_name[] = $matches[0];
+            $file_name = $matches[0];
+
+            // If an extension is provided, filter by it
+            if ($extension === null || pathinfo($file_name, PATHINFO_EXTENSION) === $extension) {
+                $files_name[] = $file_name;
+            }
         }
 
         $this->disconnect($sftp);

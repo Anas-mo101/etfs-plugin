@@ -96,6 +96,32 @@ class ETFRestController extends WP_REST_Controller
             'callback' => array($this, 'remove_fund_doc'),
             'permission_callback' => '__return_true'
         ));
+
+        // =========================
+
+        register_rest_route($this->base_route, '/table/create', array(
+            'methods'  => 'POST',
+            'callback' => array($this, 'create_dynamic_table'),
+            'permission_callback' => '__return_true'
+        ));
+
+        register_rest_route($this->base_route, '/table/list', array(
+            'methods'  => 'GET',
+            'callback' => array($this, 'list_dynamic_table'),
+            'permission_callback' => '__return_true'
+        ));
+
+        register_rest_route($this->base_route, '/table/remove', array(
+            'methods'  => 'POST',
+            'callback' => array($this, 'remove_dynamic_table'),
+            'permission_callback' => '__return_true'
+        ));
+
+        register_rest_route($this->base_route, '/table/update', array(
+            'methods'  => 'POST',
+            'callback' => array($this, 'update_dynamic_table'),
+            'permission_callback' => '__return_true'
+        ));
     }
 
     public function add_fund_doc(WP_REST_Request $request)
@@ -329,13 +355,18 @@ class ETFRestController extends WP_REST_Controller
     {
         try {
             $body = json_decode($request->get_body(), true);
+            $ext = null;
 
             if (!isset($body["id"]) || $body["id"] === "") {
                 return rest_ensure_response(array("status" => "no id provided"));
             }
 
+            if (isset($body["ext"]) || $body["ext"] !== "") {
+                $ext = $body["ext"];
+            }
+
             $sftp = \ETFsSFTP\SFTP::getInstance();
-            $sftp_res = $sftp->get_dir_conntent($body["id"]);
+            $sftp_res = $sftp->get_dir_conntent($body["id"], $ext);
             $res = array('files' => $sftp_res);
 
             return rest_ensure_response($res);
@@ -479,6 +510,120 @@ class ETFRestController extends WP_REST_Controller
             return rest_ensure_response(array('update' => 'success', 'data' => $divz_values));
         } catch (\Throwable $th) {
             return new \WP_REST_Response(null, 400);
+        }
+    }
+
+    /// ============================
+
+    public function list_dynamic_table(WP_REST_Request $request)
+    {
+        try {
+            $dynamic_tables = new \DynamicProductsTable();
+            $tables = $dynamic_tables->list_tables();
+
+            return rest_ensure_response(array(
+                'data' => $tables
+            ));
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response(null, 400);
+        }
+    }
+
+    public function remove_dynamic_table(WP_REST_Request $request)
+    {
+        try {
+            $body = json_decode($request->get_body(), true);
+
+            if (!isset($body["id"]) || $body["id"] === "") {
+                return new \WP_REST_Response(array("status" => "no id provided"), 400);
+            }
+
+            $dynamic_tables = new \DynamicProductsTable();
+            $dynamic_tables->remove_dynamice_table( (int) $body["id"] );
+
+            return rest_ensure_response(array( "deletion" => "success" ));
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response(null, 400);
+        }
+    }
+
+    public function update_dynamic_table(WP_REST_Request $request)
+    {
+        try {
+            $body = json_decode($request->get_body(), true);
+
+            if (!isset($body["id"]) || $body["id"] === "") {
+                return new \WP_REST_Response(array("status" => "no id provided"), 400);
+            }
+
+            $args = [];
+
+            if (isset($body["name"]) || $body["name"] != "") {
+                $args["Name"] = $body["name"];
+            }
+
+            if (isset($body["connectionId"]) || $body["connectionId"] != "") {
+                $args["ConnectionId"] = $body["connectionId"];
+            }
+
+            if (isset($body["filename"]) || $body["filename"] != "") {
+                $args["FileName"] = $body["filename"];
+            }
+
+            if (isset($body["order"]) || $body["order"] != "") {
+                $args["Torder"] = $body["order"];
+            }
+
+            $dynamic_tables = new \DynamicProductsTable();
+            $dynamic_tables->update_table( (int) $body["id"], $args );
+
+            $sftp = new \ETFsSFTP\SFTP();
+            $sftp->auto_cycle( (int) $body["connectionId"] );
+
+            return rest_ensure_response(["update" => "success"]);
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response(null, 400);
+        }
+    }
+
+    public function create_dynamic_table(WP_REST_Request $request)
+    {
+        try {
+            $body = json_decode($request->get_body(), true);
+
+            if (!isset($body["name"]) || $body["name"] === "") {
+                return new \WP_REST_Response(array("status" => "no name provided"), 400);
+            }
+
+            if (!isset($body["connectionId"]) || $body["connectionId"] === "") {
+                return new \WP_REST_Response(array("status" => "no connectionId provided"), 400);
+            }
+
+            if (!isset($body["fileName"]) || $body["fileName"] === "") {
+                return new \WP_REST_Response(array("status" => "no fileName provided"), 400);
+            }
+
+            if (!isset($body["order"]) || $body["order"] === "") {
+                return new \WP_REST_Response(array("status" => "no order provided"), 400);
+            }
+
+            $data = "[]";
+
+            $dynamic_tables = new \DynamicProductsTable();
+            $dynamic_tables->create_dynamice_table(
+                $body["name"],
+                $body["connectionId"],
+                $body["fileName"],
+                $body["order"],
+                $data,
+            );
+
+            $sftp = new \ETFsSFTP\SFTP();
+            $sftp->auto_cycle( (int) $body["connectionId"] );
+
+            return rest_ensure_response(['create' => 'success']);
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response($th->getMessage(), 400);
         }
     }
 }

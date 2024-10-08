@@ -17,6 +17,7 @@ require_once 'services/PostMetaUtils.php';
 
 require_once 'services/SFTP.php';
 require_once 'services/Connections.php';
+require_once 'services/DynamicProductsTable.php';
 require_once 'services/CsvProvider.php';
 require_once 'services/Calculations.php';
 require_once 'services/FundDocuments.php';
