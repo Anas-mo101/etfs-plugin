@@ -10,22 +10,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById('new-table-name').value = "";
         document.getElementById('new-table-order').value = "";
+        document.getElementById('new-table-connection').value = undefined;
 
         const file = document.getElementById('new-table-file');
-        file.dataset.connection = undefined;
         file.dataset.file = undefined;
         file.innerHTML = "";
 
+        document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = "";
+
         const popup = document.getElementById("ETF-Pre-popup-underlay-new-table-field");
         popup.style.display = "flex";
-
     });
 
     document.getElementById('table-submit-button').addEventListener('click', async (e) => {
         const name = document.getElementById('new-table-name').value;
         const order = document.getElementById('new-table-order').value;
+        const connectionId = document.getElementById('new-table-connection').value;
         const file = document.getElementById('new-table-file');
-        const connectionId = file.dataset.connection;
         const filename = file.dataset.file;
 
         await add_new_table(name, filename, connectionId, order);
@@ -68,9 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById('new-table-name').value = name;
             document.getElementById('new-table-order').value = order;
+            document.getElementById('new-table-connection').value = connectionId;
 
             const file = document.getElementById('new-table-file');
-            file.dataset.connection = connectionId;
             file.dataset.file = filename;
             file.innerHTML = filename;
 
@@ -78,6 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const edit = document.getElementById('table-update-button');
             edit.style.display = "block"
             edit.dataset.table = id;
+
+            document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = "";
+            const loader = document.getElementById("ETFs-Pre-loadinganimation");
+            loader.style.display = 'inline-block';
+            await scan_connection_dir(connectionId);
+            loader.style.display = 'none';
         })
     });
 
@@ -86,9 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const newName = document.getElementById('new-table-name').value;
         const newOrder = document.getElementById('new-table-order').value;
+        const newConnectionId = document.getElementById('new-table-connection').value;
 
         const file = document.getElementById('new-table-file');
-        const newConnectionId = file.dataset.connection;
         const newFilename = file.dataset.file;
 
         edit_table(id, {
@@ -99,26 +106,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    fillFileContainers();
+    document.getElementById('new-table-connection').addEventListener('change', async (e) => {
+        document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = "";
+        document.getElementById('new-table-file').innerHTML = "";
+        document.getElementById('new-table-file').dataset.file = undefined;
+
+        const loader = document.getElementById("ETFs-Pre-loadinganimation");
+        loader.style.display = 'inline-block';
+
+        const selectElement = e.target;
+        const connectionId = selectElement.value;
+        await scan_connection_dir(connectionId);
+
+        loader.style.display = 'none';
+    });
 });
 
-const fillFileContainers = async () => {
-    const loader = document.getElementById("ETFs-Pre-loadinganimation");
+const edit_table = async (tid, args = {}) => {
+    const errors = validateFields({ ...args });
 
-    if (loader.style.display === "inline-block") {
+    document.getElementById("table-errors").innerHTML = "";
+    if(errors){
+        errors.forEach(error => {
+            document.getElementById("table-errors").innerHTML += `<p style="color: red;"> ${error} </p>`;
+        });
         return;
     }
+    document.getElementById("table-errors").innerHTML = "";
 
-    loader.style.display = 'inline-block';
-    const containers = document.querySelectorAll(".file-container");
-    for (const element of containers) {
-        const connectionId = element.dataset.connection;
-        await scan_connection_dir(connectionId);
-    }
-    loader.style.display = 'none';
-}
-
-const edit_table = async (tid, args = {}) => {
     document.getElementById("ETFs-Pre-loadinganimation").style.display = 'inline-block';
 
     fetch(baseURL + "/table/update", {
@@ -147,6 +162,17 @@ const edit_table = async (tid, args = {}) => {
 }
 
 const add_new_table = async (name, filename, connectionId, order) => {
+    const error = validateFields({name, filename, connectionId, order});
+
+    document.getElementById("table-errors").innerHTML = "";
+    if(error){
+        error.forEach(error => {
+            document.getElementById("table-errors").innerHTML += `<p style="color: red;"> ${error} </p>`;
+        });
+        return;
+    }
+    document.getElementById("table-errors").innerHTML = "";
+
     document.getElementById("ETFs-Pre-loadinganimation").style.display = 'inline-block';
 
     fetch(baseURL + "/table/create", {
@@ -193,10 +219,7 @@ const delete_table = async (id) => {
 }
 
 const scan_connection_dir = async (connectionId) => {
-    const container = document.getElementById('ETFs-Pre-scaned-file-list-dirc-' + connectionId);
-    if (container.hasChildNodes()) {
-        return;
-    }
+    const container = document.getElementById('ETFs-Pre-scaned-file-list-dirc');
 
     await fetch(baseURL + "/list/dir", {
         method: 'POST',
@@ -218,6 +241,31 @@ const scan_connection_dir = async (connectionId) => {
     });
 }
 
+const validateFields = ({ name, filename, connectionId, order }) => {
+    const errors = [];
+
+    // Validate name (should not be empty)
+    if (!name || typeof name !== 'string') {
+        errors.push('Name is required and must be a string.');
+    }
+
+    // Validate filename (should be a non-empty string and contain an extension like ".txt")
+    if (!filename || typeof filename !== 'string' || !/\.\w+$/.test(filename)) {
+        errors.push('Filename is required and must be a valid file with an extension (e.g., .csv).');
+    }
+
+    // Validate connectionId (should be a non-empty string)
+    if (!connectionId || typeof connectionId !== 'string') {
+        errors.push('Connection ID is required and must be a string.');
+    }
+
+    // Validate order (should be a number greater than or equal to 1)
+    if (!connectionId || typeof order !== 'string' || parseInt(order) <= 0) {
+        errors.push('Order must be a number greater than or equal to 1.');
+    }
+
+    return errors.length ? errors : null;
+};
 
 const closeForm = () => {
     Array.from(document.getElementsByClassName('ETF-Pre-general-popup-underlay')).forEach(function (element) {

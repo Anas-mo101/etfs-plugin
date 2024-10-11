@@ -32,8 +32,7 @@ $tables = $dynamic->list_tables();
                     data-order="<?= $table["Torder"] ?>"
                     data-filename="<?= $table["FileName"] ?>"
                     data-name="<?= $table["Name"] ?>"
-                    style="border: solid 2px #e6e6e6; padding: 0px 20px;"
-                >
+                    style="border: solid 2px #e6e6e6; padding: 0px 20px;">
                     <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
                         <h3 style="margin: 10px 0 30px 0;">Table Name: <?= $table["Name"] ?> </h3>
                         <div style="display: flex; gap: 10px;">
@@ -98,49 +97,57 @@ $tables = $dynamic->list_tables();
                         }
                     </script>
                     <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="ETF-Pre-popup-table-inner-container">
-                        <label for="ETF-Pre-new-fund-field-doc"><b> Table Name </b></label>
+                        <label for="ETF-Pre-new-fund-field-doc"><b> Table Name* </b></label>
                         <input type="text" id="new-table-name" style="width: 100%;" />
                     </div>
                     <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="ETF-Pre-popup-table-inner-container">
-                        <label for="ETF-Pre-new-fund-field-doc"><b> Table Order </b></label>
+                        <label for="ETF-Pre-new-fund-field-doc"><b> Table Order* </b></label>
                         <select style="width: 100%; max-width: unset;" id="new-table-order">
                             <option> select order </option>
                             <?php
-                                for ($i=1; $i <= count($tables) + 1; $i++) { 
-                                    echo "<option value='" . $i . "'>" . $i . "</option>";
+                            for ($i = 1; $i <= count($tables) + 1; $i++) {
+                                echo "<option value='" . $i . "'>" . $i . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="ETF-Pre-popup-table-inner-container">
+                        <label for="ETF-Pre-new-fund-field-doc"><b> Table Connection* </b></label>
+                        <select style="width: 100%; max-width: unset;" id="new-table-connection">
+                            <option> select sftp connection </option>
+                            <?php
+                                $connections_services = new \ConnectionServices();
+                                $connections = $connections_services->list_connections();
+                                for ($i = 0; $i < count($connections); $i++) {
+                                    $connection = $connections[$i];
+                                    echo "<option value='" . $connection["id"] . "'>" . $connection["Name"] . "</option>";
                                 }
                             ?>
                         </select>
                     </div>
                     <div style="display: flex; flex-direction: column; justify-content: flex-start; margin: auto;" id="ETF-Pre-popup-table-inner-container">
-                        <label for="ETF-Pre-new-fund-field-doc"><b> File Name (drag n drop file required file from list below) </b></label>
+                        <label for="ETF-Pre-new-fund-field-doc"><b> File Name* (drag n drop file required file from list below) </b></label>
                         <div id="new-table-file" style="width: 100%;" class="drop-file-name" ondrop="drop_handler(event)" ondragover="event.preventDefault()"> </div>
                     </div>
-                    <div class="ETF-Pre-connections-container" style="display: grid; grid-template-columns: 50% 50%;">
-                        <?php
-                        $connections_services = new \ConnectionServices();
-                        $connections = $connections_services->list_connections();
-                        for ($i = 0; $i < count($connections); $i++) {
-                            $sftp_config = $connections[$i];
-                        ?>
-                            <div class="ETF-Pre-connection-container" style="margin-right: 0px; padding: 20px;">
-                                <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
-                                    <h3 style="margin: 10px 0px;">SFTP: <?= $sftp_config["Name"] ?> </h3>
-                                </div>
-                                <div id="ETF-Pre-table-collapse-<?= $sftp_config["id"] ?>" class="ETF-Pre-table-collapse">
-                                    <div id="ETFs-Pre-scaned-file-list-dir-<?= $sftp_config["id"] ?>" class="folder-wrap level-current scrolling">
-                                        <ul>
-                                            <li class="root"> Downloads/ </li>
-                                            <div class="file-container" data-connection="<?= $sftp_config["id"] ?>" id="ETFs-Pre-scaned-file-list-dirc-<?= $sftp_config["id"] ?>"></div>
-                                        </ul>
-                                    </div>
+                    <div class="ETF-Pre-connections-container">
+                        <div class="ETF-Pre-connection-container" style="margin-right: 0px; padding: 20px;">
+                            <div id="ETF-Pre-table-collapse" class="ETF-Pre-table-collapse">
+                                <div id="ETFs-Pre-scaned-file-list-dir" class="folder-wrap level-current scrolling">
+                                    <ul>
+                                        <li class="root"> Downloads/ </li>
+                                        <div class="file-container" data-connection id="ETFs-Pre-scaned-file-list-dirc"></div>
+                                    </ul>
                                 </div>
                             </div>
-                        <?php } ?>
+                        </div>
                     </div>
                 </div>
 
-                <div id="ETF-Pre-popup-bottombar-container">
+                <div id="ETF-Pre-popup-bottombar-container" style="flex-direction: row; justify-content: space-between;">
+                    <div id="table-errors">
+
+                    </div>
+
                     <button class="button button-primary button-large" type="buttton" id="table-submit-button"> Confirm </button>
                     <button class="button button-primary button-large" style="display: none;" type="buttton" id="table-update-button"> Update </button>
                 </div>
