@@ -35,7 +35,6 @@ class ETFShortCodes
         return ob_get_clean();
     }
 
-    // call shortcode [render-top-holders-table] to render product table
     function render_top_holders()
     {
         ob_start();

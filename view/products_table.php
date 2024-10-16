@@ -144,10 +144,7 @@ $tables = $dynamic->list_tables();
                 </div>
 
                 <div id="ETF-Pre-popup-bottombar-container" style="flex-direction: row; justify-content: space-between;">
-                    <div id="table-errors">
-
-                    </div>
-
+                    <div id="table-errors"></div>
                     <button class="button button-primary button-large" type="buttton" id="table-submit-button"> Confirm </button>
                     <button class="button button-primary button-large" style="display: none;" type="buttton" id="table-update-button"> Update </button>
                 </div>
