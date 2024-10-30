@@ -1,5 +1,9 @@
-<?php ?>
-<div id="table-pd" class="table-responsive">
+<?php
+
+function default_product_page(){
+    ?> 
+    <h1 style="margin-top: 20px;margin-bottom: 0px;"> Products Table </h1>
+    <div id="table-pd" class="table-responsive">
     <table class="table-ts" style="border-collapse: separate; border-spacing: 0 17px; margin: 0;  overflow-x: auto;">
         <tr>
             <th style="text-align: center; border:none;" class="dynamic-elementor-font-style-body-bold">Ticker</th>
@@ -43,36 +47,42 @@
             </tr>
         <?php } ?>
     </table>
-</div> <?php
+    </div> <?php
+    $option_key = "structured_outcome_etfs_product_table";
+    if ($download_url = get_option($option_key)) {  ?>
+        <style>
+            <?php require_once plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/css/button.css'; ?>
+        </style>
 
-$option_key = "structured_outcome_etfs_product_table";
-if ($download_url = get_option($option_key)) {  ?>
-    <style>
-        <?php require_once plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/css/button.css'; ?>
-    </style>
-
-    <div id="download_button_DIV_1">
-        <a href="<?= $download_url ?>" id="download_button_A_2">
-            <span id="download_button_SPAN_3">
-                <span id="download_button_SPAN_4">
-                    <svg id="download_button_svg_5">
-                        <path id="download_button_path_6"> </path>
-                        <rect id="download_button_rect_7"> </rect>
-                        <path id="download_button_path_8"> </path>
-                        <rect id="download_button_rect_9"> </rect>
-                    </svg>
+        <div id="download_button_DIV_1">
+            <a href="<?= $download_url ?>" id="download_button_A_2">
+                <span id="download_button_SPAN_3">
+                    <span id="download_button_SPAN_4">
+                        <svg id="download_button_svg_5">
+                            <path id="download_button_path_6"> </path>
+                            <rect id="download_button_rect_7"> </rect>
+                            <path id="download_button_path_8"> </path>
+                            <rect id="download_button_rect_9"> </rect>
+                        </svg>
+                    </span>
+                    <span id="download_button_SPAN_10">DOWNLOAD PRODUCTS</span>
                 </span>
-                <span id="download_button_SPAN_10">DOWNLOAD PRODUCTS</span>
-            </span>
-        </a>
-    </div>
-<?php }
+            </a>
+        </div>
+    <?php }
+}
+
 
 $dynamic = new DynamicProductsTable();
 $tables = $dynamic->list_tables();
 
 for ($i = 0; $i < count($tables); $i++) {
     $table = $tables[$i];
+
+    if ($table["Name"] === "default") {
+        default_product_page();
+        continue;
+    }
 
     if (!isset($table["TableData"]) || $table["TableData"] === null || empty($table["TableData"])) {
         $table["TableData"] = "[]";

@@ -618,8 +618,10 @@ class ETFRestController extends WP_REST_Controller
                 $data,
             );
 
-            $sftp = new \ETFsSFTP\SFTP();
-            $sftp->auto_cycle( (int) $body["connectionId"] );
+            if($body["name"] !== "default"){
+                $sftp = new \ETFsSFTP\SFTP();
+                $sftp->auto_cycle( (int) $body["connectionId"] );
+            }
 
             return rest_ensure_response(['create' => 'success']);
         } catch (\Throwable $th) {

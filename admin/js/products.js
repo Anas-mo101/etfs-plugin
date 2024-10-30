@@ -59,21 +59,28 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = event.target.dataset.table;
             const section = document.getElementById(id + "-section");
 
+            let isDefault = false;
             const name = section.dataset.name;
-            const filename = section.dataset.filename;
-            const connectionId = section.dataset.connection;
+            if (name === "default") {
+                isDefault = true;
+            }
+
+            const filename = isDefault ? "default" : section.dataset.filename;
+            const connectionId = isDefault ? 0 : section.dataset.connection;
             const order = section.dataset.order;
 
             const popup = document.getElementById("ETF-Pre-popup-underlay-new-table-field");
             popup.style.display = "flex";
 
-            document.getElementById('new-table-name').value = name;
             document.getElementById('new-table-order').value = order;
-            document.getElementById('new-table-connection').value = connectionId;
+
+            const name_feild = document.getElementById('new-table-name');
+            name_feild.value = name;
+
+            const connection_feild = document.getElementById('new-table-connection');
+            connection_feild.value = connectionId;
 
             const file = document.getElementById('new-table-file');
-            file.dataset.file = filename;
-            file.innerHTML = filename;
 
             document.getElementById('table-submit-button').style.display = "none";
             const edit = document.getElementById('table-update-button');
@@ -81,10 +88,26 @@ document.addEventListener("DOMContentLoaded", () => {
             edit.dataset.table = id;
 
             document.getElementById('ETFs-Pre-scaned-file-list-dirc').innerHTML = "";
-            const loader = document.getElementById("ETFs-Pre-loadinganimation");
-            loader.style.display = 'inline-block';
-            await scan_connection_dir(connectionId);
-            loader.style.display = 'none';
+
+            if (isDefault) {
+                name_feild.disabled = true;
+                connection_feild.disabled = true;
+                file.innerHTML = "default";
+                file.dataset.file = "default.csv";
+                file.style.display = "none";
+            } else {
+                name_feild.disabled = false;
+                connection_feild.disabled = false;
+
+                file.dataset.file = filename;
+                file.innerHTML = filename;
+                file.style.display = "block";
+
+                const loader = document.getElementById("ETFs-Pre-loadinganimation");
+                loader.style.display = 'inline-block';
+                await scan_connection_dir(connectionId);
+                loader.style.display = 'none';
+            }
         })
     });
 
@@ -100,8 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         edit_table(id, {
             name: newName,
-            filename: newFilename,
-            connectionId: newConnectionId,
+            filename: newName === "default" ? "default.csv" : newFilename,
+            connectionId: newName === "default" ? "0" : newConnectionId,
             order: newOrder
         });
     });
@@ -126,7 +149,7 @@ const edit_table = async (tid, args = {}) => {
     const errors = validateFields({ ...args });
 
     document.getElementById("table-errors").innerHTML = "";
-    if(errors){
+    if (errors) {
         errors.forEach(error => {
             document.getElementById("table-errors").innerHTML += `<p style="color: red;"> ${error} </p>`;
         });
@@ -162,10 +185,10 @@ const edit_table = async (tid, args = {}) => {
 }
 
 const add_new_table = async (name, filename, connectionId, order) => {
-    const error = validateFields({name, filename, connectionId, order});
+    const error = validateFields({ name, filename, connectionId, order });
 
     document.getElementById("table-errors").innerHTML = "";
-    if(error){
+    if (error) {
         error.forEach(error => {
             document.getElementById("table-errors").innerHTML += `<p style="color: red;"> ${error} </p>`;
         });

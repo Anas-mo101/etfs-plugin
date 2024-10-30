@@ -16,6 +16,11 @@ $tables = $dynamic->list_tables();
             for ($i = 0; $i < count($tables); $i++) {
                 $table = $tables[$i];
 
+                $is_def = false;
+                if ($table["Name"] === "default") {
+                    $is_def = true;
+                }
+
                 if (
                     !isset($table["TableData"]) ||
                     $table["TableData"] === null ||
@@ -32,11 +37,20 @@ $tables = $dynamic->list_tables();
                     data-order="<?= $table["Torder"] ?>"
                     data-filename="<?= $table["FileName"] ?>"
                     data-name="<?= $table["Name"] ?>"
-                    style="border: solid 2px #e6e6e6; padding: 0px 20px;">
+                    style="border: solid 2px #e6e6e6; padding: 0px 20px;"
+                >
                     <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 10px 0 30px 0;">Table Name: <?= $table["Name"] ?> </h3>
+                        <h3 style="margin: 10px 0 30px 0;">Table Name: <?= $is_def ? "Products Table" : $table["Name"] ?> </h3>
                         <div style="display: flex; gap: 10px;">
-                            <button data-table="<?= $table["id"] ?>" class="button button-primary button-large delete-table" style="height: 30px"> Delete Table </button>
+                            <?php
+                                if(!$is_def){
+                                    ?>
+                                        <button data-table="<?= $table["id"] ?>" class="button button-primary button-large delete-table" style="height: 30px"> Delete Table </button>
+                                    <?php
+                                }
+                            ?>
+
+                            
                             <button data-table="<?= $table["id"] ?>" class="button button-primary button-large edit-table" style="height: 30px"> Edit Table </button>
                             <button data-table="<?= $table["id"] ?>" class="button button-primary button-large show-table" style="height: 30px"> Toggle </button>
                         </div>
