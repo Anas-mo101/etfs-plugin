@@ -40,7 +40,7 @@ $tables = $dynamic->list_tables();
                     style="border: solid 2px #e6e6e6; padding: 0px 20px;"
                 >
                     <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 10px 0 30px 0;">Table Name: <?= $is_def ? "Products Table" : $table["Name"] ?> </h3>
+                        <h3 style="margin: 10px 0 30px 0;">Table Name: <?= $is_def ? "Structured Outcome" : $table["Name"] ?> </h3>
                         <div style="display: flex; gap: 10px;">
                             <?php
                                 if(!$is_def){

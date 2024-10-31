@@ -2,7 +2,8 @@
 
 function default_product_page(){
     ?> 
-    <h1 style="margin-top: 20px;margin-bottom: 0px;"> Products Table </h1>
+    <p style="margin-top: 20px;margin-bottom: 0px;"> Data as of <?= get_post_meta(custom_get_page_by_title('JANZ', OBJECT, 'etfs')->ID, 'ETF-Pre-rate-date-data', true) ?> </p>
+    <h1 style="margin-top: 5px;margin-bottom: 0px;"> Structured Outcome </h1>
     <div id="table-pd" class="table-responsive">
     <table class="table-ts" style="border-collapse: separate; border-spacing: 0 17px; margin: 0;  overflow-x: auto;">
         <tr>
