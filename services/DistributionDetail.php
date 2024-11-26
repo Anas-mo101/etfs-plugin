@@ -23,9 +23,8 @@ class DisturbutionDetail
 
         $current_data_array = json_decode($current_data, true);
 
-        $current_data_array[] = array('ex-date' => '', 'rec-date' => '', 'pay-date' => '', 'amount' => '', 'varcol' => '');
+        $current_data_array[] = ['ex-date' => '', 'rec-date' => '', 'pay-date' => '', 'amount' => '', 'varcol' => ''];
         $count_data = count($current_data_array);
-
 
         $new_data_array = json_encode($current_data_array);
         update_post_meta($post_to_update->ID, $this->prefix . $this->meta_key, $new_data_array);
@@ -69,7 +68,7 @@ class DisturbutionDetail
 
         $varcols = ["oi" => "Ordinary Income", "stcg" => "Short-Term Capital Gains", "ltcg" => "Long-Term Capital Gains", "" => "-"]
 
-?> <style>
+        ?> <style>
             .table-horizontal-row-null {
                 background-color: white;
                 padding: 0 15px;
@@ -109,29 +108,13 @@ class DisturbutionDetail
         <?php if (is_array($current_data_array) && count($current_data_array) >= 5) { ?>
             <style>
                 <?php require_once plugin_dir_path(dirname(__FILE__)) . 'admin/css/button.css'; ?>
-                
                 .loadmore {
                     margin: 20px 0;
                     display: block;
-                    max-width: 200px;
                 }
 
                 .loadmore div {
                     display: flex;
-                    flex-direction: row-reverse;
-                    min-width: 200px;
-                }
-
-                .loadmore div svg path{
-                    fill: rgb(99, 213, 211);
-                }
-
-                .loadmore:hover > div > p{
-                    color: #0D031E !important;
-                }
-
-                .loadmore:hover > div > svg > path{
-                    fill: #0D031E  !important;
                 }
 
                 .loadmore-mobile {
@@ -139,9 +122,22 @@ class DisturbutionDetail
                     display: none;
                 }
 
-                .loadmoretext{ 
+                .loadmoretext {
                     width: auto !important;
                     margin-top: 5px;
+                    color: #54595F;
+                }
+
+                .prevDist:hover > p, .prevDist:hover > svg > path {
+                    cursor: pointer;
+                    color: #63d5d3 !important;
+                    fill: #63d5d3 !important;
+                }
+
+                .nextDist:hover > p, .nextDist:hover > svg > path {
+                    cursor: pointer;
+                    color: #63d5d3 !important;
+                    fill: #63d5d3 !important;
                 }
 
                 @media only screen and (min-width: 768px) {
@@ -165,15 +161,28 @@ class DisturbutionDetail
                 }
             </style>
 
-            <a id="loadmore-button" class="loadmore loadmore-mobile">
-                <div>
-                    <p id="download_button_SPAN_10" class="loadmoretext"> Show All </p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+            <div class="loadmore loadmore-mobile">
+                <div class="prevDist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="transform: rotate(85deg)">
+                        <path d="M9.501 13.165a1.417 1.417 0 0 0-2 0 1.417 1.417 0 0 0 0 2l8.5 8.5a1.417 1.417 0 0 0 1.959.043l8.5-7.792a1.417 1.417 0 0 0 .087-2 1.417 1.417 0 0 0-2-.087l-7.5 6.875Z"></path>
+                    </svg>
+                    <p style="margin-top: 3px; font-weight: bold;"> PREVIOUS </p>
+                </div>
+                <div style="margin: 0 50px;">
+                    <p class="loadmoretext download_button_SPAN_10"> 1/1 </p>    
+                </div>
+                <div class="nextDist">
+                    <p style="margin-top: 3px; font-weight: bold;"> NEXT </p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="transform: rotate(270deg)">
                         <path d="M9.501 13.165a1.417 1.417 0 0 0-2 0 1.417 1.417 0 0 0 0 2l8.5 8.5a1.417 1.417 0 0 0 1.959.043l8.5-7.792a1.417 1.417 0 0 0 .087-2 1.417 1.417 0 0 0-2-.087l-7.5 6.875Z"></path>
                     </svg>
                 </div>
-            </a>
-        <?php } ?>
+            </div>
+        <?php }
+
+        $url = get_post_meta(get_the_ID(), "ETF-Pre-premium-discount-url", true);
+
+        ?>
 
         <section class="elementor-section elementor-inner-section elementor-element elementor-element-619dcf3 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="619dcf3" data-element_type="section">
             <div class="elementor-container elementor-column-gap-default">
@@ -182,7 +191,7 @@ class DisturbutionDetail
                         <div class="elementor-element elementor-element-6775a07 elementor-align-left bt-download elementor-tablet-align-center elementor-widget elementor-widget-button" data-id="6775a07" data-element_type="widget" data-widget_type="button.default">
                             <div class="elementor-widget-container">
                                 <div class="elementor-button-wrapper" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a class="elementor-button elementor-button-link elementor-size-xs" href="https://content.true-shares.com/hubfs/Fund%20Documents/DIVZ/DIVZ%20Premium%20Discount.pdf" target="_blank" download="Premium Discount Information">
+                                    <a class="elementor-button elementor-button-link elementor-size-xs" href="<?= $url ?>" target="_blank" download="Premium Discount Information">
                                         <span class="elementor-button-content-wrapper">
                                             <span class="elementor-button-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
@@ -195,14 +204,23 @@ class DisturbutionDetail
                                         </span>
                                     </a>
 
-                                    <a id="loadmore-button" class="loadmore loadmore-nonmobile">
-                                        <div>
-                                            <p id="download_button_SPAN_10" class="loadmoretext"> Show All </p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+                                    <div class="loadmore loadmore-nonmobile">
+                                        <div class="prevDist">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="transform: rotate(85deg)">
+                                                <path d="M9.501 13.165a1.417 1.417 0 0 0-2 0 1.417 1.417 0 0 0 0 2l8.5 8.5a1.417 1.417 0 0 0 1.959.043l8.5-7.792a1.417 1.417 0 0 0 .087-2 1.417 1.417 0 0 0-2-.087l-7.5 6.875Z"></path>
+                                            </svg>
+                                            <p style="margin-top: 3px; font-weight: bold;"> PREVIOUS </p>
+                                        </div>
+                                        <div style="margin: 0 50px;">
+                                            <p class="loadmoretext download_button_SPAN_10"> 1/1 </p>    
+                                        </div>
+                                        <div class="nextDist">
+                                            <p style="margin-top: 3px; font-weight: bold;"> NEXT </p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="transform: rotate(270deg)">
                                                 <path d="M9.501 13.165a1.417 1.417 0 0 0-2 0 1.417 1.417 0 0 0 0 2l8.5 8.5a1.417 1.417 0 0 0 1.959.043l8.5-7.792a1.417 1.417 0 0 0 .087-2 1.417 1.417 0 0 0-2-.087l-7.5 6.875Z"></path>
                                             </svg>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -214,10 +232,15 @@ class DisturbutionDetail
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const data = <?php echo json_encode($current_data_array); ?>;
-                let showAllToggled = false;
+
+                data.sort((a, b) => new Date(b["ex-date"]) - new Date(a["ex-date"]));
+
+                const rowsPerPage = 5;
+                const totalPages = Math.ceil(data.length / rowsPerPage);
+                
                 let currentPage = 1;
 
-                function renderTable(page = 1, rowsPerPage = 5) {
+                function renderTable(page = 1) {
                     const start = (page - 1) * rowsPerPage;
                     const end = start + rowsPerPage;
                     const paginatedData = data.slice(start, end);
@@ -245,49 +268,34 @@ class DisturbutionDetail
                             <td class="table-ts-in pb dynamic-elementor-font-style-body" style="text-align: center;">${varcol in <?= json_encode($varcols) ?> ? <?= json_encode($varcols) ?>[varcol] : '-'}</td>
                         </tr>`;
                     });
+
+                    document.querySelectorAll(".loadmoretext").forEach((text) => {
+                        text.innerHTML = `${currentPage}/${totalPages}`;
+                    });
                 }
 
                 function renderPagination() {
-                    const buttons = document.querySelectorAll('.loadmore');
+                    const nextButtons = document.querySelectorAll('.nextDist');
+                    const prevButtons = document.querySelectorAll('.prevDist');
 
-                    if (buttons.length <= 0) {
+                    if (!nextButtons[0] && !prevButtons[0]) {
                         return
                     }
 
-                    buttons.forEach((loadmore) => {
+                    nextButtons.forEach((loadmore) => {
                         loadmore.addEventListener('click', function() {
-                            if (showAllToggled) {
-                                showAllToggled = false;
-                                renderTable(1)
+                            if(currentPage < totalPages){
+                                currentPage++;
+                                renderTable(currentPage);
+                            }
+                        });
+                    });
 
-                                document.querySelectorAll('.loadmoretext').forEach((loadmoreText) => {
-                                    loadmoreText.innerHTML = "Show All";
-                                    loadmoreText.style.color = "#63d5d3";
-                                });
-
-                                document.querySelectorAll('.loadmore div svg').forEach((icon) => {
-                                    icon.style.transform = "rotate(0deg)";
-                                });
-
-                                document.querySelectorAll('.loadmore div svg path').forEach((icon) => {
-                                    icon.style.fill = "#63d5d3";
-                                });
-                            } else {
-                                showAllToggled = true;
-                                renderTable(1, <?= count($current_data_array); ?>);
-
-                                document.querySelectorAll('.loadmoretext').forEach((loadmoreText) => {
-                                    loadmoreText.innerHTML = "Show Less";
-                                    loadmoreText.style.color = "#0D031E";
-                                });
-
-                                document.querySelectorAll('.loadmore div svg').forEach((icon) => {
-                                    icon.style.transform = "rotate(180deg)";
-                                });
-
-                                document.querySelectorAll('.loadmore div svg path').forEach((icon) => {
-                                    icon.style.fill = "#0D031E";
-                                });
+                    prevButtons.forEach((loadmore) => {
+                        loadmore.addEventListener('click', function() {
+                            if(currentPage > 1){
+                                currentPage--;
+                                renderTable(currentPage);
                             }
                         });
                     });
@@ -296,8 +304,8 @@ class DisturbutionDetail
                 renderTable(currentPage);
                 renderPagination();
             });
-        </script> <?php
+            </script> <?php
 
-                    return ob_get_clean();
-                }
-            }
+        return ob_get_clean();
+    }
+}

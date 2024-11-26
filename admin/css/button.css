@@ -408,7 +408,7 @@
     outline: rgb(99, 213, 211) none 0px;
 }/*#download_button_rect_9*/
 
-#download_button_SPAN_10 {
+.download_button_SPAN_10 {
     block-size: 24px;
     border-block-end-color: rgb(99, 213, 211);
     border-block-start-color: rgb(99, 213, 211);
