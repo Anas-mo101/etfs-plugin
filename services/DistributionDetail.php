@@ -88,6 +88,10 @@ class DisturbutionDetail
                 font-family: "Avenir Next", sans-serif;
                 margin: 20px 0;
             }
+
+            table thead:first-child tr:first-child th {
+                border-block-start: none;
+            }
         </style>
 
         <table class="table-ts table-10" style="border-collapse: separate; display: table; overflow-x:auto; border-spacing: 0 17px; margin: 0;">

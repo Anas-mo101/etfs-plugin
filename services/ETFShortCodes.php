@@ -23,7 +23,7 @@ class ETFShortCodes
     function render_product_page()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/product_page.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/product_page.php');
         return ob_get_clean();
     }
 
@@ -38,35 +38,35 @@ class ETFShortCodes
     function render_top_holders()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/topten.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/topten.php');
         return ob_get_clean();
     }
 
     function render_subadvisor()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/subadvisors.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/subadvisors.php');
         return ob_get_clean();
     }
 
     function render_toptenmobile()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/topten_mobile.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/topten_mobile.php');
         return ob_get_clean();
     }
 
     function render_graph()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/nav_graph.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/nav_graph.php');
         return ob_get_clean();
     }
 
     function divs_charts_values()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/divz_charts.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/divz_charts.php');
         return ob_get_clean();
     }
 
@@ -122,7 +122,7 @@ class ETFShortCodes
     function render_frontpage_etfs()
     {
         ob_start();
-        include(WP_PLUGIN_DIR . '/etfs/view/shortcodes/boxes.php');
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/boxes.php');
         return ob_get_clean();
     }
 }

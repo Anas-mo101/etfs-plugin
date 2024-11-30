@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           2.0.0
+ * Version:           2.0.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
@@ -237,9 +237,6 @@ class ETFPlugin
         if ( wp_next_scheduled ( 'get_sftp_data' )){
             wp_clear_scheduled_hook('get_sftp_data');
         }
-        // $connections_services = new \ConnectionServices();
-        // $connections_services->sftp_remove_all();
-        // $connections_services->sftp_db_drop();
         flush_rewrite_rules();
     }
 }

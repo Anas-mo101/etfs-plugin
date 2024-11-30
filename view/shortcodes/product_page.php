@@ -57,16 +57,9 @@ function default_product_page(){
 
         <div id="download_button_DIV_1">
             <a href="<?= $download_url ?>" id="download_button_A_2">
-                <span id="download_button_SPAN_3">
-                    <span id="download_button_SPAN_4">
-                        <svg id="download_button_svg_5">
-                            <path id="download_button_path_6"> </path>
-                            <rect id="download_button_rect_7"> </rect>
-                            <path id="download_button_path_8"> </path>
-                            <rect id="download_button_rect_9"> </rect>
-                        </svg>
-                    </span>
+                <span id="download_button_SPAN_3" style="flex-direction:row-reverse">
                     <span class="download_button_SPAN_10">DOWNLOAD PRODUCTS</span>
+                    <span class="bt-download-prospectus"> </span>
                 </span>
             </a>
         </div>

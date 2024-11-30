@@ -428,7 +428,10 @@ function save_manually_edited_data(){
 
         document.getElementById('ETF-Pre-preformance-section-desc-data').value = document.getElementById('ETF-Pre-preformance-section-desc').value.trim();
 
-        if(document.getElementById('in-category-21').checked === false){
+        const devCategory = document.getElementById('in-category-21-2');
+        const prodCategory = document.getElementById('in-category-21');
+        
+        if((prodCategory ?? devCategory).checked === false){
             // --> vars
             document.getElementById('ETF-Pre-starting-nav-data').value = document.getElementById('ETF-Pre-starting-nav').value.trim();
             document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById('ETF-Pre-starting-nav').value.trim();
