@@ -43,7 +43,7 @@ function default_product_page(){
                 <td class="table-ts-in pb"> <?php echo get_post_meta($post_to_diplay->ID, 'ETF-Pre-floor-of-buffer-data', true); ?> </td>
                 <td class="table-ts-in pb"> <?php echo ($daysleft > 1) ? $daysleft . ' days' : $daysleft . ' day'; ?> </td>
                 <td class="text-center table-ts-in pb p-link">
-                    <a href="<?php echo get_post_meta($post_to_diplay->ID, 'ETF-Pre-pdf-prospectus', true); ?>" class="bt-download-prospectus" download>
+                    <a href="<?php echo get_post_meta($post_to_diplay->ID, 'ETF-Pre-prospectus', true); ?>" class="bt-download-prospectus" download>
                 </td>
             </tr>
         <?php } ?>
