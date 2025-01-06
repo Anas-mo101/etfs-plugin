@@ -223,7 +223,16 @@ function write_xlsx_file($in, $post_id, $selected_etfs, $etf_name = null)
 
     if (!empty($upload_dir['basedir'])) {
 
-        $file_name = ($etf_name ?? $selected_etfs) . '_USBanksHoldings.xlsx';
+        $formatedName = '';
+        $cid = get_post_meta( get_the_ID(),"ETF-Pre-connection-id", true );
+        if($cid){
+            $connections_services = new \ConnectionServices();
+            $connection = $connections_services->get_config_db( (int) $cid );
+            $formatedName = preg_replace('/\s+/', '_', (string) $connection["Name"]);
+            $formatedName = strtoupper($formatedName);
+        }
+
+        $file_name = ($etf_name ?? $selected_etfs) . '_' . $formatedName . 'Holdings.xlsx';
         $file_path = $upload_dir['basedir'] . '/' . $file_name;
         $file_url = $upload_dir['baseurl'] . '/' . $file_name;
 
