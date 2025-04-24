@@ -24,6 +24,7 @@ require_once 'services/FundDocuments.php';
 require_once 'services/DistributionDetail.php';
 require_once 'services/ETFShortCodes.php';
 require_once 'services/CustomFeilds.php';
+require_once 'services/PremiumDiscount.php';
 
 require_once 'libs/XSLMParser.php';
 require_once 'libs/SimpleXLSX.php';

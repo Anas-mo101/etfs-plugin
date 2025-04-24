@@ -1,5 +1,10 @@
 <?php
 
+function get_prefix(){
+    $prefix = "ETF-Pre-";
+    return $prefix;
+}
+
 function get_etfs_full_pre($etf_name)
 {
     switch ($etf_name) {

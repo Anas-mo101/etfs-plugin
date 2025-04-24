@@ -122,6 +122,77 @@ class ETFRestController extends WP_REST_Controller
             'callback' => array($this, 'update_dynamic_table'),
             'permission_callback' => '__return_true'
         ));
+
+        register_rest_route($this->base_route, '/premium/historical', array(
+            'methods'  => 'POST',
+            'callback' => array($this, 'process_premium_historical'),
+            'permission_callback' => '__return_true'
+        ));
+
+        register_rest_route($this->base_route, '/premium/list', array(
+            'methods'  => 'POST',
+            'callback' => array($this, 'get_premium_historical'),
+            'permission_callback' => '__return_true'
+        ));
+
+        register_rest_route($this->base_route, '/premium/sync', array(
+            'methods'  => 'GET',
+            'callback' => array($this, 'sync_premium_count'),
+            'permission_callback' => '__return_true'
+        ));
+    }
+
+    public function process_premium_historical(WP_REST_Request $request)
+    {
+        try {
+            $body = json_decode($request->get_body(), true);
+
+            $pd = new \PremiumDiscount();
+            $response = $pd->proccess_multiple_historical($body);
+            
+            return rest_ensure_response($response);
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response(null, 400);
+        }
+    }
+
+    public function sync_premium_count(WP_REST_Request $request)
+    {
+        try {
+            $pd = new \PremiumDiscount();
+            $pd->sync_count();
+            
+            return rest_ensure_response([
+                "status" => "success"
+            ]);
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response($th->getMessage(), 400);
+        }
+    }
+
+    public function get_premium_historical(WP_REST_Request $request)
+    {
+        try {
+            $body = json_decode($request->get_body(), true);
+
+            if (!isset($body["fund"])) {
+                return new \WP_REST_Response(array("status" => "no fund provided"), 400);
+            }
+
+            $post_to_update = custom_get_page_by_title($body["fund"], OBJECT, 'etfs');
+            if (!$post_to_update){
+                return new \WP_REST_Response(array("status" => "no fund found"), 400);
+            }
+
+            $id = $post_to_update->ID; 
+
+            $pd = new \PremiumDiscount();
+            $response = $pd->list_entries($id);
+            
+            return rest_ensure_response($response);
+        } catch (\Throwable $th) {
+            return new \WP_REST_Response(null, 400);
+        }
     }
 
     public function add_fund_doc(WP_REST_Request $request)

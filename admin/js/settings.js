@@ -110,6 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
     });
+
+    document.getElementById('pd-submit-button').addEventListener('click', async (e) => {
+        const fileInput = document.getElementById('pd-historical-file'); // File input element
+        const file = fileInput.files[0]; // Get the selected file
+    
+        if (!file) {
+            console.log("No file selected");
+            return;
+        }
+    
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const fileContents = event.target.result; 
+            process_premium_historicals(fileContents);
+        };
+    
+        reader.readAsText(file); // Read the file as text
+    });
+
+    document.getElementById('pd-sync-button').addEventListener('click', async (e) => process_premium_sync());
 });
 
 const delete_connection = async (id) => {
@@ -124,6 +144,40 @@ const delete_connection = async (id) => {
 
     location.reload();
 }
+
+const process_premium_sync = async () => {
+    await fetch(baseURL + "/premium/sync", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        cache: 'no-cache'
+    });
+}
+
+const process_premium_historicals = async (fileString) => {
+    const data = CSVToJSON(fileString);
+
+    await fetch(baseURL + "/premium/historical", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        cache: 'no-cache'
+    });
+}
+
+const CSVToJSON = (data, delimiter = ',') => {
+    const titles = data.slice(0, data.indexOf('\n')).split(delimiter);
+    return data.slice(data.indexOf('\n') + 1).split('\n').map(v => {
+        const values = v.split(delimiter);
+        return titles.reduce(
+            (obj, title, index) => ((obj[title.trim()] = values[index]?.replace("\r", "")), obj),
+            {}
+        );
+    });
+};
 
 const edit_button = () => {
     document.querySelectorAll('.diz-toggle-button').forEach(btn => btn.disabled = false);

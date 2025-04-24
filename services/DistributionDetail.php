@@ -195,16 +195,9 @@ class DisturbutionDetail
                         <div class="elementor-element elementor-element-6775a07 elementor-align-left bt-download elementor-tablet-align-center elementor-widget elementor-widget-button" data-id="6775a07" data-element_type="widget" data-widget_type="button.default">
                             <div class="elementor-widget-container">
                                 <div class="elementor-button-wrapper" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a class="elementor-button elementor-button-link elementor-size-xs" href="<?= $url ?>" target="_blank" download="Premium Discount Information">
+                                    <a class="elementor-button elementor-button-link elementor-size-xs" href="#link-popup">
                                         <span class="elementor-button-content-wrapper">
-                                            <span class="elementor-button-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-                                                    <path d="M0 0h34v34H0Z" fill="none"></path>
-                                                    <rect width="2" height="20" rx="1" transform="translate(16.099 4)" opacity=".3"></rect>
-                                                    <path d="M9.501 13.165a1.417 1.417 0 0 0-2 0 1.417 1.417 0 0 0 0 2l8.5 8.5a1.417 1.417 0 0 0 1.959.043l8.5-7.792a1.417 1.417 0 0 0 .087-2 1.417 1.417 0 0 0-2-.087l-7.5 6.875Z"></path>
-                                                    <rect width="26" height="3" rx="1.5" transform="translate(4.099 27)" opacity=".3"></rect>
-                                                </svg> </span>
-                                            <span class="elementor-button-text">DOWNLOAD PREMIUM DISCOUNT INFORMATION</span>
+                                            <span class="elementor-button-text">PREMIUM DISCOUNT INFORMATION</span>
                                         </span>
                                     </a>
 

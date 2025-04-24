@@ -118,8 +118,6 @@ class CustomFeilds
                         $value = str_replace(array("\r\n", "\r", "\n", "\\r", "\\n", "\\r\\n"), "<br/>", $value);
                     }
                     update_post_meta($post_id, $this->prefix . $customField['name'], $value);
-                } else {
-                    delete_post_meta($post_id, $this->prefix . $customField['name']);
                 }
             }
         }

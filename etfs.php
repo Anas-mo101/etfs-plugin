@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       ETFs
  * Description:       Manages Trueshares ETFs 
- * Version:           2.0.1
+ * Version:           2.0.2
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Anmo
@@ -228,6 +228,9 @@ class ETFPlugin
 
         $dynamic_tables = new \DynamicProductsTable();
         $dynamic_tables->init();
+
+        $pd = new \PremiumDiscount();
+        $pd->init();
 
         flush_rewrite_rules();
     }

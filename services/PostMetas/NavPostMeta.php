@@ -91,6 +91,11 @@ class NavPostMeta implements PostMetaInterface
                 }
             }
 
+            if (isset($data['Premium/Discount Percentage'])) {
+                $pd = new PremiumDiscount();
+                $pd->update_table($post_to_update->ID, (float) $data['Premium/Discount Percentage']);
+            }
+
             return true;
         }
 

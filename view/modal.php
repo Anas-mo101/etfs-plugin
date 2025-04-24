@@ -90,6 +90,61 @@
                     </div>
                 </div>
 
+                <div style="display: contents;" class="template-tables-preview">
+                  <h1 style="font-weight: 600; margin-bottom: 20px;"> Premium/Discount Text </h1>
+                  
+                  <textarea style="padding: 10px; font-size: 16px;" id="<?php echo $this->prefix ?>premium-section-desc" rows="10"> <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-section-desc-data", true )) ?> </textarea>
+                </div>
+
+                <div class="template-tables-preview-" style="width: 800px;">
+                    <h1 style="font-weight: 600;"> Historical Premium/Discount Graph </h1>
+                    <div id="<?php echo $this->prefix ?>graph-premium-container"></div>
+                </div>
+
+                <div class="template-tables-preview" >
+                    <h1 style="font-weight: 600;"> Premium/Discount Table </h1>
+                    <p>  Data as of 
+                        <span id="<?php echo $this->prefix ?>">  
+                            <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-section-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "premium-section-date-data", true ))); ?>" />
+                        </span>
+                    </p>
+                    <div class="table-horizontal-row-grid"> 
+                        <h3>Days traded at</h3>
+                        <h3>Previous Year</h3>
+                        <h3>Q1 Current Year</h3>
+                        <h3>Q2 Current Year</h3>
+                        <h3>Q3 Current Year</h3>
+                        <h3>Q4 Current Year</h3>
+                    </div> 
+                    <div id="<?php echo $this->prefix ?>performance-section-containers"> 
+                        <div class="table-horizontal-row-grid"> 
+                            <p style="margin: 20px 0;"> Premium </p>
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q4-cy", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row-grid"> 
+                            <p style="margin: 20px 0;"> Net Asset Value </p>
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q4-cy", true )) ?> " />
+                        </div>
+                        <div class="table-horizontal-row-grid"> 
+                            <p style="margin: 20px 0;"> Discount </p>
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q4-cy", true )) ?> " />
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="template-tables-preview-" style="width: 800px;">
                     <h1 style="font-weight: 600;"> Historical NAV Graph </h1>
                     <div style='margin-bottom: 10px;'>

@@ -202,19 +202,34 @@ class RorPostMeta implements PostMetaInterface {
     {
         $benchmark = get_post_meta($id, 'ETF-Pre-preformance-benchmark-selection-data', true);
 
-        $benchmark_value = explode(' - ', $benchmark);
+        $benchmark_value = explode(' :: ', $benchmark);
 
         $benchmark_length = count($benchmark_value);
 
-        $null_arr = array('three_months' => "0.0",  'six_months' => "0.0", 'one_year' => "0.0", 'five_year' => "0.0", 'inception' => "0.0");
+        $null_arr = [
+            'three_months' => "0.0",
+            'six_months' => "0.0",
+            'one_year' => "0.0",
+            'five_year' => "0.0",
+            'inception' => "0.0"
+        ];
 
         if (!is_array($benchmark_value) || $benchmark_length > 2 || $benchmark_length <= 0) return $null_arr;
 
         foreach ($meta as $record => $values) {
-            if ($values['Fund Name'] === $benchmark_value[1]) {
+
+            $formated_fund_names = explode(' - ', $values['Fund Name']);
+            $formated_fund_name = trim($formated_fund_names[0]);
+
+            $formated_benchmark_values = explode(' - ', $benchmark_value[1]);
+            $formated__benchmark_value = trim($formated_benchmark_values[0]);
+
+            if ($formated_fund_name === $formated__benchmark_value) {
                 $i = $record;
                 while ($i < count($meta)) {
                     if ($meta[$i]['Fund Name'] === $benchmark_value[0]) {
+                        update_post_meta($id, 'ETF-Pre-preformance-benchmark-label-data', $benchmark_value[0]);
+
                         return [
                             'three_months' => $meta[$i]['3 Month'] == 0 ? "0.0" : $meta[$i]['3 Month'],
                             'six_months' => $meta[$i]['6 Month']  == 0 ? "0.0" : $meta[$i]['6 Month'],
@@ -251,7 +266,7 @@ class RorPostMeta implements PostMetaInterface {
                     }
 
                     if (str_contains($data[$i - $j]['Fund Name'], 'ETF')) {
-                        $benchmarks[] = $data[$i]['Fund Name'] . ' - ' . $data[$i - $j]['Fund Name'];
+                        $benchmarks[] = $data[$i]['Fund Name'] . ' :: ' . $data[$i - $j]['Fund Name'];
                         $loop = false;
                     }
                     $j++;

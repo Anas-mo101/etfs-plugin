@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let preGraphDataSet = document.getElementById('ETF-Pre-graph-json-data')?.value ?? "[]";
     initGragh(preGraphDataSet);
+    initPremiumGragh();
 });
 
 const media_file_selector = (identifier,tog_flag,file_type) => {
@@ -264,6 +265,48 @@ const initGragh = (data) => {
     });
 }
 
+const initPremiumGragh = async () => {
+    const response = await fetch(baseURL + '/premium/list', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            fund: document.getElementById('title').value.trim(),
+        }),
+        cache: 'no-cache'
+    });
+
+    const data = await response.json();
+
+    Highcharts.chart("ETF-Pre-graph-premium-container", {
+        time: { useUTC: false },
+        navigator: { enabled: true },
+        rangeSelector: {
+            buttons: [
+                { count: 1, type: 'month', text: '1m' },
+                { count: 3, type: 'month', text: '3m' },
+                { count: 6, type: 'month', text: '6m' },
+                { count: 1, type: 'year', text: '1y' },
+                { count: 3, type: 'year', text: '3y' },
+                { count: 5, type: 'year', text: '5y' },
+                { type: 'all', text: 'All' }
+            ],
+            inputEnabled: true,
+            selected: 0
+        },
+        title: { text: 'Historical Premium/Discount Change' },
+        subtitle: { text: `As of today` },
+        xAxis: { type: 'datetime', labels: { format: '{value:%b %d, %Y}' } },
+        yAxis: { title: { text: 'Premium/Discount', enabled: true } },
+        series: [{
+            name: 'Premium/Discount',
+            data: data,
+            tooltip: { valueDecimals: 4 }
+        }]
+    });
+}
+
 const toggle_between_gs_and_up = (in_name) => { 
     let tog = document.getElementById(`ETF-Pre-${in_name}-toggle-file-option`).innerHTML.trim();
     if(tog === "Upload file"){
@@ -371,9 +414,10 @@ function format_date_jdy(date) {
 }
 
 function save_manually_edited_data(){
-    document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () => { 
+    document.getElementById("ETF-Pre-popup-submit-button").addEventListener('click', () => {
+        document.getElementById("ETF-Pre-premium-section-desc-data").value = document.getElementById("ETF-Pre-premium-section-desc").value.trim();
+        document.getElementById("ETF-Pre-premium-section-date-data").value = format_date(document.getElementById("ETF-Pre-premium-section-date").value.trim());
 
-        //set data in feilds 
         // --> fund detials
         document.getElementById('ETF-Pre-rate-date-fund-details-data').value = format_date(document.getElementById('ETF-Pre-rate-date-fund-details').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
         document.getElementById("ETF-Pre-inception-date-data").value = format_date( document.getElementById("ETF-Pre-inc-date-previewform").value.trim() ); // convert from yyyy-mm-dd to mm-dd-yyyy
@@ -432,7 +476,6 @@ function save_manually_edited_data(){
         const prodCategory = document.getElementById('in-category-21');
         
         if((prodCategory ?? devCategory).checked === false){
-            // --> vars
             document.getElementById('ETF-Pre-starting-nav-data').value = document.getElementById('ETF-Pre-starting-nav').value.trim();
             document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById('ETF-Pre-starting-nav').value.trim();
             document.getElementById('ETF-Pre-treasury-yeild-data').value = document.getElementById('ETF-Pre-treasury-yeild').value.trim();
@@ -447,36 +490,18 @@ function save_manually_edited_data(){
 
             // --> Outcome Period Values
             document.getElementById('ETF-Pre-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
-            // document.getElementById("ETF-Pre-etf-starting-return-data").value = document.getElementById("ETF-Pre-etf-starting-return").value.trim();
             document.getElementById("ETF-Pre-spx-index-price-data").value = document.getElementById("ETF-Pre-spx-index-price").value.trim();
             document.getElementById("ETF-Pre-downside-buffer-data").value = document.getElementById("ETF-Pre-downside-buffer").value.trim();
             document.getElementById("ETF-Pre-expected-upside-data").value = document.getElementById("ETF-Pre-product-participation-rate").value.trim();
             document.getElementById("ETF-Pre-days-remaining-data").value = document.getElementById("ETF-Pre-days-remaining").value.trim();
 
-
-            // --> Current Outcome Period Values
-            // document.getElementById('ETF-Pre-current-outcome-period-date-data').value = format_date(document.getElementById('ETF-Pre-current-outcome-period-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy
-            // document.getElementById("ETF-Pre-current-etf-return-data").value = document.getElementById("ETF-Pre-current-etf-return").value.trim();
-            // document.getElementById("ETF-Pre-current-spx-return-data").value = document.getElementById("ETF-Pre-current-spx-return").value.trim();
-            // document.getElementById("ETF-Pre-current-remaining-buffer-data").value = document.getElementById("ETF-Pre-current-remaining-buffer").value.trim();
-            // document.getElementById("ETF-Pre-current-downside-buffer-data").value = document.getElementById("ETF-Pre-current-downside-buffer").value.trim();
-            // document.getElementById("ETF-Pre-current-remaining-outcome-data").value = document.getElementById("ETF-Pre-current-remaining-outcome").value.trim();
-            
             document.getElementById("ETF-Pre-preformance-benchmark-label-data").value = document.getElementById("ETF-Pre-preformance-benchmark-selection").innerText.trim();
         }else{
             document.getElementById("ETF-Pre-preformance-benchmark-selection-data").value = document.getElementById("ETF-Pre-preformance-benchmark-selection").value;
-
             const benchmark = document.getElementById("ETF-Pre-preformance-benchmark-selection").value;
-            const benchmark_label = benchmark.split(" - ")[0];
+            const benchmark_label = benchmark.split(" :: ")[0];
             document.getElementById("ETF-Pre-preformance-benchmark-label-data").value = benchmark_label;
         }
-
-
-        // --> Distribution Detail
-        // document.getElementById('ETF-Pre-ex-date-data').value = document.getElementById('ETF-Pre-ex-date').value.trim();
-        // document.getElementById('ETF-Pre-rec-date-data').value = document.getElementById('ETF-Pre-rec-date').value.trim();
-        // document.getElementById('ETF-Pre-pay-date-data').value = document.getElementById('ETF-Pre-pay-date').value.trim();
-        // document.getElementById('ETF-Pre-dis-rate-share-data').value = document.getElementById('ETF-Pre-amount-date').value.trim();
 
         let new_dis_data = [];
         const rows_count = document.querySelectorAll('.table-horizontal-row-grid-4-icon').length - 1;
@@ -493,8 +518,6 @@ function save_manually_edited_data(){
             }
         }
         document.getElementById("ETF-Pre-disturbion-detail-data").value = JSON.stringify(new_dis_data);
-        // document.getElementById("ETF-Pre-disturbion-detail-varcol-data").value = document.getElementById("ETF-Pre-disturbion-detail-varcol").value;
-
 
         // --> holdings
         document.getElementById("ETF-Pre-top-holding-update-date-data").value = format_date(document.getElementById('ETF-Pre-top-holding-update-date').value.trim()); // convert from yyyy-mm-dd to mm-dd-yyyy

@@ -10,6 +10,7 @@ class ETFShortCodes
         add_shortcode('render-subadvisor-section', array($this, 'render_subadvisor'));
         add_shortcode('render-toptenmobile', array($this, 'render_toptenmobile'));
         add_shortcode('render-nav-graph', array($this, 'render_graph'));
+        add_shortcode('render-premium-graph', array($this, 'render_premium_graph'));
         add_shortcode('render-etf-content', array($this, 'render_content_cuz_elementor_dumb'));
         add_shortcode('render-post-category', array($this, 'get_post_category_cuz_elementor_cant'));
         add_shortcode('render-frontpage-box-content', array($this, 'render_frontpage_etfs'));
@@ -60,6 +61,13 @@ class ETFShortCodes
     {
         ob_start();
         include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/nav_graph.php');
+        return ob_get_clean();
+    }
+
+    function render_premium_graph()
+    {
+        ob_start();
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/premium_graph.php');
         return ob_get_clean();
     }
 

@@ -843,6 +843,142 @@ function get_custom_feilds(){
             "capability"    => "edit_posts"
         ),
         array(
+            "name"          => "premium-q1-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-q2-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-q3-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-q4-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-py",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "net-q1-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "net-q2-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "net-q3-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "net-q4-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "net-py",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "discount-q1-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "discount-q2-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "discount-q3-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "discount-q4-cy",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "discount-py",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-section-desc-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "premium-section-date-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
             "name"          => "connection-id",
             "title"         => "SFTP Connection",
             "description"   => "",
