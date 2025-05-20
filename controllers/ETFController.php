@@ -146,9 +146,15 @@ class ETFRestController extends WP_REST_Controller
     {
         try {
             $body = json_decode($request->get_body(), true);
+            $query = $request->get_query_params();
+
+            $update = false;
+            if (isset($query["update"])) {
+                $update = true;
+            }
 
             $pd = new \PremiumDiscount();
-            $response = $pd->proccess_multiple_historical($body);
+            $response = $pd->proccess_multiple_historical($body, $update);
             
             return rest_ensure_response($response);
         } catch (\Throwable $th) {

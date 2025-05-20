@@ -200,12 +200,6 @@ class RorPostMeta implements PostMetaInterface {
 
     private function get_ror_benchmark_record($id, $date_inc, $meta)
     {
-        $benchmark = get_post_meta($id, 'ETF-Pre-preformance-benchmark-selection-data', true);
-
-        $benchmark_value = explode(' :: ', $benchmark);
-
-        $benchmark_length = count($benchmark_value);
-
         $null_arr = [
             'three_months' => "0.0",
             'six_months' => "0.0",
@@ -214,14 +208,20 @@ class RorPostMeta implements PostMetaInterface {
             'inception' => "0.0"
         ];
 
-        if (!is_array($benchmark_value) || $benchmark_length > 2 || $benchmark_length <= 0) return $null_arr;
+        $benchmark = trim(get_post_meta($id, 'ETF-Pre-preformance-benchmark-selection-data', true));
+        if (empty($benchmark)) return $null_arr;
+
+        $benchmark_value = explode(' :: ', $benchmark);
+        $benchmark_length = count($benchmark_value);
+
+        if (!is_array($benchmark_value) || $benchmark_length !== 2) return $null_arr;
 
         foreach ($meta as $record => $values) {
 
             $formated_fund_names = explode(' - ', $values['Fund Name']);
             $formated_fund_name = trim($formated_fund_names[0]);
 
-            $formated_benchmark_values = explode(' - ', $benchmark_value[1]);
+            $formated_benchmark_values = explode(' - ', $benchmark_value[1]);  // line 224
             $formated__benchmark_value = trim($formated_benchmark_values[0]);
 
             if ($formated_fund_name === $formated__benchmark_value) {

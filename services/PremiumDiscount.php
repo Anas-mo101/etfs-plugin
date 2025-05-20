@@ -44,11 +44,14 @@ class PremiumDiscount {
     }
 
 
-    function create_entry($value, $id){
+    function create_entry($value, $id, $in_date = null){
         global $wpdb;
         $wp_table_name = $wpdb->prefix . $this->table_name;
 
         $date = date('Y-m-d H:i:s');
+        if ($in_date !== null) {
+            $date = $in_date;
+        }
 
         $wpdb->insert(
             $wp_table_name,
@@ -58,6 +61,16 @@ class PremiumDiscount {
                 'Timestamp' => $date
             ]
         );
+    }
+
+    function update_entry($id, $value){
+        global $wpdb;
+        $wp_table_name = $wpdb->prefix . $this->table_name;
+
+        $data = ['Value' => $value];
+        $where = ['ID' => $id];
+
+        $wpdb->update($wp_table_name, $data, $where);
     }
 
     function list_db_entries($id){
@@ -74,7 +87,7 @@ class PremiumDiscount {
         return $entries;
     }
 
-    function entry_exists($id, $timestamp){
+    function entry_exists($id, $timestamp): int|false {
         global $wpdb;
 
         $wp_table_name = $wpdb->prefix . $this->table_name;
@@ -86,7 +99,7 @@ class PremiumDiscount {
             ARRAY_A
         );
         
-        return count($entries) > 0;
+        return count($entries) > 0 ? $entries[0]["ID"] : false;
     }
 
     function format_entries(array $entries){
@@ -137,7 +150,7 @@ class PremiumDiscount {
         update_post_meta($id, get_prefix() . $this->date_meta_key, $timestamp2);
     }
 
-    function proccess_multiple_historical($entries){
+    function proccess_multiple_historical($entries, $updateExisting = false){
         $fails = [];
         for ($i=0; $i < count($entries); $i++) { 
             try {
@@ -155,7 +168,8 @@ class PremiumDiscount {
                 $status = $this->process_single_historical(
                     $entry["ticker"],
                     $entry["premium_discount_perc"],
-                    $entry["as_of_date"]
+                    $entry["as_of_date"],
+                    $updateExisting
                 );
 
                 if(!$status){
@@ -245,7 +259,7 @@ class PremiumDiscount {
         }
     }
 
-    function process_single_historical($fund, $premium_discount, string $date){
+    function process_single_historical($fund, $premium_discount, string $date, $updateExisting = false){
         $post_to_update = custom_get_page_by_title($fund, OBJECT, 'etfs');
         if (!$post_to_update){
             return false;
@@ -258,6 +272,11 @@ class PremiumDiscount {
 
         $exist = $this->entry_exists($id, $formatted_timestamp);
         if ($exist) {
+            if( $updateExisting ){
+                $this->update_entry($exist, $premium_discount);
+                return true;
+            }
+
             return false;
         }
 
@@ -265,7 +284,7 @@ class PremiumDiscount {
         $dateYear = date('Y', strtotime($date));
         $isCurrentYear = $dateYear == $currentYear;
 
-        $this->create_entry($premium_discount, $id);
+        $this->create_entry($premium_discount, $id, $formatted_timestamp);
 
         if( $isCurrentYear ){
             $month = (int) $timestamp->format('m'); // Extract month as integer

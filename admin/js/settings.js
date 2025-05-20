@@ -158,7 +158,10 @@ const process_premium_sync = async () => {
 const process_premium_historicals = async (fileString) => {
     const data = CSVToJSON(fileString);
 
-    await fetch(baseURL + "/premium/historical", {
+    const params = new URLSearchParams();
+    params.append("update", "true");
+
+    await fetch(baseURL + `/premium/historical?${params}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
