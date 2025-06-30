@@ -241,7 +241,7 @@ class PremiumDiscount {
                     }
 
                     $current_premium_py = (int) get_post_meta($id, get_prefix() . $this->premium_py_meta_key, true) ?? 0;
-                    if($premium_discount < 0){
+                    if($premium_discount > 0){
                         update_post_meta($id, get_prefix() . $this->premium_py_meta_key, $current_premium_py + 1);
                     }
             
@@ -251,7 +251,7 @@ class PremiumDiscount {
                     }
             
                     $current_discount_py = (int) get_post_meta($id, get_prefix() . $this->discount_py_meta_key, true) ?? 0;
-                    if($premium_discount > 0){
+                    if($premium_discount < 0){
                         update_post_meta($id, get_prefix() . $this->discount_py_meta_key, $current_discount_py + 1);
                     }
                 }
@@ -301,7 +301,7 @@ class PremiumDiscount {
         }
 
         $current_premium_py = (int) get_post_meta($id, get_prefix() . $this->premium_py_meta_key, true) ?? 0;
-        if($premium_discount < 0){
+        if($premium_discount > 0){
             update_post_meta($id, get_prefix() . $this->premium_py_meta_key, $current_premium_py + 1);
         }
 
@@ -311,7 +311,7 @@ class PremiumDiscount {
         }
 
         $current_discount_py = (int) get_post_meta($id, get_prefix() . $this->discount_py_meta_key, true) ?? 0;
-        if($premium_discount > 0){
+        if($premium_discount < 0){
             update_post_meta($id, get_prefix() . $this->discount_py_meta_key, $current_discount_py + 1);
         }
 
@@ -319,7 +319,7 @@ class PremiumDiscount {
     }
 
     function process_current_year_pd($id, $premium_discount, $quarter){
-        if($premium_discount < 0){
+        if($premium_discount > 0){
             if ($quarter == "Q1") {
                 $current_premium_cy = (int) get_post_meta($id, get_prefix() . $this->premium_cyq1_meta_key, true) ?? 0;
 
@@ -359,7 +359,7 @@ class PremiumDiscount {
             }
         }
 
-        if($premium_discount > 0){
+        if($premium_discount < 0){
             if ($quarter == "Q1") {
                 $current_discount_cy = (int) get_post_meta($id, get_prefix() . $this->discount_cyq1_meta_key, true) ?? 0;
 

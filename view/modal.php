@@ -119,27 +119,27 @@
                     <div id="<?php echo $this->prefix ?>performance-section-containers"> 
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> Premium </p>
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-py", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q1-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q2-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q3-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q4-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-py" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-q1-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-q2-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-q3-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>premium-q4-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "premium-q4-cy", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> Net Asset Value </p>
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-py", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q1-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q2-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q3-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q4-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>net-py" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>net-q1-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>net-q2-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>net-q3-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>net-q4-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "net-q4-cy", true )) ?> " />
                         </div>
                         <div class="table-horizontal-row-grid"> 
                             <p style="margin: 20px 0;"> Discount </p>
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-py", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q1-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q2-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q3-cy", true )) ?> " />
-                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q4-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>discount-py" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-py", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>discount-q1-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q1-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>discount-q2-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q2-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>discount-q3-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q3-cy", true )) ?> " />
+                            <input type="text" readonly class="fund-details-input-feilds" id="<?php echo $this->prefix ?>discount-q4-cy" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "discount-q4-cy", true )) ?> " />
                         </div>
                     </div>
                 </div>

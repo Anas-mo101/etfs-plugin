@@ -82,8 +82,24 @@ class NavPostMeta implements PostMetaInterface
             $nav_meta_keys = array(
                 'ETF-Pre-current-etf-return-data' => 'NAV',
                 'ETF-Pre-discount-percentage-data' => 'Premium/Discount Percentage',
-                'ETF-Pre-thirty-day-median-data' => 'Median 30 Day Spread Percentage',
             );
+
+            if (isset($data["Median 30 Day Spread Percentage"])) {
+                $thirtyMedianValue = $data["Median 30 Day Spread Percentage"] ?? "0.00";
+                $thirtyMedianValue = $thirtyMedianValue === "" ? "0.00" : $thirtyMedianValue;
+
+                update_post_meta(
+                    $post_to_update->ID,
+                    "ETF-Pre-thirty-day-median-data",
+                    $thirtyMedianValue
+                );
+            }else{
+                update_post_meta(
+                    $post_to_update->ID,
+                    "ETF-Pre-thirty-day-median-data",
+                    "0.00"
+                );
+            }
 
             foreach ($nav_meta_keys as $key => $value) {
                 if (isset($data[$value])) {
