@@ -979,6 +979,78 @@ function get_custom_feilds(){
             "capability"    => "edit_posts"
         ),
         array(
+            "name"          => "perf-mp-ten-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-nav-ten-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-sp-ten-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-mp-fifteen-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-nav-fifteen-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-sp-fifteen-year-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ), 
+        array(
+            "name"          => "perf-ten-year-exist-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "perf-ten-fifteen-exist-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "annualized-distribution-rate-data",
+            "title"         => "",
+            "description"   => "",
+            "type"          => "hidden",
+            "scope"         => array( "etfs" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
             "name"          => "connection-id",
             "title"         => "SFTP Connection",
             "description"   => "",

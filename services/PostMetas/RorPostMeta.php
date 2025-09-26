@@ -57,6 +57,9 @@ class RorPostMeta implements PostMetaInterface {
             return false;
         }
 
+        $ten_years_exits = false;
+        $fifteen_years_exits = false;
+
         update_post_meta($post_to_update->ID, 'ETF-Pre-pref-date-data', $utils->meta['date']);
 
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-nav-inception-data', $utils->meta['fund_nav']['inception']);
@@ -65,17 +68,83 @@ class RorPostMeta implements PostMetaInterface {
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-nav-six-data', $utils->meta['fund_nav']['six_months']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-nav-three-data', $utils->meta['fund_nav']['three_months']);
 
+        if (isset($utils->meta['fund_nav']['ten_year'])) {
+            $ten_year = $utils->meta['fund_nav']['ten_year'];
+
+            if ($ten_year !== null && trim($ten_year) !== '') {
+                $ten_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-nav-ten-year-data', $ten_year);
+            }
+        }
+
+        if (isset($utils->meta['fund_nav']['fifteen_year'])) {
+            $fifteen_year = $utils->meta['fund_nav']['fifteen_year'];
+
+            if ($fifteen_year !== null && trim($fifteen_year) !== '') {
+                $fifteen_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-nav-fifteen-year-data', $fifteen_year);
+            }
+        }
+
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-market-inception-data', $utils->meta['market_price']['inception']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-market-year-data', $utils->meta['market_price']['one_year']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-market-five-year-data', $utils->meta['market_price']['five_year']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-market-six-data', $utils->meta['market_price']['six_months']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-market-three-data', $utils->meta['market_price']['three_months']);
 
+        if (isset($utils->meta['market_price']['ten_year'])) {
+            $ten_year = $utils->meta['market_price']['ten_year'];
+
+            if ($ten_year !== null && trim($ten_year) !== '') {
+                $ten_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-mp-ten-year-data', $ten_year);
+            }
+        }
+
+        if (isset($utils->meta['market_price']['fifteen_year'])) {
+            $fifteen_year = $utils->meta['market_price']['fifteen_year'];
+
+            if ($fifteen_year !== null && trim($fifteen_year) !== '') {
+                $fifteen_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-mp-fifteen-year-data', $fifteen_year);
+            }
+        }
+
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-inception-data', $utils->meta['sp']['inception']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-year-data', $utils->meta['sp']['one_year']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-five-year-data', $utils->meta['sp']['five_year']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-six-data', $utils->meta['sp']['six_months']);
         update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-three-data', $utils->meta['sp']['three_months']);
+
+        if (isset($utils->meta['sp']['ten_year'])) {
+            $ten_year = $utils->meta['sp']['ten_year'];
+
+            if ($ten_year !== null && trim($ten_year) !== '') {
+                $ten_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-ten-year-data', $ten_year);
+            }
+        }
+
+        if (isset($utils->meta['sp']['fifteen_year'])) {
+            $fifteen_year = $utils->meta['sp']['fifteen_year'];
+
+            if ($fifteen_year !== null && trim($fifteen_year) !== '') {
+                $fifteen_years_exits = true;
+                update_post_meta($post_to_update->ID, 'ETF-Pre-perf-sp-fifteen-year-data', $fifteen_year);
+            }
+        }
+
+        if ($ten_years_exits) {
+            update_post_meta($post_to_update->ID, 'ETF-Pre-perf-ten-year-exist-data', "true");
+        }else{
+            update_post_meta($post_to_update->ID, 'ETF-Pre-perf-ten-year-exist-data', "false");
+        }
+
+        if ($fifteen_years_exits) {
+            update_post_meta($post_to_update->ID, 'ETF-Pre-perf-fifteen-year-exist-data', "true");
+        }else{
+            update_post_meta($post_to_update->ID, 'ETF-Pre-perf-fifteen-year-exist-data', "false");
+        }
 
         return true;
     }
@@ -161,6 +230,14 @@ class RorPostMeta implements PostMetaInterface {
                         'five_year' => $sp_arr['5 Year'] == 0 ? "0.0" : $sp_arr['5 Year'],
                         'inception' => $sp_arr[$date_inc] == 0 ? "0.0" : $sp_arr[$date_inc],
                     ];
+
+                    if ( isset($sp_arr['10 Year']) ) {
+                        $data_array_sp['ten_year'] = $sp_arr['10 Year'];
+                    }
+
+                    if ( isset($sp_arr['15 Year']) ) {
+                        $data_array_sp['fifteen_year'] = $sp_arr['15 Year'];
+                    }
                 }
 
                 if (empty($nav_arr) || empty($mkt_arr)) {
@@ -175,6 +252,14 @@ class RorPostMeta implements PostMetaInterface {
                     'inception' => $nav_arr[$date_inc] == 0 ? "0.0" : $nav_arr[$date_inc],
                 ];
 
+                if ( isset($nav_arr['10 Year']) ) {
+                    $data_array_nav['ten_year'] = $nav_arr['10 Year'];
+                }
+
+                if ( isset($nav_arr['15 Year']) ) {
+                    $data_array_nav['fifteen_year'] = $nav_arr['15 Year'];
+                }
+
                 $data_array_market = [
                     'three_months' => $mkt_arr['3 Month'] == 0 ? "0.0" : $mkt_arr['3 Month'],
                     'six_months' => $mkt_arr['6 Month'] == 0 ? "0.0" : $mkt_arr['6 Month'],
@@ -182,6 +267,14 @@ class RorPostMeta implements PostMetaInterface {
                     'five_year' => $mkt_arr['5 Year'] == 0 ? "0.0" : $mkt_arr['5 Year'],
                     'inception' => $mkt_arr[$date_inc] == 0 ? "0.0" : $mkt_arr[$date_inc]
                 ];
+
+                if ( isset($mkt_arr['10 Year']) ) {
+                    $data_array_market['ten_year'] = $mkt_arr['10 Year'];
+                }
+
+                if ( isset($mkt_arr['15 Year']) ) {
+                    $data_array_market['fifteen_year'] = $mkt_arr['15 Year'];
+                }
 
                 $data_array = [
                     'date' => $nav_arr['Date'],
@@ -205,6 +298,8 @@ class RorPostMeta implements PostMetaInterface {
             'six_months' => "0.0",
             'one_year' => "0.0",
             'five_year' => "0.0",
+            'ten_year' => "0.0",
+            'fifteen_year' => "0.0",
             'inception' => "0.0"
         ];
 
@@ -235,6 +330,8 @@ class RorPostMeta implements PostMetaInterface {
                             'six_months' => $meta[$i]['6 Month']  == 0 ? "0.0" : $meta[$i]['6 Month'],
                             'one_year' => $meta[$i]['1 Year']  == 0 ? "0.0" : $meta[$i]['1 Year'],
                             'five_year' => $meta[$i]['5 Year']  == 0 ? "0.0" : $meta[$i]['5 Year'],
+                            'ten_year' => $meta[$i]['5 Year']  == 0 ? "0.0" : $meta[$i]['10 Year'],
+                            'fifteen_year' => $meta[$i]['5 Year']  == 0 ? "0.0" : $meta[$i]['15 Year'],
                             'inception' => $meta[$i][$date_inc]  == 0 ? "0.0" : $meta[$i][$date_inc]
                         ];
                     }

@@ -6,6 +6,8 @@ class ETFShortCodes
     function __construct()
     {
         add_shortcode('render-etf-page', array($this, 'render_product_page'));
+        add_shortcode('render-preformance-section', array($this, 'render_preformance_section'));
+        add_shortcode('render-annualized-rate', array($this, 'render_annualized_rate_feild'));
         add_shortcode('render-top-holders-table', array($this, 'render_top_holders'));
         add_shortcode('render-subadvisor-section', array($this, 'render_subadvisor'));
         add_shortcode('render-toptenmobile', array($this, 'render_toptenmobile'));
@@ -25,6 +27,20 @@ class ETFShortCodes
     {
         ob_start();
         include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/product_page.php');
+        return ob_get_clean();
+    }
+
+    function render_annualized_rate_feild()
+    {
+        ob_start();
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/annualized_rate_feild.php');
+        return ob_get_clean();
+    }
+
+    function render_preformance_section()
+    {
+        ob_start();
+        include(WP_PLUGIN_DIR . '/etfs-plugin/view/shortcodes/performance.php');
         return ob_get_clean();
     }
 

@@ -185,6 +185,10 @@ tbody {
     width: auto;
 }
 
+.table-horizontal-row-grid-8{
+    grid-template-columns: 160px 160px 160px 160px 160px 160px 160px 160px;
+}
+
 .table-horizontal-row-grid-4-icon{
     grid-template-columns: 170px 170px 170px 170px 220px 50px;
     width: auto;

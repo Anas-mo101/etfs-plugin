@@ -88,6 +88,13 @@
                         <h3>  Median 30 Day Spread Percentage </h3>
                         <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>median-spread-per" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "thirty-day-median-data", true )) ?> " />
                     </div>
+
+                    <?php  if (strtolower(the_title('', '', false)) === "cefz") { ?>
+                        <div class="table-horizontal-row"> 
+                            <h3> Annualized Distribution Rate </h3>
+                            <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>annualized-distribution-rate" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "annualized-distribution-rate-data", true )) ?> " />
+                        </div>
+                    <?php  } ?>
                 </div>
 
                 <div style="display: contents;" class="template-tables-preview">
@@ -262,32 +269,67 @@
                             <input type="date" style="width: 120px;" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>preformance-update-date" value="<?php echo date('Y-m-d', strtotime(get_post_meta( get_the_ID(), $this->prefix . "pref-date-data", true )));  ?>" />
                         </span>
                     </p>
-                    <div class="table-horizontal-row-grid"> 
+
+                    <?php 
+                        $mp_ten = get_post_meta( get_the_ID(), "ETF-Pre-perf-mp-ten-year-data", true );
+                        $nav_ten = get_post_meta( get_the_ID(), "ETF-Pre-perf-nav-ten-year-data", true );
+                        $sp_ten = get_post_meta( get_the_ID(), "ETF-Pre-perf-sp-ten-year-data", true );
+
+                        $mp_fifteen = get_post_meta( get_the_ID(), "ETF-Pre-perf-mp-fifteen-year-data", true );
+                        $nav_fifteen = get_post_meta( get_the_ID(), "ETF-Pre-perf-nav-fifteen-year-data", true );
+                        $sp_fifteen = get_post_meta( get_the_ID(), "ETF-Pre-perf-sp-fifteen-year-data", true );
+
+                        $show = get_post_meta( get_the_ID(), "ETF-Pre-perf-ten-year-exist-data", true ) === "true";
+                        $show_fiften = get_post_meta( get_the_ID(), "ETF-Pre-perf-fiften-year-exist-data", true ) === "true";
+                    ?>
+
+                    <div class="table-horizontal-row-grid table-horizontal-row-grid-8"> 
                         <h3></h3>
                         <h3>3 Month</h3>
                         <h3>6 Month</h3>
                         <h3>1 Year</h3>
                         <h3>5 Year</h3>
+
+                        <?php if ($show) { ?>
+                            <h3>10 Year</h3>
+                        <?php } ?>
+
+                        <?php if ($show_fiften) { ?>
+                            <h3>15 Year</h3>
+                        <?php } ?>
+
                         <h3>Since Inception</h3>
                     </div> 
                     <div id="<?php echo $this->prefix ?>performance-section-containers"> 
-                        <div class="table-horizontal-row-grid"> 
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-8"> 
                             <p style="margin: 20px 0;"> Market Price </p>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-three-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-six-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-year-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-five-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-five-year-data", true )) ?> " />
+                            <?php if ( $show ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>mp-ten-year" value=" <?= $mp_ten ?> " />
+                            <?php } ?>
+                            <?php if ( $show_fiften ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>mp-fifteen-year" value=" <?= $mp_fifteen ?> " />
+                            <?php } ?>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>market-price-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-market-inception-data", true )) ?> " />
                         </div>
-                        <div class="table-horizontal-row-grid"> 
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-8"> 
                             <p style="margin: 20px 0;"> Fund NAV </p>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-three" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-three-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-six-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-year-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-five-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-five-year-data", true )) ?> " />
+                            <?php if ( $show ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-ten-year" value=" <?= $nav_ten ?> " />
+                            <?php } ?>
+                            <?php if ( $show_fiften ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-fifteen-year" value=" <?= $nav_fifteen ?> " />
+                            <?php } ?>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>nav-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-nav-inception-data", true )) ?> " />
                         </div>
-                        <div class="table-horizontal-row-grid"> 
+                        <div class="table-horizontal-row-grid table-horizontal-row-grid-8"> 
                                 <?php if(in_category( 'Unstructured ETFs' )){
                                     $connection_id = get_post_meta( get_the_ID(), $this->prefix . "connection-id", true );
 
@@ -306,6 +348,12 @@
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-six" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-six-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-year-data", true )) ?> " />
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-five-year" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-five-year-data", true )) ?> " />
+                            <?php if ( $show ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-ten-year" value=" <?= $sp_ten ?> " />
+                            <?php } ?>
+                            <?php if ( $show_fiften ) { ?>
+                                <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-fifteen-year" value=" <?= $sp_fifteen ?> " />
+                            <?php } ?>
                             <input type="text" class="fund-details-input-feilds" id="<?php echo $this->prefix ?>sp-inception" value=" <?php echo htmlspecialchars(get_post_meta( get_the_ID(), $this->prefix . "perf-sp-inception-data", true )) ?> " />
                         </div>
                     </div>
